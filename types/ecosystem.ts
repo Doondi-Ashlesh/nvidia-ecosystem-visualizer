@@ -74,7 +74,6 @@ export type ServiceNodeData = {
   isActiveStep: boolean;
   isExploreMode: boolean;
   onHover: (service: Service | null) => void;
-  onClick: (service: Service) => void;
   /** Mouse-move callback used to track cursor position for the hover tooltip (non-explore modes) */
   onMouseMove?: (service: Service, x: number, y: number) => void;
   [key: string]: unknown;

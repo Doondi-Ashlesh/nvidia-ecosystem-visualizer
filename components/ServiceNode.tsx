@@ -29,7 +29,6 @@ function ServiceNodeComponent({ data }: NodeProps) {
     isActiveStep,
     isExploreMode,
     onHover,
-    onClick,
     onMouseMove,
   } = data as ServiceNodeData & {
     onMouseMove?: (service: Service, x: number, y: number) => void;
@@ -91,9 +90,6 @@ function ServiceNodeComponent({ data }: NodeProps) {
         if (!isExploreMode) {
           (onHover as (s: Service | null) => void)(null);
         }
-      }}
-      onClick={() => {
-        (onClick as (s: Service) => void)(service);
       }}
     >
       {/* Active-step radial pulse */}

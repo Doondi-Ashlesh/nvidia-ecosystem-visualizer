@@ -124,7 +124,6 @@ function GraphInner({
         isActiveStep,
         isExploreMode:  mode === 'explore',
         onHover:        handleNodeHover,
-        onClick:        onClickService,
         onMouseMove:    handleNodeMouseMove,
       };
 
@@ -138,7 +137,7 @@ function GraphInner({
     });
   }, [
     mode, activeWorkflow, activeStepIndex, workflowNodeIds,
-    handleNodeHover, onClickService, handleNodeMouseMove,
+    handleNodeHover, handleNodeMouseMove,
   ]);
 
   // ── Edges ──────────────────────────────────────────────────────────────────
@@ -260,6 +259,10 @@ function GraphInner({
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
         style={{ background: '#000000' }}
+        onNodeClick={(_, node) => {
+          const service = NVIDIA_SERVICES.find((s) => s.id === node.id);
+          if (service) onClickService(service);
+        }}
       >
         <Background
           variant={BackgroundVariant.Dots}
