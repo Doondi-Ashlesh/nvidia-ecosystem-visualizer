@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import EcosystemGraph from '@/components/EcosystemGraph';
 import { LAYER_ORDER, LAYER_LABELS, LAYER_SUBLABELS } from '@/types/ecosystem';
@@ -200,17 +201,33 @@ export default function Home() {
                             style={{ background: 'linear-gradient(90deg, #76b900, transparent)' }}
                           />
 
-                          {/* Services in this layer */}
-                          <div className="space-y-1">
+                          {/* Services in this layer — each with docs link */}
+                          <div className="space-y-1.5">
                             {layerServices.map((s) => (
-                              <div key={s.id} className="flex items-start gap-1.5">
+                              <div key={s.id} className="flex items-start gap-1.5 group/svc">
                                 <span
                                   className="w-1 h-1 rounded-full mt-1.5 shrink-0"
                                   style={{ background: '#76b900' }}
                                 />
-                                <div>
-                                  <p className="text-[10px] text-white font-medium">{s.name}</p>
-                                  <p className="text-[9px] text-slate-600 leading-snug">{s.shortDescription}</p>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-1">
+                                    <p className="text-[10px] text-white font-medium leading-tight">
+                                      {s.name}
+                                    </p>
+                                    <a
+                                      href={s.officialUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="shrink-0 opacity-0 group-hover/svc:opacity-100 transition-opacity p-0.5 rounded hover:bg-[#76b90020]"
+                                      title={`Open official ${s.name} docs`}
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <ExternalLink size={9} style={{ color: '#76b900' }} />
+                                    </a>
+                                  </div>
+                                  <p className="text-[9px] text-slate-600 leading-snug">
+                                    {s.shortDescription}
+                                  </p>
                                 </div>
                               </div>
                             ))}

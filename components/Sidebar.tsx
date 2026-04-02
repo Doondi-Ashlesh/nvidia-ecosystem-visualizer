@@ -48,7 +48,11 @@ export default function Sidebar({
   const [goal, setGoal]       = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
-  const inputRef              = useRef<HTMLTextAreaElement>(null);
+  const [unverified, setUnverified] = useState<{
+    message: string;
+    suggestedServices: Array<{ id: string; name: string; officialUrl: string }>;
+  } | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleGenerate = useCallback(async () => {
     const trimmed = goal.trim();
@@ -56,6 +60,7 @@ export default function Sidebar({
 
     setLoading(true);
     setError(null);
+    setUnverified(null);
 
     try {
       const res = await fetch('/api/generate-flow', {
@@ -65,13 +70,31 @@ export default function Sidebar({
       });
 
       const data = (await res.json()) as {
-        goal?: string;
-        steps?: WorkflowStep[];
-        error?: string;
+        verified?:         boolean;
+        goal?:             string;
+        steps?:            WorkflowStep[];
+        message?:          string;
+        suggestedServices?: Array<{ id: string; name: string; officialUrl: string }>;
+        error?:            string;
       };
 
-      if (!res.ok || data.error) {
-        setError(data.error ?? 'Something went wrong — try rephrasing');
+      // Hard API / network error
+      if (data.error) {
+        setError(data.error);
+        return;
+      }
+
+      // Groq couldn't verify a valid documented path
+      if (data.verified === false) {
+        setUnverified({
+          message:           data.message ?? 'No documented NVIDIA path found for this goal.',
+          suggestedServices: data.suggestedServices ?? [],
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        setError('Something went wrong — try rephrasing');
         return;
       }
 
@@ -156,7 +179,7 @@ export default function Sidebar({
                 <textarea
                   ref={inputRef}
                   value={goal}
-                  onChange={(e) => { setGoal(e.target.value); setError(null); }}
+                  onChange={(e) => { setGoal(e.target.value); setError(null); setUnverified(null); }}
                   onKeyDown={handleKey}
                   placeholder="e.g. Deploy a medical imaging model with low-latency inference…"
                   rows={3}
@@ -176,7 +199,7 @@ export default function Sidebar({
                 </button>
               </div>
 
-              {/* Error */}
+              {/* Hard error */}
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -4 }}
@@ -185,6 +208,72 @@ export default function Sidebar({
                 >
                   <AlertCircle size={12} className="text-red-400 mt-0.5 shrink-0" />
                   <p className="text-red-300 text-[11px] leading-relaxed">{error}</p>
+                </motion.div>
+              )}
+
+              {/* Unverified — no documented path found */}
+              {unverified && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-lg border overflow-hidden"
+                  style={{ borderColor: '#76b90030', background: '#76b90008' }}
+                >
+                  {/* Header */}
+                  <div
+                    className="flex items-start gap-2 px-3 py-2.5"
+                    style={{ borderBottom: '1px solid #76b90020' }}
+                  >
+                    <AlertCircle size={12} className="text-[#76b900] mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] font-bold text-[#76b900] uppercase tracking-widest mb-0.5">
+                        Cannot verify path
+                      </p>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        {unverified.message}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Suggested services */}
+                  {unverified.suggestedServices.length > 0 && (
+                    <div className="px-3 py-2.5 space-y-2">
+                      <p className="text-[9px] uppercase tracking-widest text-slate-600 font-semibold">
+                        Services to investigate
+                      </p>
+                      {unverified.suggestedServices.map((svc) => (
+                        <div key={svc.id} className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <span
+                              className="w-1.5 h-1.5 rounded-full shrink-0"
+                              style={{ background: '#76b900' }}
+                            />
+                            <span className="text-white text-[11px] font-medium truncate">
+                              {svc.name}
+                            </span>
+                          </div>
+                          <a
+                            href={svc.officialUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="shrink-0 p-1 rounded transition-colors hover:bg-[#76b90020]"
+                            title="Open official docs"
+                          >
+                            <ExternalLink size={10} style={{ color: '#76b900' }} />
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Dismiss */}
+                  <button
+                    onClick={() => setUnverified(null)}
+                    className="w-full text-center text-[10px] text-slate-700 hover:text-slate-500 transition-colors py-2"
+                    style={{ borderTop: '1px solid #76b90015' }}
+                  >
+                    Try a different goal
+                  </button>
                 </motion.div>
               )}
 

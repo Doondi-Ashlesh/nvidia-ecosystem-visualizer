@@ -39,8 +39,8 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.94 }}
       transition={{ duration: 0.1, ease: 'easeOut' }}
-      className="fixed z-[9999] pointer-events-none select-none"
-      style={{ left, top, width: TOOLTIP_W }}
+      className="fixed z-[9999] select-none"
+      style={{ pointerEvents: 'none', left, top, width: TOOLTIP_W }}
     >
       <div
         className="relative overflow-hidden"
@@ -121,16 +121,30 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
             ))}
           </div>
 
-          {/* Footer hint */}
-          <div
-            className="flex items-center gap-1 pt-0.5"
-            style={{ color: '#76b90055' }}
+          {/* Docs link — real button */}
+          <a
+            href={service.officialUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 w-full mt-1 pt-2 transition-colors group/link"
+            style={{
+              borderTop: '1px solid #76b90020',
+              color:     '#76b90060',
+              pointerEvents: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <ExternalLink size={8} />
-            <span className="text-[8px] font-mono tracking-wide">
-              click to open official docs
+            <ExternalLink size={9} className="shrink-0 group-hover/link:text-[#76b900] transition-colors" style={{ color: 'inherit' }} />
+            <span
+              className="text-[9px] font-mono tracking-wide group-hover/link:text-[#76b900] transition-colors"
+              style={{ color: 'inherit' }}
+            >
+              {service.officialUrl.replace(/^https?:\/\//, '').split('/')[0]}
             </span>
-          </div>
+            <span className="ml-auto text-[8px] font-mono opacity-60 group-hover/link:opacity-100 transition-opacity">
+              open docs →
+            </span>
+          </a>
         </div>
       </div>
     </motion.div>
