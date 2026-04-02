@@ -273,6 +273,7 @@ function GraphInner({
             service={tooltipService}
             x={mousePos.x}
             y={mousePos.y}
+            isExploreMode={mode === 'explore'}
           />
         )}
       </AnimatePresence>
