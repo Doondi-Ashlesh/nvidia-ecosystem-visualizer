@@ -65,7 +65,7 @@ export default function Home() {
 
   const handleClickService = useCallback((service: Service) => {
     if (mode === 'explore') {
-      window.open(service.officialUrl, '_blank', 'noopener,noreferrer');
+      setHoveredService(service);
     } else if (mode === 'workflow' && activeWorkflow) {
       const stepIdx = activeWorkflow.steps.findIndex((s) => s.serviceId === service.id);
       if (stepIdx >= 0) setActiveStepIndex(stepIdx);
@@ -130,7 +130,7 @@ export default function Home() {
           {mode === 'explore' && (
             <p className="text-slate-500 text-sm truncate min-w-0">
               <span className="text-[#76b900] font-semibold">Explore mode</span>
-              <span className="hidden sm:inline"> — Hover any service for a tooltip · click to open official docs</span>
+              <span className="hidden sm:inline"> — Click any service to see its description in the sidebar</span>
             </p>
           )}
           {mode === 'workflow' && activeWorkflow && (
@@ -196,7 +196,7 @@ export default function Home() {
                   >
                     <p
                       className="text-[11px] font-bold uppercase tracking-widest transition-colors truncate"
-                      style={{ color: isActive ? '#76b900' : '#76b90055' }}
+                      style={{ color: isActive ? '#76b900' : '#76b900aa' }}
                     >
                       {/* Short label on medium screens, full label on lg+ */}
                       <span className="lg:hidden">{LAYER_SHORT_LABELS[layer]}</span>
@@ -220,13 +220,15 @@ export default function Home() {
                         transition={{ duration: 0.15, ease: 'easeOut' }}
                         className={`absolute top-full mt-1 z-50 ${dropdownPosition}`}
                         style={{
-                          transformOrigin: 'top center',
-                          width:      'max-content',
-                          maxWidth:   220,
-                          background: 'rgba(5,5,5,0.97)',
-                          border:     '1px solid #76b90040',
-                          borderRadius: 6,
-                          boxShadow:  '0 0 20px #76b90015, 0 8px 32px rgba(0,0,0,0.9)',
+                          transformOrigin:      'top center',
+                          width:                'max-content',
+                          maxWidth:             220,
+                          background:           'rgba(0,0,0,0.55)',
+                          backdropFilter:       'blur(20px)',
+                          WebkitBackdropFilter: 'blur(20px)',
+                          border:               '1px solid #76b90040',
+                          borderRadius:         6,
+                          boxShadow:            '0 0 20px #76b90015, 0 8px 32px rgba(0,0,0,0.6)',
                         }}
                       >
                         <div className="p-3 space-y-2.5">

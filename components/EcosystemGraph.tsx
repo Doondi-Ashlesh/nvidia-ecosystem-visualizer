@@ -81,10 +81,6 @@ function GraphInner({
   const [tooltipService, setTooltipService] = useState<Service | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Click popup (explore mode)
-  const [clickedService, setClickedService] = useState<Service | null>(null);
-  const [clickPos, setClickPos] = useState({ x: 0, y: 0 });
-
   const workflowNodeIds = useMemo(
     () => (activeWorkflow ? getWorkflowNodeIds(activeWorkflow) : []),
     [activeWorkflow],
@@ -102,16 +98,6 @@ function GraphInner({
   const handleNodeHover = useCallback(
     (service: Service | null) => {
       if (!service) setTooltipService(null);
-      onHoverService(service);
-    },
-    [onHoverService],
-  );
-
-  // Click callback — explore mode popup
-  const handleNodeExploreClick = useCallback(
-    (service: Service, x: number, y: number) => {
-      setClickedService((prev) => (prev?.id === service.id ? null : service));
-      setClickPos({ x, y });
       onHoverService(service);
     },
     [onHoverService],
@@ -140,7 +126,6 @@ function GraphInner({
         onHover:        handleNodeHover,
         onClick:        onClickService,
         onMouseMove:    handleNodeMouseMove,
-        onExploreClick: handleNodeExploreClick,
       };
 
       return {
@@ -247,6 +232,13 @@ function GraphInner({
     }
   }, [focusLayer, fitView]);
 
+  // Reset to full view when switching to explore mode
+  useEffect(() => {
+    if (mode === 'explore') {
+      fitView({ duration: 500, padding: 0.08 });
+    }
+  }, [mode, fitView]);
+
   return (
     <div
       className={`w-full h-full relative${mode === 'explore' ? ' explore-mode' : ''}`}
@@ -268,7 +260,6 @@ function GraphInner({
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
         style={{ background: '#000000' }}
-        onPaneClick={() => setClickedService(null)}
       >
         <Background
           variant={BackgroundVariant.Dots}
@@ -290,19 +281,6 @@ function GraphInner({
             service={tooltipService}
             x={mousePos.x}
             y={mousePos.y}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Explore mode click popup */}
-      <AnimatePresence>
-        {mode === 'explore' && clickedService && (
-          <NodeTooltip
-            service={clickedService}
-            x={clickPos.x}
-            y={clickPos.y}
-            isExploreMode
-            onClose={() => setClickedService(null)}
           />
         )}
       </AnimatePresence>

@@ -27,6 +27,7 @@ function ServiceNodeComponent({ data }: NodeProps) {
     isHighlighted,
     isDimmed,
     isActiveStep,
+    isExploreMode,
     onHover,
     onClick,
     onMouseMove,
@@ -61,10 +62,9 @@ function ServiceNodeComponent({ data }: NodeProps) {
 
   return (
     <motion.div
-      style={{ width: NODE_W + 4, height: NODE_H + 4 }}
-      className="relative cursor-pointer select-none"
+      className="relative select-none"
+      style={{ width: NODE_W + 4, height: NODE_H + 4, cursor: 'pointer' }}
       animate={{
-        // Dimmed: still visible at ~40%, slightly desaturated — not invisible
         opacity: isDimmed ? 0.40 : 1,
         filter:  isDimmed ? 'grayscale(0.6) brightness(0.55)' : glowFilter,
         scale:   hovered && !isDimmed ? 1.06 : 1,
@@ -72,21 +72,29 @@ function ServiceNodeComponent({ data }: NodeProps) {
       transition={{ duration: 0.22, ease: 'easeOut' }}
       onMouseEnter={(e) => {
         setHovered(true);
-        (onHover as (s: Service | null) => void)(service);
-        (onMouseMove as ((s: Service, x: number, y: number) => void) | undefined)?.(
-          service, e.clientX, e.clientY,
-        );
+        if (!isExploreMode) {
+          (onHover as (s: Service | null) => void)(service);
+          (onMouseMove as ((s: Service, x: number, y: number) => void) | undefined)?.(
+            service, e.clientX, e.clientY,
+          );
+        }
       }}
       onMouseMove={(e) => {
-        (onMouseMove as ((s: Service, x: number, y: number) => void) | undefined)?.(
-          service, e.clientX, e.clientY,
-        );
+        if (!isExploreMode) {
+          (onMouseMove as ((s: Service, x: number, y: number) => void) | undefined)?.(
+            service, e.clientX, e.clientY,
+          );
+        }
       }}
       onMouseLeave={() => {
         setHovered(false);
-        (onHover as (s: Service | null) => void)(null);
+        if (!isExploreMode) {
+          (onHover as (s: Service | null) => void)(null);
+        }
       }}
-      onClick={() => (onClick as (s: Service) => void)(service)}
+      onClick={() => {
+        (onClick as (s: Service) => void)(service);
+      }}
     >
       {/* Active-step radial pulse */}
       {isActiveStep && (
