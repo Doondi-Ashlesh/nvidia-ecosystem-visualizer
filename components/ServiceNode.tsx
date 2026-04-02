@@ -17,8 +17,8 @@ import type { Service, ServiceNodeData } from '@/types/ecosystem';
 
 const GREEN    = '#76b900';
 const HEX_CLIP = 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)';
-const NODE_W   = 164;
-const NODE_H   = 92;
+const NODE_W   = 180;
+const NODE_H   = 100;
 
 function ServiceNodeComponent({ data }: NodeProps) {
   const {
@@ -122,11 +122,11 @@ function ServiceNodeComponent({ data }: NodeProps) {
           WebkitBackdropFilter: 'blur(8px)',
         }}
       >
-        <span className="text-[10.5px] font-bold text-white text-center leading-tight px-9 line-clamp-2">
+        <span className="text-[12px] font-bold text-white text-center leading-tight px-8 line-clamp-2">
           {service.name}
         </span>
         <span
-          className="text-[8px] font-semibold uppercase tracking-wider"
+          className="text-[10px] font-semibold uppercase tracking-wider"
           style={{ color: `${GREEN}bb` }}
         >
           {service.tags[0]}
@@ -136,7 +136,7 @@ function ServiceNodeComponent({ data }: NodeProps) {
       {/* Step number badge */}
       {stepNumber !== undefined && (
         <div
-          className="absolute -top-1.5 -right-1.5 w-[18px] h-[18px] rounded-full flex items-center justify-center text-[8px] font-black z-20"
+          className="absolute -top-1.5 -right-1.5 w-[20px] h-[20px] rounded-full flex items-center justify-center text-[10px] font-black z-20"
           style={{
             background: isActiveStep ? GREEN : '#0d1117',
             color:      isActiveStep ? '#000' : GREEN,

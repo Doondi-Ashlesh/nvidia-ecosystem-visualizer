@@ -140,12 +140,12 @@ export default function Sidebar({
             <rect width="28" height="20" rx="2" fill="#76b900" />
             <text x="4" y="14" fontSize="9" fontWeight="900" fill="#000" fontFamily="Arial">NV</text>
           </svg>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-[#76b900] uppercase">
+          <span className="text-base font-bold tracking-[0.2em] text-[#76b900] uppercase">
             NVIDIA
           </span>
         </div>
         <h1 className="text-white font-bold text-base leading-snug">AI Ecosystem</h1>
-        <p className="text-[10px] text-slate-500 mt-0.5">18 services · 6 layers · official docs</p>
+        <p className="text-sm text-slate-500 mt-0.5">18 services · 6 layers · official docs</p>
       </div>
 
       {/* ── Main content ─────────────────────────────────────────────────── */}
@@ -166,14 +166,14 @@ export default function Sidebar({
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Sparkles size={13} className="text-[#76b900]" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#76b900]">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#76b900]">
                     AI Path Generator
                   </span>
                 </div>
-                <p className="text-slate-300 text-sm font-medium leading-relaxed">
+                <p className="text-slate-300 text-base font-medium leading-relaxed">
                   What are you trying to build?
                 </p>
-                <p className="text-[10px] text-slate-600 mt-1">
+                <p className="text-sm text-slate-600 mt-1">
                   Describe your goal — Groq AI will map the right NVIDIA services.
                 </p>
               </div>
@@ -187,7 +187,7 @@ export default function Sidebar({
                   onKeyDown={handleKey}
                   placeholder="e.g. Deploy a medical imaging model with low-latency inference…"
                   rows={3}
-                  className="w-full bg-[#0d1117] border border-[#1e293b] rounded-lg px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-[#76b900] transition-colors resize-none"
+                  className="w-full bg-[#0d1117] border border-[#1e293b] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#76b900] transition-colors resize-none"
                 />
                 <button
                   onClick={handleGenerate}
@@ -211,7 +211,7 @@ export default function Sidebar({
                   className="flex items-start gap-2 px-3 py-2.5 rounded-lg border border-red-900/40 bg-red-950/20"
                 >
                   <AlertCircle size={12} className="text-red-400 mt-0.5 shrink-0" />
-                  <p className="text-red-300 text-[11px] leading-relaxed">{error}</p>
+                  <p className="text-red-300 text-base leading-relaxed">{error}</p>
                 </motion.div>
               )}
 
@@ -230,10 +230,10 @@ export default function Sidebar({
                   >
                     <AlertCircle size={12} className="text-[#76b900] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] font-bold text-[#76b900] uppercase tracking-widest mb-0.5">
+                      <p className="text-xs font-bold text-[#76b900] uppercase tracking-widest mb-0.5">
                         Cannot verify path
                       </p>
-                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                      <p className="text-slate-400 text-sm leading-relaxed">
                         {unverified.message}
                       </p>
                     </div>
@@ -242,7 +242,7 @@ export default function Sidebar({
                   {/* Suggested services */}
                   {unverified.suggestedServices.length > 0 && (
                     <div className="px-3 py-2.5 space-y-2">
-                      <p className="text-[9px] uppercase tracking-widest text-slate-600 font-semibold">
+                      <p className="text-[10px] uppercase tracking-widest text-slate-600 font-semibold">
                         Services to investigate
                       </p>
                       {unverified.suggestedServices.map((svc) => (
@@ -252,7 +252,7 @@ export default function Sidebar({
                               className="w-1.5 h-1.5 rounded-full shrink-0"
                               style={{ background: '#76b900' }}
                             />
-                            <span className="text-white text-[11px] font-medium truncate">
+                            <span className="text-white text-sm font-medium truncate">
                               {svc.name}
                             </span>
                           </div>
@@ -273,7 +273,7 @@ export default function Sidebar({
                   {/* Dismiss */}
                   <button
                     onClick={() => setUnverified(null)}
-                    className="w-full text-center text-[10px] text-slate-700 hover:text-slate-500 transition-colors py-2"
+                    className="w-full text-center text-sm text-slate-700 hover:text-slate-500 transition-colors py-2"
                     style={{ borderTop: '1px solid #76b90015' }}
                   >
                     Try a different goal
@@ -295,7 +295,7 @@ export default function Sidebar({
                       style={{ width: `${w}%`, background: '#76b90015' }}
                     />
                   ))}
-                  <p className="text-[10px] text-[#76b900]/60 font-mono mt-2">
+                  <p className="text-sm text-[#76b900]/60 font-mono mt-2">
                     Groq is generating your path…
                   </p>
                 </motion.div>
@@ -304,7 +304,7 @@ export default function Sidebar({
               {/* Divider */}
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-[#1e293b]" />
-                <span className="text-[10px] text-slate-600 uppercase tracking-widest">or</span>
+                <span className="text-sm text-slate-600 uppercase tracking-widest">or</span>
                 <div className="flex-1 h-px bg-[#1e293b]" />
               </div>
 
@@ -316,10 +316,10 @@ export default function Sidebar({
                 <div className="flex items-center gap-3">
                   <Compass size={16} className="text-[#76b900]" />
                   <div className="text-left">
-                    <p className="text-white text-xs font-semibold group-hover:text-[#76b900] transition-colors">
+                    <p className="text-white text-sm font-semibold group-hover:text-[#76b900] transition-colors">
                       Explore freely
                     </p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">Hover any service for details</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Hover any service for details</p>
                   </div>
                 </div>
                 <ChevronRight size={13} className="text-slate-600 group-hover:text-[#76b900] transition-colors" />
@@ -343,11 +343,11 @@ export default function Sidebar({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Sparkles size={10} className="text-[#76b900]" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-[#76b900]">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#76b900]">
                         AI Generated
                       </span>
                     </div>
-                    <h2 className="text-white font-bold text-sm leading-snug">
+                    <h2 className="text-white font-bold text-base leading-snug">
                       {activeWorkflow.goal}
                     </h2>
                   </div>
@@ -370,7 +370,7 @@ export default function Sidebar({
                     transition={{ duration: 0.4 }}
                   />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1.5">
+                <p className="text-sm text-slate-500 mt-1.5">
                   Step {activeStepIndex + 1} of {activeWorkflow.steps.length}
                 </p>
               </div>
@@ -394,7 +394,7 @@ export default function Sidebar({
                     >
                       <div className="flex items-center gap-2.5">
                         <div
-                          className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold"
+                          className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
                           style={{
                             background: isCompleted || isActive ? '#76b900' : '#1e293b',
                             color:      isCompleted || isActive ? '#000' : '#64748b',
@@ -404,17 +404,17 @@ export default function Sidebar({
                           {idx + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-xs font-semibold truncate">
+                          <p className="text-white text-sm font-semibold truncate">
                             {step.serviceId
                               .split('-')
                               .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
                               .join(' ')}
                           </p>
-                          <p className="text-slate-500 text-[10px]">{step.role}</p>
+                          <p className="text-slate-500 text-xs">{step.role}</p>
                         </div>
                       </div>
                       {isActive && (
-                        <p className="text-slate-300 text-[11px] leading-relaxed mt-2.5 pl-7 break-words">
+                        <p className="text-slate-300 text-sm leading-relaxed mt-2.5 pl-7 break-words">
                           {step.action}
                         </p>
                       )}
@@ -428,14 +428,14 @@ export default function Sidebar({
                 <button
                   onClick={() => onStepChange(activeStepIndex - 1)}
                   disabled={activeStepIndex === 0}
-                  className="flex items-center gap-1 px-3 py-2 rounded-lg border border-[#1e293b] text-xs text-slate-300 hover:border-slate-500 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1 px-3 py-2 rounded-lg border border-[#1e293b] text-sm text-slate-300 hover:border-slate-500 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   <ChevronLeft size={13} /> Prev
                 </button>
                 <button
                   onClick={() => onStepChange(activeStepIndex + 1)}
                   disabled={activeStepIndex === activeWorkflow.steps.length - 1}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-base font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                   style={{ background: '#76b900', color: '#000' }}
                 >
                   Next <ChevronRight size={13} />
@@ -445,7 +445,7 @@ export default function Sidebar({
               <div className="px-4 pb-4 shrink-0">
                 <button
                   onClick={onBackToInitial}
-                  className="w-full text-center text-[11px] text-slate-600 hover:text-slate-400 transition-colors"
+                  className="w-full text-center text-sm text-slate-600 hover:text-slate-400 transition-colors"
                 >
                   ← Try a different goal
                 </button>
@@ -465,7 +465,7 @@ export default function Sidebar({
             >
               <button
                 onClick={onBackToInitial}
-                className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#76b900] transition-colors mb-5"
+                className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#76b900] transition-colors mb-5"
               >
                 <ChevronLeft size={12} /> Back to goals
               </button>
@@ -482,7 +482,7 @@ export default function Sidebar({
                   >
                     <div>
                       <span
-                        className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
+                        className="text-base font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
                         style={{
                           color:      LAYER_COLORS[hoveredService.layer].hex,
                           background: LAYER_COLORS[hoveredService.layer].dim,
@@ -491,12 +491,12 @@ export default function Sidebar({
                       >
                         {LAYER_LABELS[hoveredService.layer]}
                       </span>
-                      <h3 className="text-white font-bold text-sm mt-2 leading-snug">
+                      <h3 className="text-white font-bold text-base mt-2 leading-snug">
                         {hoveredService.name}
                       </h3>
                     </div>
 
-                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                    <p className="text-slate-300 text-base leading-relaxed">
                       {hoveredService.fullDescription}
                     </p>
 
@@ -504,7 +504,7 @@ export default function Sidebar({
                       href={hoveredService.officialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
+                      className="inline-flex items-center gap-1.5 text-base font-semibold px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
                       style={{ background: '#76b900', color: '#000' }}
                     >
                       Official docs <ExternalLink size={10} />
@@ -514,7 +514,7 @@ export default function Sidebar({
                       {hoveredService.tags.map((t) => (
                         <span
                           key={t}
-                          className="text-[9px] px-2 py-0.5 rounded bg-[#1e293b] text-slate-400 border border-[#334155]"
+                          className="text-sm px-2 py-0.5 rounded bg-[#1e293b] text-slate-400 border border-[#334155]"
                         >
                           {t}
                         </span>
@@ -523,14 +523,14 @@ export default function Sidebar({
 
                     {hoveredService.connections.length > 0 && (
                       <div>
-                        <p className="text-[9px] uppercase tracking-widest text-slate-600 font-semibold mb-2">
+                        <p className="text-sm uppercase tracking-widest text-slate-600 font-semibold mb-2">
                           Connects to
                         </p>
                         <div className="space-y-1.5">
                           {hoveredService.connections.map((id) => (
                             <div key={id} className="flex items-center gap-2">
                               <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#76b900' }} />
-                              <span className="text-slate-400 text-[11px]">
+                              <span className="text-slate-400 text-base">
                                 {id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                               </span>
                             </div>
@@ -553,7 +553,7 @@ export default function Sidebar({
                     >
                       <Compass size={18} className="text-[#76b900]" />
                     </div>
-                    <p className="text-slate-500 text-xs leading-relaxed">
+                    <p className="text-slate-500 text-base leading-relaxed">
                       Hover over any service node to see its official description and connections.
                     </p>
                   </motion.div>
@@ -566,7 +566,7 @@ export default function Sidebar({
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
       <div className="px-6 py-4 border-t border-[#1a1a1a] shrink-0">
-        <p className="text-[9px] text-slate-700 leading-relaxed">
+        <p className="text-sm text-slate-700 leading-relaxed">
           All data sourced from official NVIDIA documentation.
           <br />
           <span className="text-slate-600">docs.nvidia.com · developer.nvidia.com</span>

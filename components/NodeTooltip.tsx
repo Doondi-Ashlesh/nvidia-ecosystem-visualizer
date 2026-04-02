@@ -19,8 +19,8 @@ interface NodeTooltipProps {
   y: number;
 }
 
-const TOOLTIP_W   = 276;
-const TOOLTIP_H   = 200; // conservative estimate for flip threshold
+const TOOLTIP_W   = 300;
+const TOOLTIP_H   = 220; // conservative estimate for flip threshold
 const EDGE_MARGIN = 10;  // minimum gap from viewport edge
 
 export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
@@ -30,13 +30,11 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
   // Flip horizontally if too close to right edge
   const flipX    = x + 20 + TOOLTIP_W > vw - EDGE_MARGIN;
   const rawLeft  = flipX ? x - TOOLTIP_W - 12 : x + 20;
-  // Clamp so tooltip never goes off either horizontal edge
   const left     = Math.min(Math.max(rawLeft, EDGE_MARGIN), vw - TOOLTIP_W - EDGE_MARGIN);
 
   // Flip vertically if too close to bottom
   const flipY  = y + TOOLTIP_H + 20 > vh - EDGE_MARGIN;
   const rawTop = flipY ? y - TOOLTIP_H - 10 : y - 12;
-  // Clamp so tooltip never goes above top of viewport
   const top    = Math.max(rawTop, EDGE_MARGIN);
 
   return (
@@ -80,11 +78,11 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
           />
         ))}
 
-        <div className="relative p-3.5 space-y-2.5">
+        <div className="relative p-4 space-y-3">
           {/* Layer badge + name */}
           <div>
             <span
-              className="inline-block text-[8px] font-bold uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm mb-1.5"
+              className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm mb-2"
               style={{
                 background: '#76b90018',
                 color:      '#76b900',
@@ -93,7 +91,7 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
             >
               {LAYER_LABELS[service.layer]}
             </span>
-            <p className="text-white font-bold text-[13px] leading-tight tracking-wide">
+            <p className="text-white font-bold text-[15px] leading-tight tracking-wide">
               {service.name}
             </p>
           </div>
@@ -107,7 +105,7 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
           />
 
           {/* Description */}
-          <p className="text-slate-300 text-[11px] leading-relaxed">
+          <p className="text-slate-300 text-sm leading-relaxed">
             {service.shortDescription}
           </p>
 
@@ -116,7 +114,7 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
             {service.tags.slice(0, 5).map((tag) => (
               <span
                 key={tag}
-                className="text-[8px] font-mono px-1.5 py-0.5 rounded-sm"
+                className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm"
                 style={{
                   background: '#76b90010',
                   color:      '#76b90088',
@@ -128,7 +126,7 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
             ))}
           </div>
 
-          {/* Docs link — real button */}
+          {/* Docs link */}
           <a
             href={service.officialUrl}
             target="_blank"
@@ -141,14 +139,14 @@ export default function NodeTooltip({ service, x, y }: NodeTooltipProps) {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <ExternalLink size={9} className="shrink-0 group-hover/link:text-[#76b900] transition-colors" style={{ color: 'inherit' }} />
+            <ExternalLink size={11} className="shrink-0 group-hover/link:text-[#76b900] transition-colors" style={{ color: 'inherit' }} />
             <span
-              className="text-[9px] font-mono tracking-wide group-hover/link:text-[#76b900] transition-colors"
+              className="text-[11px] font-mono tracking-wide group-hover/link:text-[#76b900] transition-colors"
               style={{ color: 'inherit' }}
             >
               {service.officialUrl.replace(/^https?:\/\//, '').split('/')[0]}
             </span>
-            <span className="ml-auto text-[8px] font-mono opacity-60 group-hover/link:opacity-100 transition-opacity">
+            <span className="ml-auto text-[10px] font-mono opacity-60 group-hover/link:opacity-100 transition-opacity">
               open docs →
             </span>
           </a>

@@ -122,24 +122,24 @@ export default function Home() {
           </button>
 
           {mode === 'initial' && (
-            <p className="text-slate-500 text-xs truncate min-w-0">
+            <p className="text-slate-500 text-sm truncate min-w-0">
               <span className="text-slate-300 font-semibold">NVIDIA AI Ecosystem</span>
               <span className="hidden sm:inline"> — Describe your goal to generate a custom path, or explore all services</span>
             </p>
           )}
           {mode === 'explore' && (
-            <p className="text-slate-500 text-xs truncate min-w-0">
+            <p className="text-slate-500 text-sm truncate min-w-0">
               <span className="text-[#76b900] font-semibold">Explore mode</span>
               <span className="hidden sm:inline"> — Hover any service for a tooltip · click to open official docs</span>
             </p>
           )}
           {mode === 'workflow' && activeWorkflow && (
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <span className="text-[#76b900] font-semibold text-xs truncate max-w-[260px] shrink-0">
+              <span className="text-[#76b900] font-semibold text-sm truncate max-w-[300px] shrink-0">
                 {activeWorkflow.goal}
               </span>
-              <span className="text-slate-700 text-[10px] shrink-0">·</span>
-              <span className="text-slate-500 text-xs truncate hidden sm:block">
+              <span className="text-slate-700 text-xs shrink-0">·</span>
+              <span className="text-slate-500 text-sm truncate hidden sm:block">
                 Follow the numbered steps — highlighted nodes form your AI-generated path
               </span>
             </div>
@@ -150,7 +150,7 @@ export default function Home() {
             {LAYER_ORDER.map((layer) => (
               <div key={layer} className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#76b900' }} />
-                <span className="text-[10px] text-slate-500 whitespace-nowrap">{LAYER_LABELS[layer]}</span>
+                <span className="text-xs text-slate-500 whitespace-nowrap">{LAYER_LABELS[layer]}</span>
               </div>
             ))}
           </div>
@@ -195,7 +195,7 @@ export default function Home() {
                     style={{ borderBottom: isActive ? '1px solid #76b90040' : '1px solid transparent' }}
                   >
                     <p
-                      className="text-[9px] font-bold uppercase tracking-widest transition-colors truncate"
+                      className="text-[11px] font-bold uppercase tracking-widest transition-colors truncate"
                       style={{ color: isActive ? '#76b900' : '#76b90055' }}
                     >
                       {/* Short label on medium screens, full label on lg+ */}
@@ -203,7 +203,7 @@ export default function Home() {
                       <span className="hidden lg:inline">{LAYER_LABELS[layer]}</span>
                     </p>
                     <p
-                      className="text-[7.5px] mt-0.5 truncate transition-colors hidden lg:block"
+                      className="text-[9px] mt-0.5 truncate transition-colors hidden lg:block"
                       style={{ color: isActive ? '#64748b' : '#374151' }}
                     >
                       {LAYER_SUBLABELS[layer]}
@@ -232,10 +232,10 @@ export default function Home() {
                         <div className="p-3 space-y-2.5">
                           {/* Layer name */}
                           <div>
-                            <p className="text-[10px] font-bold text-[#76b900] uppercase tracking-widest">
+                            <p className="text-xs font-bold text-[#76b900] uppercase tracking-widest">
                               {LAYER_LABELS[layer]}
                             </p>
-                            <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                               {LAYER_SUBLABELS[layer]}
                             </p>
                           </div>
@@ -256,7 +256,7 @@ export default function Home() {
                                 />
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-1">
-                                    <p className="text-[10px] text-white font-medium leading-tight">
+                                    <p className="text-xs text-white font-medium leading-tight">
                                       {s.name}
                                     </p>
                                     <a
@@ -270,7 +270,7 @@ export default function Home() {
                                       <ExternalLink size={9} style={{ color: '#76b900' }} />
                                     </a>
                                   </div>
-                                  <p className="text-[9px] text-slate-600 leading-snug">
+                                  <p className="text-[11px] text-slate-500 leading-snug">
                                     {s.shortDescription}
                                   </p>
                                 </div>
