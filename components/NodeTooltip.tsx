@@ -238,7 +238,7 @@ export default function NodeTooltip({ service, x, y, isExploreMode = false, onCl
               {service.officialUrl.replace(/^https?:\/\//, '').split('/')[0]}
             </span>
             <span className="ml-auto text-[10px] font-mono opacity-60 group-hover/link:opacity-100 transition-opacity">
-              open docs →
+              Open Docs →
             </span>
           </a>
         </div>

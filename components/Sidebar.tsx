@@ -514,7 +514,7 @@ export default function Sidebar({
                       className="inline-flex items-center gap-1.5 text-base font-semibold px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
                       style={{ background: '#76b900', color: '#000' }}
                     >
-                      Official docs <ExternalLink size={10} />
+                      Official Docs <ExternalLink size={10} />
                     </a>
 
                     <div className="flex flex-wrap gap-1">

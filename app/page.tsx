@@ -110,8 +110,9 @@ export default function Home() {
       {/* Main — full width on mobile (sidebar overlays), offset on sm+ */}
       <div className="flex-1 flex flex-col min-w-0 sm:ml-72">
 
-        {/* Top bar */}
-        <div className="h-14 flex items-center px-4 sm:px-6 gap-3 border-b border-[#111] shrink-0 bg-black">
+        {/* Top bar — NVIDIA Developer portal style */}
+        <div className="h-14 flex items-center px-4 sm:px-6 border-b border-[#1a1a1a] shrink-0 bg-black gap-3">
+
           {/* Hamburger — mobile only */}
           <button
             className="sm:hidden shrink-0 text-slate-400 hover:text-[#76b900] transition-colors"
@@ -121,38 +122,81 @@ export default function Home() {
             <Menu size={18} />
           </button>
 
-          {mode === 'initial' && (
-            <p className="text-slate-500 text-sm truncate min-w-0">
-              <span className="text-slate-300 font-semibold">NVIDIA AI Ecosystem</span>
-              <span className="hidden sm:inline"> — Describe your goal to generate a custom path, or explore all services</span>
-            </p>
-          )}
-          {mode === 'explore' && (
-            <p className="text-slate-500 text-sm truncate min-w-0">
-              <span className="text-[#76b900] font-semibold">Explore mode</span>
-              <span className="hidden sm:inline"> — Click any service to see its description in the sidebar</span>
-            </p>
-          )}
-          {mode === 'workflow' && activeWorkflow && (
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <span className="text-[#76b900] font-semibold text-sm truncate max-w-[300px] shrink-0">
-                {activeWorkflow.goal}
-              </span>
-              <span className="text-slate-700 text-xs shrink-0">·</span>
-              <span className="text-slate-500 text-sm truncate hidden sm:block">
-                Follow the numbered steps — highlighted nodes form your AI-generated path
-              </span>
-            </div>
-          )}
+          {/* NVIDIA Developer branding */}
+          <a
+            href="https://developer.nvidia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 shrink-0 group"
+          >
+            {/* NVIDIA eye mark — faithful to developer.nvidia.com */}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="2.5" fill="#76b900"/>
+              {/* outer eye arc */}
+              <path d="M5 23 C6 14 10 8 16 7 C22 8 26 14 27 23 C23 18 20 16 16 16 C12 16 9 18 5 23Z" fill="#000"/>
+              {/* iris */}
+              <ellipse cx="16" cy="22" rx="5.5" ry="4" fill="#76b900"/>
+              {/* pupil */}
+              <circle cx="16" cy="22" r="2.5" fill="#000"/>
+            </svg>
+            <span className="hidden sm:flex items-baseline gap-0">
+              <span className="text-[15px] font-black text-white tracking-[0.06em] leading-none">NVIDIA</span>
+              <span className="text-[15px] font-light text-white tracking-[0.04em] leading-none">.DEVELOPER</span>
+            </span>
+          </a>
 
-          {/* Layer legend */}
-          <div className="ml-auto hidden lg:flex items-center gap-4 shrink-0">
-            {LAYER_ORDER.map((layer) => (
-              <div key={layer} className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#76b900' }} />
-                <span className="text-xs text-slate-500 whitespace-nowrap">{LAYER_LABELS[layer]}</span>
-              </div>
-            ))}
+          {/* Vertical rule */}
+          <div className="hidden sm:block w-px h-5 bg-[#2a2a2a] shrink-0" />
+
+          {/* Mode indicator */}
+          <div className="flex-1 min-w-0 hidden sm:block">
+            {mode === 'initial' && (
+              <p className="text-slate-500 text-sm truncate">
+                <span className="text-slate-300 font-semibold">AI Ecosystem Visualizer</span>
+                <span className="hidden lg:inline text-slate-600"> — Describe your goal or explore all 18 services</span>
+              </p>
+            )}
+            {mode === 'explore' && (
+              <p className="text-slate-500 text-sm truncate">
+                <span className="text-[#76b900] font-semibold">Explore Mode</span>
+                <span className="hidden lg:inline"> — Click any service node to see its description</span>
+              </p>
+            )}
+            {mode === 'workflow' && activeWorkflow && (
+              <p className="text-slate-500 text-sm truncate">
+                <span className="text-[#76b900] font-semibold">{activeWorkflow.goal}</span>
+                <span className="hidden lg:inline"> — Follow the numbered steps</span>
+              </p>
+            )}
+          </div>
+
+          {/* NVIDIA Developer nav links — right side */}
+          <div className="ml-auto hidden lg:flex items-center gap-6 shrink-0">
+            <a href="https://developer.nvidia.com" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] text-slate-300 hover:text-white transition-colors tracking-wide">
+              Home
+            </a>
+            <a href="https://developer.nvidia.com/blog" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] text-slate-300 hover:text-white transition-colors tracking-wide">
+              Blog
+            </a>
+            <a href="https://forums.developer.nvidia.com" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] hover:text-white transition-colors tracking-wide"
+              style={{ color: '#7dd3f8' }}>
+              Forums
+            </a>
+            <a href="https://docs.nvidia.com" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] text-slate-300 hover:text-white transition-colors tracking-wide">
+              Docs
+            </a>
+            <a href="https://developer.nvidia.com/downloads" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] text-slate-300 hover:text-white transition-colors tracking-wide">
+              Downloads
+            </a>
+            <a href="https://www.nvidia.com/en-us/training/" target="_blank" rel="noopener noreferrer"
+              className="text-[13px] text-slate-300 hover:text-white transition-colors tracking-wide">
+              Training
+            </a>
           </div>
         </div>
 

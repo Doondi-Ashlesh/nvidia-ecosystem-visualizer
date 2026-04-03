@@ -42,7 +42,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'ngc',
-    name: 'NGC Catalog',
+    name: 'NVIDIA NGC Catalog',
     shortDescription: 'Curated GPU-accelerated containers, models, and resources.',
     // Source: catalog.ngc.nvidia.com official description
     fullDescription:
@@ -69,7 +69,7 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'cuda',
-    name: 'NVIDIA CUDA Toolkit',
+    name: 'NVIDIA CUDA® Toolkit',
     shortDescription: 'Comprehensive dev environment for GPU-accelerated apps.',
     // Source: developer.nvidia.com/cuda-toolkit
     fullDescription:
@@ -81,7 +81,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'cudnn',
-    name: 'NVIDIA cuDNN',
+    name: 'NVIDIA cuDNN™',
     shortDescription: 'GPU-accelerated library of deep neural network primitives.',
     // Source: developer.nvidia.com/cudnn
     fullDescription:
@@ -93,7 +93,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'tensorrt',
-    name: 'NVIDIA TensorRT',
+    name: 'NVIDIA TensorRT™',
     shortDescription: 'Inference optimizer — up to 36× faster than CPU-only platforms.',
     // Source: developer.nvidia.com/tensorrt
     fullDescription:
@@ -120,31 +120,31 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'nemo',
-    name: 'NVIDIA NeMo',
+    name: 'NVIDIA NeMo™',
     shortDescription: 'Cloud-native framework for LLMs, multimodal, and speech AI.',
     // Source: docs.nvidia.com/nemo-framework and nvidia.com/en-us/ai-data-science/nemo/
     fullDescription:
       'A comprehensive toolkit for managing the AI agent lifecycle. Scalable and cloud-native generative AI framework built for researchers and developers working on LLMs, Multimodal, and Speech AI. Supports custom LLM development, fine-tuning, RAG applications, agentic AI systems, synthetic data generation, and humanoid robot reasoning.',
-    officialUrl: 'https://www.nvidia.com/en-us/ai-data-science/nemo/',
+    officialUrl: 'https://developer.nvidia.com/nemo-framework',
     layer: 'framework',
     tags: ['LLM', 'fine-tuning', 'speech', 'multimodal', 'agentic AI'],
     connections: ['nim', 'triton', 'nemo-agent-toolkit'],
   },
   {
     id: 'nemo-curator',
-    name: 'NVIDIA NeMo Curator',
+    name: 'NVIDIA NeMo™ Curator',
     shortDescription: 'Data preparation and cleaning for LLM pre-training.',
     // Source: official NeMo microservices documentation
     fullDescription:
       'Official NeMo microservice for data preparation and cleaning. Processes multimodal data at scale for LLM pre-training and customization. Provides tooling to clean/filter web-scraped data and prepare domain-specific training corpora. A required step before training with NeMo.',
-    officialUrl: 'https://docs.nvidia.com/nemo-framework/user-guide/latest/datacuration/index.html',
+    officialUrl: 'https://developer.nvidia.com/nemo-curator',
     layer: 'framework',
     tags: ['data curation', 'pre-training', 'dataset', 'LLM'],
     connections: ['nemo'],
   },
   {
     id: 'nemo-guardrails',
-    name: 'NVIDIA NeMo Guardrails',
+    name: 'NVIDIA NeMo™ Guardrails',
     shortDescription: 'Programmable safety and compliance rails for LLM apps.',
     // Source: developer.nvidia.com/nemo-guardrails
     fullDescription:
@@ -156,7 +156,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'nemo-retriever',
-    name: 'NVIDIA NeMo Retriever',
+    name: 'NVIDIA NeMo™ Retriever',
     shortDescription: 'Document extraction and RAG pipeline microservices.',
     // Source: official NeMo microservices documentation
     fullDescription:
@@ -180,7 +180,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'rapids',
-    name: 'NVIDIA RAPIDS',
+    name: 'NVIDIA RAPIDS™',
     shortDescription: 'End-to-end GPU-accelerated data science with PyData APIs.',
     // Source: rapids.ai and official NVIDIA RAPIDS docs
     fullDescription:
@@ -195,7 +195,7 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'nemotron',
-    name: 'NVIDIA Nemotron',
+    name: 'NVIDIA Nemotron™',
     shortDescription: 'Open models with open weights, data, and recipes for agents.',
     // Source: developer.nvidia.com/nemotron
     fullDescription:
@@ -207,12 +207,12 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'nemo-agent-toolkit',
-    name: 'NeMo Agent Toolkit',
+    name: 'NeMo™ Agent Toolkit',
     shortDescription: 'Open-source library adding intelligence and observability to AI agents.',
     // Source: docs.nvidia.com/nemo-framework — NeMo Agent Toolkit overview
     fullDescription:
       'An open-source AI library that adds intelligence to AI agents across any framework. Provides enterprise-grade instrumentation, observability, and continuous learning for agentic AI systems. Compatible with LangChain, Google ADK, CrewAI, and custom frameworks. Features agent hyperparameter optimization, built-in evaluation tools, and safety middleware for red-teaming agentic workflows.',
-    officialUrl: 'https://docs.nvidia.com/nemo-framework/user-guide/latest/nemo-agent-toolkit/overview.html',
+    officialUrl: 'https://developer.nvidia.com/nemo-agent-toolkit',
     layer: 'agent',
     tags: ['agents', 'observability', 'LangChain', 'multi-agent', 'evaluation'],
     connections: ['nim', 'blueprints'],
@@ -234,19 +234,19 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'triton',
-    name: 'NVIDIA Triton Inference Server',
+    name: 'NVIDIA Dynamo-Triton',
     shortDescription: 'Deploy AI across all major frameworks with dynamic batching.',
     // Source: developer.nvidia.com/triton-inference-server
     fullDescription:
-      'NVIDIA Triton Inference Server is an open-source inference serving platform optimized for CPU and GPU deployments. Supports TensorRT, PyTorch, TensorFlow, ONNX, OpenVINO, Python, and RAPIDS FIL backends. Features concurrent model execution, dynamic batching, streaming, model ensembles, KV cache for LLMs, Kubernetes integration, and Prometheus metrics. Works alongside NVIDIA Dynamo — an open-source distributed LLM inference framework — for large-scale multi-GPU and multi-node LLM deployments.',
-    officialUrl: 'https://developer.nvidia.com/triton-inference-server',
+      'NVIDIA Dynamo is an open-source distributed inference framework designed for high-throughput LLM serving across multi-GPU and multi-node deployments, built on NVIDIA Triton Inference Server. Triton supports all major backends — TensorRT™, PyTorch, TensorFlow, ONNX, OpenVINO, Python, and RAPIDS FIL — with dynamic batching, concurrent model execution, KV cache, model ensembles, Kubernetes integration, and Prometheus metrics. Together, Dynamo and Triton form NVIDIA\'s production serving stack.',
+    officialUrl: 'https://developer.nvidia.com/nvidia-dynamo',
     layer: 'serving',
     tags: ['inference server', 'model serving', 'Kubernetes', 'LLM', 'multi-framework'],
     connections: ['ai-enterprise'],
   },
   {
     id: 'nim',
-    name: 'NVIDIA NIM',
+    name: 'NVIDIA NIM™',
     shortDescription: 'Optimized cloud-native AI model deployment — anywhere.',
     // Source: developer.nvidia.com/nim
     fullDescription:
@@ -261,11 +261,11 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'ai-enterprise',
-    name: 'NVIDIA AI Enterprise',
+    name: 'NVIDIA AI Enterprise™',
     shortDescription: 'Enterprise AI platform — secure, stable, SLA-backed production.',
     // Source: official NVIDIA AI Enterprise documentation
     fullDescription:
-      'Enterprise-grade AI software platform providing secure, stable, and supported AI services with SLAs. Wraps NVIDIA NIM, NVIDIA Triton Inference Server, NVIDIA NGC Catalog, and NVIDIA AI Workbench for production deployments. Offers 36-month support lifecycle, enterprise security features, and certified infrastructure for regulated industry deployments.',
+      'Enterprise-grade AI software platform providing secure, stable, and supported AI services with SLAs. Wraps NVIDIA NIM™, NVIDIA Dynamo-Triton™, NVIDIA NGC™ Catalog, and NVIDIA AI Workbench™ for production deployments. Offers 36-month support lifecycle, enterprise security features, and certified infrastructure for regulated industry deployments.',
     officialUrl: 'https://www.nvidia.com/en-us/data-center/products/ai-enterprise/',
     layer: 'enterprise',
     tags: ['enterprise', 'SLA', 'production', 'security', 'support'],
