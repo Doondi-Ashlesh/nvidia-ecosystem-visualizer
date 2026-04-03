@@ -14,6 +14,7 @@ import {
   type Workflow,
   type WorkflowStep,
 } from '@/types/ecosystem';
+import { NVIDIA_SERVICES } from '@/data/nvidia';
 
 // NVIDIA palette difficulty colours
 const DIFF_COLORS = {
@@ -405,12 +406,15 @@ export default function Sidebar({
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-sm font-semibold truncate">
-                            {step.serviceId
-                              .split('-')
-                              .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                              .join(' ')}
+                            {NVIDIA_SERVICES.find((s) => s.id === step.serviceId)?.name ??
+                              step.serviceId
+                                .split('-')
+                                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                                .join(' ')}
                           </p>
-                          <p className="text-slate-500 text-xs">{step.role}</p>
+                          <p className="text-slate-500 text-xs">
+                            {step.role || NVIDIA_SERVICES.find((s) => s.id === step.serviceId)?.tags[0] || ''}
+                          </p>
                         </div>
                       </div>
                       {isActive && (
