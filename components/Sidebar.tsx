@@ -136,12 +136,15 @@ export default function Sidebar({
 
       {/* ── Branding ────────────────────────────────────────────────────── */}
       <div className="px-6 pt-6 pb-5 border-b border-[#1a1a1a] shrink-0">
-        <div className="flex items-center gap-2 mb-1">
-          <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
-            <rect width="28" height="20" rx="2" fill="#76b900" />
-            <text x="4" y="14" fontSize="9" fontWeight="900" fill="#000" fontFamily="Arial">NV</text>
+        <div className="flex items-center gap-2.5 mb-1">
+          {/* NVIDIA logo mark */}
+          <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="22" rx="2" fill="#76b900"/>
+            {/* Eye / swoosh inner shape */}
+            <path d="M4 16 L4 6 L9 6 L16 13.5 L16 6 L21 6 L21 16 L16 16 L9 8.5 L9 16 Z" fill="#000"/>
+            <path d="M22 6 L27 6 L27 16 L22 16 Z" fill="#000"/>
           </svg>
-          <span className="text-base font-bold tracking-[0.2em] text-[#76b900] uppercase">
+          <span className="text-[13px] font-black tracking-[0.22em] text-[#76b900] uppercase leading-none">
             NVIDIA
           </span>
         </div>

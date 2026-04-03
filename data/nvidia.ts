@@ -54,7 +54,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'dgx-cloud',
-    name: 'DGX Cloud',
+    name: 'NVIDIA DGX Cloud',
     shortDescription: "NVIDIA's cloud for building and operating AI at scale.",
     // Source: official NVIDIA DGX Cloud documentation
     fullDescription:
@@ -105,7 +105,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'tensorrt-llm',
-    name: 'TensorRT-LLM',
+    name: 'NVIDIA TensorRT-LLM',
     shortDescription: 'TensorRT optimized specifically for LLM inference.',
     // Source: developer.nvidia.com/tensorrt (TensorRT ecosystem components)
     fullDescription:
@@ -168,7 +168,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'ai-workbench',
-    name: 'AI Workbench',
+    name: 'NVIDIA AI Workbench',
     shortDescription: 'Free GPU dev environment manager using Git and containers.',
     // Source: nvidia.com/en-us/ai-data-science/ai-workbench/
     fullDescription:
@@ -180,7 +180,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'rapids',
-    name: 'RAPIDS',
+    name: 'NVIDIA RAPIDS',
     shortDescription: 'End-to-end GPU-accelerated data science with PyData APIs.',
     // Source: rapids.ai and official NVIDIA RAPIDS docs
     fullDescription:
@@ -234,11 +234,11 @@ export const NVIDIA_SERVICES: Service[] = [
 
   {
     id: 'triton',
-    name: 'NVIDIA Dynamo-Triton',
+    name: 'Triton Inference Server',
     shortDescription: 'Deploy AI across all major frameworks with dynamic batching.',
     // Source: developer.nvidia.com/triton-inference-server
     fullDescription:
-      'Production-ready inference platform (formerly Triton Inference Server) enabling AI deployment across TensorRT, PyTorch, ONNX, OpenVINO, Python, and RAPIDS FIL. Features dynamic batching, concurrent execution, LLM inference with prefix/KV caching, Kubernetes integration, and Prometheus monitoring. NVIDIA AI Enterprise provides production-ready Dynamo-Triton with SLAs.',
+      'NVIDIA Triton Inference Server is an open-source inference serving platform optimized for CPU and GPU deployments. Supports TensorRT, PyTorch, TensorFlow, ONNX, OpenVINO, Python, and RAPIDS FIL backends. Features concurrent model execution, dynamic batching, streaming, model ensembles, KV cache for LLMs, Kubernetes integration, and Prometheus metrics. Works alongside NVIDIA Dynamo — an open-source distributed LLM inference framework — for large-scale multi-GPU and multi-node LLM deployments.',
     officialUrl: 'https://developer.nvidia.com/triton-inference-server',
     layer: 'serving',
     tags: ['inference server', 'model serving', 'Kubernetes', 'LLM', 'multi-framework'],
@@ -246,7 +246,7 @@ export const NVIDIA_SERVICES: Service[] = [
   },
   {
     id: 'nim',
-    name: 'NIM Microservices',
+    name: 'NVIDIA NIM',
     shortDescription: 'Optimized cloud-native AI model deployment — anywhere.',
     // Source: developer.nvidia.com/nim
     fullDescription:
