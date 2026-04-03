@@ -320,7 +320,7 @@ export default function Sidebar({
                     <p className="text-white text-sm font-semibold group-hover:text-[#76b900] transition-colors">
                       Explore freely
                     </p>
-                    <p className="text-xs text-slate-500 mt-0.5">Hover any service for details</p>
+                    <p className="text-xs text-slate-500 mt-0.5">Click on any service to see details</p>
                   </div>
                 </div>
                 <ChevronRight size={13} className="text-slate-600 group-hover:text-[#76b900] transition-colors" />
