@@ -59,7 +59,7 @@ The Agentic AI layer uses NVIDIA's brand green — intentionally the most visual
 
 ## How to verify
 
-1. **Load app in explore mode** → all 18 hexagons fully visible with correct layer colors on border
+1. **Load app in explore mode** → all service hexagons fully visible with correct layer colors on border
 2. **Hover a hexagon** → drop-shadow glow appears; sidebar shows that service's details
 3. **Select "Build an Agentic AI system" workflow** → 6 hexagons highlight (numbered 1–6); 12 hexagons dim to 18% opacity with grayscale
 4. **Active step hexagon** → pulses with NVIDIA green glow; step badge glows

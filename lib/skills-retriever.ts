@@ -4,7 +4,7 @@
  * Architecture:
  *  1. STATIC_SKILLS (compiled-in baseline) are embedded at first call and cached.
  *  2. A background async refresh fetches live SKILL.md files from GitHub on
- *     server startup. If successful, it replaces the in-memory skill store and
+ *     server startup. If successful, it merges into the in-memory skill store and
  *     invalidates the embedding cache so the next query re-embeds fresh data.
  *  3. retrieveRelevantSkills() embeds the user goal via NVIDIA's nv-embedqa-e5-v5
  *     model and returns the top-K semantically matched skills — these are injected
@@ -17,6 +17,7 @@
  */
 
 import OpenAI from 'openai';
+import { parse as parseYaml } from 'yaml';
 import { STATIC_SKILLS, SKILL_SOURCE_URLS } from '@/data/skills-catalog';
 import type { Skill, ServiceSkills } from '@/types/ecosystem';
 
@@ -98,19 +99,63 @@ export function getCacheSize(): number {
 
 // ── Background GitHub refresh ─────────────────────────────────────────────────
 
-/** Parse YAML frontmatter from a raw SKILL.md string */
-function parseSkillMd(
-  raw: string,
-  repoUrl: string,
-): Pick<Skill, 'name' | 'version' | 'description'> | null {
-  const block = raw.match(/^---\n([\s\S]*?)\n---/)?.[1];
-  if (!block) return null;
-  const get = (key: string) =>
-    block.match(new RegExp(`^${key}:\\s*"?([^"\\n]+)"?`, 'm'))?.[1]?.trim() ?? '';
-  const name = get('name');
-  const description = get('description');
-  if (!name || !description) return null;
-  return { name, version: get('version'), description };
+/** Headers for raw.githubusercontent.com (optional auth for rate limits). */
+function githubFetchHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    'User-Agent': 'nvidia-ecosystem-visualizer/1',
+    Accept: 'text/plain',
+  };
+  const token = process.env.GITHUB_TOKEN?.trim();
+  if (token) {
+    // GitHub recommends Bearer for PATs (classic and fine-grained)
+    headers.Authorization = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+/** Retry transient failures (429 / 5xx) with bounded backoff. */
+async function fetchWithRetry(url: string, maxAttempts = 3): Promise<Response> {
+  const headers = githubFetchHeaders();
+  let last: Response | null = null;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const res = await fetch(url, { headers, cache: 'no-store' });
+    last = res;
+    if (res.ok) return res;
+    if ((res.status === 429 || res.status >= 500) && attempt < maxAttempts) {
+      const ra = res.headers.get('retry-after');
+      const waitMs = ra
+        ? Math.min(parseInt(ra, 10) * 1000, 60000)
+        : Math.min(400 * 2 ** (attempt - 1), 8000);
+      await new Promise(r => setTimeout(r, Number.isFinite(waitMs) ? waitMs : 400 * attempt));
+      continue;
+    }
+    return res;
+  }
+  return last!;
+}
+
+/** Parse YAML frontmatter (handles multiline / folded `description`, extra keys). */
+function parseSkillMd(raw: string): Pick<Skill, 'name' | 'version' | 'description'> | null {
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return null;
+  try {
+    const doc = parseYaml(m[1]);
+    if (!doc || typeof doc !== 'object' || Array.isArray(doc)) return null;
+    const o = doc as Record<string, unknown>;
+    const name = String(o.name ?? '').trim();
+    const description = String(o.description ?? '').trim();
+    if (!name || !description) return null;
+    const version = String(o.version ?? '').trim() || '1.0.0';
+    return { name, version, description };
+  } catch {
+    return null;
+  }
+}
+
+function rawUrlToBlobUrl(rawUrl: string): string {
+  return rawUrl
+    .replace('raw.githubusercontent.com', 'github.com')
+    .replace('/main/', '/blob/main/');
 }
 
 /** Merge fresh skills into existing service entries, adding or replacing by skill name */
@@ -136,20 +181,28 @@ function mergeIntoStore(
 }
 
 async function backgroundRefresh(): Promise<void> {
-  const headers: Record<string, string> = {};
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
-  }
-
   const results = await Promise.allSettled(
     SKILL_SOURCE_URLS.map(async ({ serviceId, name, rawUrl }) => {
-      const res = await fetch(rawUrl, { headers });
-      if (!res.ok) throw new Error(`${res.status} ${rawUrl}`);
-      const text = await res.text();
-      const parsed = parseSkillMd(text, rawUrl);
-      if (!parsed) throw new Error(`YAML parse failed: ${rawUrl}`);
-      const skill: Skill = { ...parsed, repoUrl: rawUrl.replace('raw.githubusercontent.com', 'github.com').replace('/main/', '/blob/main/') };
-      return { serviceId, name, skill };
+      try {
+        const res = await fetchWithRetry(rawUrl);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        const text = await res.text();
+        const parsed = parseSkillMd(text);
+        if (!parsed) {
+          throw new Error('YAML frontmatter parse failed (missing name/description)');
+        }
+        const skill: Skill = {
+          ...parsed,
+          repoUrl: rawUrlToBlobUrl(rawUrl),
+        };
+        return { serviceId, name, skill };
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        console.warn(`[skills-retriever] skip ${name} (${serviceId}): ${msg} — ${rawUrl}`);
+        throw e;
+      }
     })
   );
 
@@ -166,10 +219,12 @@ async function backgroundRefresh(): Promise<void> {
     embeddingCache = null; // invalidate — will recompute on next query
     console.log(
       `[skills-retriever] Refreshed ${fresh.length}/${SKILL_SOURCE_URLS.length} skills from GitHub` +
-      (failed > 0 ? ` (${failed} failed — using static fallback for those)` : '')
+      (failed > 0 ? ` (${failed} failed — static baseline kept for those)` : '')
     );
   } else {
-    console.warn('[skills-retriever] GitHub refresh failed for all sources — using static baseline');
+    console.warn(
+      '[skills-retriever] GitHub refresh failed for all sources — using static baseline'
+    );
   }
 }
 

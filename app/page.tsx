@@ -174,19 +174,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Graph + layer header overlays */}
-        <div className="flex-1 min-h-0 relative">
-          <EcosystemGraph
-            mode={mode}
-            activeWorkflow={activeWorkflow}
-            activeStepIndex={activeStepIndex}
-            onHoverService={handleHoverService}
-            onClickService={handleClickService}
-            focusLayer={focusLayer}
-          />
-
+        {/* Layer headers in flow (real height), then graph — fitView only fills the graph pane, so rows sit under titles */}
+        <div className="flex-1 min-h-0 flex flex-col relative min-w-0">
           {/* Layer column headers — flex-equal so they span the full width */}
-          <div className="absolute top-0 left-0 right-0 z-10 flex pointer-events-none">
+          <div className="shrink-0 flex bg-black z-10 border-b border-[#1a1a1a] pointer-events-none">
             {LAYER_ORDER.map((layer, layerIdx) => {
               const isActive = dropdownLayer === layer;
               const isFirst  = layerIdx === 0;
@@ -304,6 +295,17 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+
+          <div className="flex-1 min-h-0 relative min-w-0">
+            <EcosystemGraph
+              mode={mode}
+              activeWorkflow={activeWorkflow}
+              activeStepIndex={activeStepIndex}
+              onHoverService={handleHoverService}
+              onClickService={handleClickService}
+              focusLayer={focusLayer}
+            />
           </div>
         </div>
       </div>

@@ -15,65 +15,66 @@ import type { ServiceSkills } from '@/types/ecosystem';
 
 export const STATIC_SKILLS: ServiceSkills[] = [
   // ── TensorRT-LLM ─────────────────────────────────────────────────────────
-  // Source: https://github.com/NVIDIA/TensorRT-LLM/.claude/skills/
+  // Source: https://github.com/NVIDIA/TensorRT-LLM/tree/main/.claude/skills/
   {
     serviceId: 'tensorrt-llm',
     skills: [
       {
-        name: 'llm-inference-optimization',
-        version: '0.16.0',
-        description: 'Optimize LLM inference performance and throughput using TensorRT-LLM compilation, batching strategies, and quantization-aware engine building.',
-        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/llm-inference-optimization/SKILL.md',
+        name: 'ad-model-onboard',
+        version: '1.0.0',
+        description:
+          'Translates a HuggingFace model into a prefill-only AutoDeploy custom model using reference custom ops, validates with hierarchical equivalence tests.',
+        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/ad-model-onboard/SKILL.md',
       },
       {
-        name: 'model-onboarding',
-        version: '0.16.0',
-        description: 'Onboard a new LLM architecture into TensorRT-LLM by implementing the model definition, weight conversion, and inference engine configuration.',
-        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/model-onboarding/SKILL.md',
+        name: 'ad-pipeline-failure-pr',
+        version: '1.0.0',
+        description:
+          'Analyze AutoDeploy pipeline failures, inspect GitLab job logs, bucket root causes, and open at most one PR per bucket from CI failures.',
+        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/ad-pipeline-failure-pr/SKILL.md',
       },
       {
-        name: 'autodeploy',
-        version: '0.16.0',
-        description: 'Automatically deploy a TensorRT-LLM model using the AutoDeploy pipeline with minimal configuration for rapid production deployment.',
-        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/autodeploy/SKILL.md',
+        name: 'ci-failure-retrieval',
+        version: '1.0.0',
+        description:
+          'Retrieve and diagnose CI test failures from TensorRT-LLM pull requests using the GitHub API and Jenkins testReport API.',
+        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/ci-failure-retrieval/SKILL.md',
       },
       {
-        name: 'ci-diagnostics',
-        version: '0.16.0',
-        description: 'Diagnose and resolve CI/CD pipeline failures in TensorRT-LLM by analyzing test logs, identifying root causes, and applying targeted fixes.',
-        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/ci-diagnostics/SKILL.md',
+        name: 'serve-config-guide',
+        version: '1.0.0',
+        description:
+          'Generate a source-backed starting trtllm-serve --config YAML for single-node PyTorch serving aligned with checked-in TensorRT-LLM configs.',
+        repoUrl: 'https://github.com/NVIDIA/TensorRT-LLM/blob/main/.claude/skills/serve-config-guide/SKILL.md',
       },
     ],
   },
 
-  // ── Model Optimizer ───────────────────────────────────────────────────────
-  // Source: https://github.com/NVIDIA/ModelOpt/.claude/skills/
+  // ── Model Optimizer (NVIDIA Model-Optimizer repo) ─────────────────────────────
+  // Source: https://github.com/NVIDIA/Model-Optimizer/tree/main/.claude/skills/
   {
     serviceId: 'model-optimizer',
     skills: [
       {
-        name: 'quantization',
-        version: '0.21.0',
-        description: 'Apply post-training quantization (INT8, FP8, INT4 AWQ/GPTQ) to neural network models using NVIDIA ModelOpt to reduce memory footprint and accelerate inference.',
-        repoUrl: 'https://github.com/NVIDIA/ModelOpt/blob/main/.claude/skills/quantization/SKILL.md',
+        name: 'ptq',
+        version: '1.0.0',
+        description:
+          'Post-training quantization (NVFP4, FP8, INT8, INT4 AWQ) via ModelOpt hf_ptq.py and launcher workflows; produce quantized HuggingFace checkpoints.',
+        repoUrl: 'https://github.com/NVIDIA/Model-Optimizer/blob/main/.claude/skills/ptq/SKILL.md',
       },
       {
-        name: 'sparsity',
-        version: '0.21.0',
-        description: 'Apply structured and unstructured sparsity to model weights using ModelOpt pruning algorithms to achieve compute and memory savings.',
-        repoUrl: 'https://github.com/NVIDIA/ModelOpt/blob/main/.claude/skills/sparsity/SKILL.md',
+        name: 'deployment',
+        version: '1.0.0',
+        description:
+          'Serve quantized or unquantized checkpoints with vLLM, SGLang, or TRT-LLM using scripts/deploy.sh and OpenAI-compatible inference endpoints.',
+        repoUrl: 'https://github.com/NVIDIA/Model-Optimizer/blob/main/.claude/skills/deployment/SKILL.md',
       },
       {
-        name: 'distillation',
-        version: '0.21.0',
-        description: 'Apply knowledge distillation to transfer capabilities from a large teacher model to a smaller student model using ModelOpt distillation recipes.',
-        repoUrl: 'https://github.com/NVIDIA/ModelOpt/blob/main/.claude/skills/distillation/SKILL.md',
-      },
-      {
-        name: 'export-optimization',
-        version: '0.21.0',
-        description: 'Export and optimize compressed models to deployment-ready formats (ONNX, TensorRT, TensorRT-LLM) using ModelOpt export utilities.',
-        repoUrl: 'https://github.com/NVIDIA/ModelOpt/blob/main/.claude/skills/export-optimization/SKILL.md',
+        name: 'evaluation',
+        version: '1.0.0',
+        description:
+          'Run NeMo Evaluator Launcher (NEL) accuracy benchmarks: nel build-config, YAML configs, SLURM/local execution, and deployment integration.',
+        repoUrl: 'https://github.com/NVIDIA/Model-Optimizer/blob/main/.claude/skills/evaluation/SKILL.md',
       },
     ],
   },
@@ -111,15 +112,16 @@ export const STATIC_SKILLS: ServiceSkills[] = [
   },
 
   // ── NeMo Gym ──────────────────────────────────────────────────────────────
-  // Source: https://github.com/NVIDIA-NeMo/Gym/.claude/skills/
+  // Source: https://github.com/NVIDIA-NeMo/Gym/tree/main/.claude/skills/
   {
     serviceId: 'nemo-gym',
     skills: [
       {
-        name: 'benchmark-addition',
+        name: 'add-benchmark',
         version: '0.5.0',
-        description: 'Add new reinforcement learning benchmark environments to NeMo Gym, including reward function design, environment registration, and integration with training pipelines.',
-        repoUrl: 'https://github.com/NVIDIA-NeMo/Gym/blob/main/.claude/skills/benchmark-addition/SKILL.md',
+        description:
+          'Add a new benchmark or training environment to NeMo Gym: resources server, YAML config, testing, and reward profiling (baselining).',
+        repoUrl: 'https://github.com/NVIDIA-NeMo/Gym/blob/main/.claude/skills/add-benchmark/SKILL.md',
       },
     ],
   },
@@ -311,24 +313,21 @@ export const STATIC_SKILLS: ServiceSkills[] = [
 
 /**
  * Known raw URLs for SKILL.md files — used by the background GitHub refresh.
- * Indexed by serviceId so the retriever can update specific service entries.
+ * Names must match `name` in YAML frontmatter so mergeIntoStore replaces the static entry.
+ *
+ * NeMo Evaluator: upstream removed `.claude/skills/` from the repo; those skills stay
+ * static-only until NVIDIA publishes new raw URLs.
  */
 export const SKILL_SOURCE_URLS: Array<{ serviceId: string; name: string; rawUrl: string }> = [
-  // TensorRT-LLM
-  { serviceId: 'tensorrt-llm', name: 'llm-inference-optimization', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/llm-inference-optimization/SKILL.md' },
-  { serviceId: 'tensorrt-llm', name: 'model-onboarding', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/model-onboarding/SKILL.md' },
-  { serviceId: 'tensorrt-llm', name: 'autodeploy', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/autodeploy/SKILL.md' },
-  { serviceId: 'tensorrt-llm', name: 'ci-diagnostics', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/ci-diagnostics/SKILL.md' },
-  // Model Optimizer
-  { serviceId: 'model-optimizer', name: 'quantization', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/quantization/SKILL.md' },
-  { serviceId: 'model-optimizer', name: 'sparsity', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/sparsity/SKILL.md' },
-  { serviceId: 'model-optimizer', name: 'distillation', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/distillation/SKILL.md' },
-  { serviceId: 'model-optimizer', name: 'export-optimization', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/export-optimization/SKILL.md' },
-  // NeMo Evaluator
-  { serviceId: 'nemo-evaluator', name: 'nel-assistant', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Evaluator/main/.claude/skills/nel-assistant/SKILL.md' },
-  { serviceId: 'nemo-evaluator', name: 'nemo-evaluator-byob', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Evaluator/main/.claude/skills/nemo-evaluator-byob/SKILL.md' },
-  { serviceId: 'nemo-evaluator', name: 'launching-evals', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Evaluator/main/.claude/skills/launching-evals/SKILL.md' },
-  { serviceId: 'nemo-evaluator', name: 'accessing-mlflow', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Evaluator/main/.claude/skills/accessing-mlflow/SKILL.md' },
+  // TensorRT-LLM (current skill folders on main)
+  { serviceId: 'tensorrt-llm', name: 'ad-model-onboard', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/ad-model-onboard/SKILL.md' },
+  { serviceId: 'tensorrt-llm', name: 'ad-pipeline-failure-pr', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/ad-pipeline-failure-pr/SKILL.md' },
+  { serviceId: 'tensorrt-llm', name: 'ci-failure-retrieval', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/ci-failure-retrieval/SKILL.md' },
+  { serviceId: 'tensorrt-llm', name: 'serve-config-guide', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/TensorRT-LLM/main/.claude/skills/serve-config-guide/SKILL.md' },
+  // NVIDIA Model-Optimizer (ptq / deployment / evaluation only — no common/SKILL.md)
+  { serviceId: 'model-optimizer', name: 'ptq', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/ptq/SKILL.md' },
+  { serviceId: 'model-optimizer', name: 'deployment', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/deployment/SKILL.md' },
+  { serviceId: 'model-optimizer', name: 'evaluation', rawUrl: 'https://raw.githubusercontent.com/NVIDIA/Model-Optimizer/main/.claude/skills/evaluation/SKILL.md' },
   // NeMo Gym
-  { serviceId: 'nemo-gym', name: 'benchmark-addition', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Gym/main/.claude/skills/benchmark-addition/SKILL.md' },
+  { serviceId: 'nemo-gym', name: 'add-benchmark', rawUrl: 'https://raw.githubusercontent.com/NVIDIA-NeMo/Gym/main/.claude/skills/add-benchmark/SKILL.md' },
 ];

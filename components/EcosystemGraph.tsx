@@ -41,6 +41,14 @@ const LAYER_X: Record<string, number> = {
   enterprise: 1570,
 };
 
+/** Inner top padding inside the graph pane (layer titles live above the pane in page.tsx). */
+const LAYER_HEADER_INSET = 24;
+/** ServiceNode outer size — must match `ServiceNode` (NODE_W+4 × NODE_H+4). */
+const NODE_OUTER_W = 184;
+const NODE_OUTER_H = 104;
+/** Padding (flow px) around the graph when clamping pan/zoom — keep modest so panning doesn’t reveal huge voids. */
+const GRAPH_VIEW_PADDING = 56;
+
 const NODE_Y: Record<string, number> = {
   // ACCESS — entry points (low-barrier playground → GPU dev → catalog → cloud)
   'build-nvidia':        60,
@@ -102,6 +110,23 @@ function GraphInner({
     [activeWorkflow],
   );
 
+  /** Clamp panning so the viewport cannot drift far into empty space above/below/side of the graph. */
+  const translateExtent = useMemo(
+    () => {
+      const xs = NVIDIA_SERVICES.map((s) => LAYER_X[s.layer] ?? 0);
+      const ys = NVIDIA_SERVICES.map((s) => (NODE_Y[s.id] ?? 0) + LAYER_HEADER_INSET);
+      const minX = Math.min(...xs) - GRAPH_VIEW_PADDING;
+      const maxX = Math.max(...xs) + NODE_OUTER_W + GRAPH_VIEW_PADDING;
+      const minY = Math.min(...ys) - GRAPH_VIEW_PADDING;
+      const maxY = Math.max(...ys) + NODE_OUTER_H + GRAPH_VIEW_PADDING;
+      return [
+        [minX, minY],
+        [maxX, maxY],
+      ] as [[number, number], [number, number]];
+    },
+    [],
+  );
+
   // Mouse-move callback — hover tooltip for non-explore modes
   const handleNodeMouseMove = useCallback(
     (service: Service, x: number, y: number) => {
@@ -147,7 +172,10 @@ function GraphInner({
       return {
         id:        service.id,
         type:      'serviceNode',
-        position:  { x: LAYER_X[service.layer] ?? 0, y: NODE_Y[service.id] ?? 0 },
+        position:  {
+          x: LAYER_X[service.layer] ?? 0,
+          y: (NODE_Y[service.id] ?? 0) + LAYER_HEADER_INSET,
+        },
         data,
         draggable: false,
       };
@@ -265,7 +293,10 @@ function GraphInner({
         edges={edges}
         nodeTypes={NODE_TYPES}
         fitView
-        fitViewOptions={{ padding: 0.08 }}
+        fitViewOptions={{
+          padding: { top: '4%', right: '8%', bottom: '10%', left: '8%' },
+        }}
+        translateExtent={translateExtent}
         panOnScroll
         zoomOnScroll
         panOnDrag

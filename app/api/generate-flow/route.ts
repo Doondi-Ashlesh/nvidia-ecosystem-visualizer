@@ -8,7 +8,7 @@
  *  • Retrieval:  NeMo Retriever pattern — NVIDIA Embedding NIM (nv-embedqa-e5-v5)
  *                + cosine similarity to fetch top-K relevant skills for grounding
  *
- * NON-NEGOTIABLES enforced in the prompt:
+ * NON-NEGOTIABLES enforced in the prompt (12 rules):
  *  1. Strict layer ordering: access → sdk → framework → agent → serving → enterprise
  *  2. If no concrete documented solution exists, return verified:false with suggested services
  *  3. Strictly grounded in NVIDIA official documentation — no invented connections
@@ -16,9 +16,15 @@
  *  5. Explicit intra-layer dependency ordering
  *  6. Mandatory service inclusions per use-case
  *  7. Service exclusion rules
- *  8. Training / fine-tuning path rules (nemo-gym, model-optimizer, megatron-lm)
+ *  8. Training / fine-tuning path rules (nemo-gym, model-optimizer, TensorRT-LLM, NIM)
+ *  9. RAG pipeline rules (nemo-retriever + nim; no spurious NeMo training stack)
+ * 10. Compliance / safety — nemo-guardrails when legal or policy requirements apply
+ * 11. Evaluation / benchmarking — include nemo-evaluator when evaluation is required
+ * 12. Inference engine compilation — include tensorrt-llm when compiling an optimized engine is required
  *
- * Requires NVIDIA_API_KEY in .env.local
+ * Requires NVIDIA_API_KEY in .env.local (optional GITHUB_TOKEN for skills refresh).
+ * Optional NIM_REASONING — set to "true" to prefix the system prompt with "reasoning mode ON"
+ * (Nemotron chain-of-thought). Omit or "false" for faster generation with no reasoning trace.
  */
 
 import OpenAI from 'openai';
@@ -95,10 +101,10 @@ const SERVICE_EXCLUSIONS: Array<{ id: string; notFor: string[]; reason: string }
   },
   {
     id: 'tensorrt-llm',
-    notFor: ['rag', 'retrieval', 'agent', 'agentic', 'fine-tune', 'fine-tuning', 'train', 'training'],
+    notFor: ['rag', 'retrieval', 'agent', 'agentic'],
     reason:
       'TensorRT-LLM is for LLM inference optimisation and powers NIM. ' +
-      'Include it only when the goal explicitly involves LLM inference optimisation.',
+      'Do not include it for pure RAG/agent goals unless the goal explicitly calls for inference optimisation.',
   },
   {
     id: 'rapids',
@@ -109,7 +115,7 @@ const SERVICE_EXCLUSIONS: Array<{ id: string; notFor: string[]; reason: string }
   },
   {
     id: 'nemo-curator',
-    notFor: ['rag', 'rag pipeline', 'retrieval augmented', 'inference', 'deployment', 'agent', 'serving'],
+    notFor: ['rag', 'rag pipeline', 'retrieval augmented', 'inference-only', 'agent', 'serving-only'],
     reason:
       'NeMo Curator is for data curation before LLM pre-training or fine-tuning. ' +
       'It has NO role in RAG pipelines — RAG retrieves from existing knowledge, it does not train models.',
@@ -138,7 +144,7 @@ const SERVICE_EXCLUSIONS: Array<{ id: string; notFor: string[]; reason: string }
   },
   {
     id: 'nemo-evaluator',
-    notFor: ['inference', 'deployment', 'serving', 'rag', 'agent'],
+    notFor: ['inference-only', 'serving-only'],
     reason:
       'NeMo Evaluator is for LLM evaluation and benchmarking (post-training). ' +
       'It does not serve production inference or build RAG/agent pipelines.',
@@ -179,12 +185,22 @@ function buildSkillsPromptSection(skills: Skill[]): string {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-/** Extract <think>…</think> block and the remaining answer text */
+/** Strip optional inline thinking blocks from model content (NIM usually uses reasoning_content instead). */
 function splitThinking(raw: string): { reasoning: string; answer: string } {
-  const match = raw.match(/<think>([\s\S]*?)<\/think>/i);
-  const reasoning = match?.[1]?.trim() ?? '';
-  const answer    = raw.replace(/<think>[\s\S]*?<\/think>/i, '').trim();
-  return { reasoning, answer };
+  const stripped = raw.trim();
+  const patterns: RegExp[] = [
+    /<redacted_thinking>([\s\S]*?)<\/think>/i,
+    /<redacted_thinking>([\s\S]*?)<\/redacted_thinking>/i,
+  ];
+  for (const re of patterns) {
+    const m = stripped.match(re);
+    if (m) {
+      const reasoning = (m[1] ?? '').trim();
+      const answer = stripped.replace(re, '').trim();
+      return { reasoning, answer };
+    }
+  }
+  return { reasoning: '', answer: stripped };
 }
 
 /** Strip markdown code fences so JSON.parse doesn't choke */
@@ -204,12 +220,12 @@ async function runGeneration(
   intraLayerRules: string,
   mandatoryRules: string,
   exclusionRules: string,
+  reasoningEnabled: boolean,
 ) {
-  // "reasoning mode ON" must be the first line of the system message to enable
-  // Nemotron's chain-of-thought reasoning mode (per NVIDIA NIM docs).
-  const systemPrompt = `reasoning mode ON
+  // When enabled, "reasoning mode ON" must be the first line (per NVIDIA NIM Nemotron docs).
+  const reasoningPrefix = reasoningEnabled ? 'reasoning mode ON\n\n' : '';
 
-You are a senior NVIDIA AI solutions architect with deep knowledge of NVIDIA's official product documentation.
+  const systemPrompt = `${reasoningPrefix}You are a senior NVIDIA AI solutions architect with deep knowledge of NVIDIA's official product documentation.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 NON-NEGOTIABLE RULES (never violate)
@@ -270,7 +286,18 @@ RULE 9 — COMPLIANCE AND SAFETY REQUIREMENTS
     • Place "nemo-guardrails" in the framework layer, AFTER "nemo" if fine-tuning is involved.
     • This is non-negotiable — omitting guardrails when compliance is stated is an incorrect path.
 
-RULE 10 — SELF-VERIFICATION CHECKLIST
+RULE 10 — EVALUATION / BENCHMARKING REQUIREMENTS
+  If the goal mentions ANY of: evaluate, evaluation, evaluator, benchmark, benchmarking, accuracy,
+  held-out set, test set, NEL, or metrics:
+    • MUST include "nemo-evaluator" in the path — use it to run structured evaluation jobs and
+      produce metrics before deployment decisions.
+
+RULE 11 — INFERENCE ENGINE COMPILATION REQUIREMENTS
+  If the goal mentions ANY of: compile, compilation, build an engine, inference engine, TensorRT,
+  TRT, max throughput, throughput, low latency, or optimize inference:
+    • MUST include "tensorrt-llm" in the path — compile an optimized inference engine for high-throughput serving.
+
+RULE 12 — SELF-VERIFICATION CHECKLIST
   Before returning your answer, verify ALL of the following:
     (a) Every serviceId is a real id from the AVAILABLE SERVICES list below ✓
     (b) Cross-layer order strictly follows: ${layerOrderStr} ✓
@@ -280,6 +307,8 @@ RULE 10 — SELF-VERIFICATION CHECKLIST
     (f) Training goals include nemo-curator and respect Rule 7 ✓
     (g) RAG goals use nemo-retriever + nim and do NOT include nemo or nemo-curator (Rule 8) ✓
     (h) Compliance/legal goals include nemo-guardrails (Rule 9) ✓
+    (i) Evaluation/benchmark goals include nemo-evaluator (Rule 10) ✓
+    (j) Engine compilation goals include tensorrt-llm (Rule 11) ✓
     (h) Every action is grounded in official NVIDIA documentation ✓
     (i) The complete path genuinely solves the stated goal ✓
   Only set verified:true if every single check passes.
@@ -392,7 +421,20 @@ export async function POST(request: Request) {
       `    Reason: ${e.reason}`,
   ).join('\n');
 
-  const generationArgs = [goal, nim, serviceList, skillsSection, layerOrderStr, intraLayerRules, mandatoryRules, exclusionRules] as const;
+  const reasoningEnabled =
+    process.env.NIM_REASONING === 'true' || process.env.NIM_REASONING === '1';
+
+  const generationArgs = [
+    goal,
+    nim,
+    serviceList,
+    skillsSection,
+    layerOrderStr,
+    intraLayerRules,
+    mandatoryRules,
+    exclusionRules,
+    reasoningEnabled,
+  ] as const;
 
   try {
     const t0 = Date.now();
@@ -498,7 +540,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. Enforce compliance rule (Rule 8): inject nemo-guardrails when goal mentions legal/compliance
+    // 4. Enforce compliance rule (Rule 9): inject nemo-guardrails when goal mentions legal/compliance
     const complianceKeywords = [
       'legal', 'compliance', 'compliant', 'regulatory', 'regulation', 'governance',
       'safety policy', 'safety policies', 'audit', 'privacy', 'content moderation',
@@ -520,6 +562,50 @@ export async function POST(request: Request) {
       }
     }
 
+    // 5. Enforce evaluation rule (Rule 10): inject nemo-evaluator when goal mentions evaluation/benchmarks
+    const evaluationKeywords = [
+      'evaluate', 'evaluation', 'evaluator',
+      'benchmark', 'benchmarks', 'benchmarking',
+      'accuracy', 'metrics',
+      'held-out', 'holdout', 'test set', 'validation set',
+      'nel', 'mlflow',
+    ];
+    const isEvaluationGoal = evaluationKeywords.some((kw) => goalLower.includes(kw));
+    const hasEvaluator = steps.some((s) => s.serviceId === 'nemo-evaluator');
+    if (isEvaluationGoal && !hasEvaluator) {
+      const svc = serviceById.get('nemo-evaluator');
+      if (svc) {
+        steps.push({
+          serviceId: 'nemo-evaluator',
+          role:      'Evaluation & Benchmarking',
+          action:    'Run structured evaluation jobs and capture metrics on a held-out set to validate quality and safety before deployment decisions.',
+          inputs:    [],
+          outputs:   [],
+        });
+      }
+    }
+
+    // 6. Enforce engine compilation rule (Rule 11): inject tensorrt-llm when goal implies engine compilation/perf serving
+    const engineKeywords = [
+      'compile', 'compilation', 'build an engine', 'inference engine',
+      'tensorrt', 'trt', 'trt-llm',
+      'throughput', 'max throughput', 'low latency', 'optimize inference',
+    ];
+    const isEngineGoal = engineKeywords.some((kw) => goalLower.includes(kw));
+    const hasTrtLlm = steps.some((s) => s.serviceId === 'tensorrt-llm');
+    if (isEngineGoal && !hasTrtLlm) {
+      const svc = serviceById.get('tensorrt-llm');
+      if (svc) {
+        steps.push({
+          serviceId: 'tensorrt-llm',
+          role:      'Compile Inference Engine',
+          action:    'Compile an optimized LLM inference engine for high-throughput, low-latency serving as the deployment target.',
+          inputs:    [],
+          outputs:   [],
+        });
+      }
+    }
+
     // Re-sort after injections
     steps = steps.sort((a, b) => {
       const layerA = serviceById.get(a.serviceId)?.layer ?? '';
@@ -529,7 +615,14 @@ export async function POST(request: Request) {
 
     const latencyMs = Date.now() - t0;
 
-    return NextResponse.json({ verified: true, goal, steps, latencyMs, reasoning: reasoning || null });
+    return NextResponse.json({
+      verified:         true,
+      goal,
+      steps,
+      latencyMs,
+      reasoning:        reasoning || null,
+      reasoningEnabled,
+    });
   } catch (err: unknown) {
     console.error('[generate-flow] NVIDIA NIM error:', err);
     const msg = err instanceof Error ? err.message : String(err);

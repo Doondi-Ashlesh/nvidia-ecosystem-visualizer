@@ -1,6 +1,6 @@
 # NVIDIA AI Ecosystem Visualizer
 
-> An interactive graph that maps NVIDIA's entire AI product stack — describe your goal in plain English and Groq AI generates the exact step-by-step path through the ecosystem.
+> An interactive graph that maps NVIDIA’s AI product stack — describe your goal in plain English and **NVIDIA NIM** (Nemotron) generates a step-by-step path through the ecosystem, grounded in official docs and optional skill retrieval.
 
 ![Workflow Path](media/Screenshot%202026-04-02%20213152.png)
 
@@ -8,13 +8,14 @@
 
 ## What It Does
 
-Developers approaching NVIDIA's AI stack face a fragmented landscape — NIM, NeMo, Triton, TensorRT, Brev — with no map showing how they relate or where to start.
+Developers approaching NVIDIA’s AI stack face a fragmented landscape — NIM, NeMo, Triton, TensorRT, Brev — with no map showing how they relate or where to start.
 
 This tool solves that by:
 
-- Visualising all **18 official NVIDIA AI services** as an interactive hexagonal graph
+- Visualising **25 official NVIDIA AI services** across **6 layers** as an interactive hexagonal graph
 - Drawing **documented connection edges** between services (no invented relationships)
-- Letting you describe any goal in plain English — **Groq AI maps the right services in the correct layer order**
+- Letting you describe any goal in plain English — **Nemotron** maps the right services in the correct layer order via **`/api/generate-flow`**
+- **Skill grounding** — NVIDIA embedding NIM + cosine similarity over a static skills catalog (optional live refresh from GitHub)
 - Highlighting your path on the graph with **animated edges + step-by-step guidance**
 - **Explore mode** — click any node to see its official description and docs in the sidebar
 
@@ -23,13 +24,15 @@ This tool solves that by:
 ## Screenshots
 
 ### AI-Generated Workflow Path
-Describe a goal → Groq maps the exact NVIDIA services with roles and actions per step.
+
+Describe a goal → Nemotron maps the exact NVIDIA services with roles and actions per step.
 
 ![AI Path — Fine-tune an LLM](media/Screenshot%202026-04-02%20213152.png)
 
 ---
 
 ### HUD Tooltip on Active Node
+
 Hover any node during a workflow to see its official description and a direct link to NVIDIA docs.
 
 ![HUD Tooltip](media/Screenshot%202026-04-02%20213334.png)
@@ -37,13 +40,15 @@ Hover any node during a workflow to see its official description and a direct li
 ---
 
 ### Explore Mode — Full Graph
-Browse all 18 services freely with full visibility. All connections visible at once.
 
-![Explore Mode](media/Screenshot%202026-04-02%20213350.png)
+Browse all services freely with full visibility. All connections visible at once.
+
+![Explore Mode — Full Graph](media/Screenshot%202026-04-02%20213350.png)
 
 ---
 
 ### Explore Mode — Click a Node
+
 Click any node to load its full official description, tags, and connections in the sidebar.
 
 ![Explore Mode — Node Detail](media/Screenshot%202026-04-02%20213453.png)
@@ -60,15 +65,16 @@ https://github.com/Doondi-Ashlesh/nvidia-ecosystem-visualizer/raw/master/media/D
 
 | Feature | Description |
 |---|---|
-| **AI Path Generator** | Type any AI goal — Groq (`llama-3.3-70b`) returns the correct NVIDIA service path with roles and actions per step |
-| **Strict layer ordering** | Paths always flow `Access → SDK → Frameworks → Agentic AI → Serving → Enterprise` |
-| **Cannot-verify fallback** | If no documented path exists, the AI declines and suggests relevant services instead of fabricating an answer |
-| **Interactive hex graph** | Pan, zoom, click — full React Flow canvas with `smoothstep` connection arrows |
+| **AI Path Generator** | Type any AI goal — **Nemotron** on **NVIDIA NIM** returns a path with roles and actions; server-side rules enforce layer order and exclusions |
+| **Strict layer ordering** | Paths flow `Access → SDK → Frameworks → Agentic AI → Serving → Enterprise` |
+| **Cannot-verify fallback** | If no documented path exists, the API returns `verified: false` and suggested services instead of fabricating a path |
+| **Interactive hex graph** | Pan, zoom, click — React Flow canvas with `smoothstep` connection arrows |
 | **Game HUD tooltips** | Hover any node for a scanline-style panel with description, tags, and official docs link |
-| **Layer zoom** | Hover a layer column header to zoom the canvas into that layer's services |
-| **Explore mode** | Browse every service freely — click a node to load its full description and connections in the sidebar |
-| **Workflow step navigator** | Follow AI-generated paths step-by-step with auto-pan to each active node and a progress bar |
-| **Glassmorphism UI** | Hex nodes with blur + NVIDIA green glow on hover/active states, pitch-black canvas |
+| **Layer zoom** | Hover a layer column header to zoom the canvas into that layer’s services |
+| **Explore mode** | Browse every service freely — click a node for full description and connections |
+| **Workflow step navigator** | Follow AI-generated paths step-by-step with auto-pan to each active node |
+| **Reasoning panel** | Optional Nemotron chain-of-thought when returned by NIM |
+| **Glassmorphism UI** | Hex nodes with blur + NVIDIA green glow on hover/active states |
 | **Responsive** | Hamburger sidebar on mobile, abbreviated layer labels at tablet widths |
 
 ---
@@ -81,23 +87,23 @@ https://github.com/Doondi-Ashlesh/nvidia-ecosystem-visualizer/raw/master/media/D
 | Styling | Tailwind CSS v4 |
 | Graph | @xyflow/react v12 |
 | Animations | Framer Motion |
-| AI | Groq SDK — `llama-3.3-70b-versatile` |
+| AI | **OpenAI-compatible SDK** → **NVIDIA NIM** (`integrate.api.nvidia.com`) — chat: **Nemotron Super 49B**; embeddings: **nv-embedqa-e5-v5** |
 | Icons | Lucide React |
 
 ---
 
 ## NVIDIA Services Covered
 
-**18 services across 6 layers — all sourced from official NVIDIA documentation.**
+**25 services across 6 layers — sourced from official NVIDIA documentation** (see `data/nvidia.ts` for per-service links).
 
-| Layer | Services |
+| Layer | Examples |
 |---|---|
-| **Access** | build.nvidia.com · NVIDIA Brev · NGC Catalog · DGX Cloud |
-| **SDK / Runtime** | CUDA Toolkit · cuDNN · TensorRT · TensorRT-LLM |
-| **Frameworks** | NVIDIA NeMo · NeMo Curator · NeMo Guardrails · NeMo Retriever · AI Workbench · RAPIDS |
-| **Agentic AI** | NVIDIA Nemotron · NeMo Agent Toolkit · NVIDIA Blueprints |
-| **Serving** | NVIDIA Dynamo-Triton · NIM Microservices |
-| **Enterprise** | NVIDIA AI Enterprise |
+| **Access** | NVIDIA Build (build.nvidia.com), Brev, NGC Catalog, DGX Cloud |
+| **SDK / Runtime** | CUDA Toolkit, cuDNN, TensorRT |
+| **Frameworks** | NeMo, NeMo Curator / Guardrails / Retriever / Evaluator / Gym, AI Workbench, RAPIDS, Megatron-LM |
+| **Agentic AI** | Nemotron, NeMo Agent Toolkit, NVIDIA AI Blueprints |
+| **Serving** | Model Optimizer, TensorRT-LLM, Dynamo-Triton, NIM |
+| **Enterprise** | NVIDIA AI Enterprise, cuOpt |
 
 ---
 
@@ -106,7 +112,7 @@ https://github.com/Doondi-Ashlesh/nvidia-ecosystem-visualizer/raw/master/media/D
 ### Prerequisites
 
 - Node.js 18+
-- A [Groq API key](https://console.groq.com/keys) — free tier is sufficient
+- An **[NVIDIA API key](https://build.nvidia.com)** (NIM) — used for chat completions and embeddings
 
 ### Installation
 
@@ -121,8 +127,16 @@ npm install
 Create `.env.local` in the project root:
 
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+NVIDIA_API_KEY=your_nvidia_api_key_here
+
+# Nemotron chain-of-thought (adds latency). Omit or set false for faster path generation.
+# NIM_REASONING=true
+
+# Optional: higher GitHub rate limits for live SKILL.md refresh
+# GITHUB_TOKEN=ghp_...
 ```
+
+**`NIM_REASONING`** — When unset, empty, `false`, or `0`, path generation **does not** send `reasoning mode ON` to Nemotron (default). Set to **`true`** or **`1`** to enable NVIDIA’s reasoning trace (often slower; the sidebar can show the reasoning panel when the model returns it).
 
 ### Run
 
@@ -136,22 +150,24 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Doondi-Ashlesh/nvidia-ecosystem-visualizer&env=GROQ_API_KEY&envDescription=Groq%20API%20key%20for%20AI%20path%20generation&envLink=https://console.groq.com/keys)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Doondi-Ashlesh/nvidia-ecosystem-visualizer&env=NVIDIA_API_KEY&envDescription=NVIDIA%20API%20key%20for%20NIM%20(path%20generation%20%2B%20embeddings)&envLink=https://build.nvidia.com)
 
 1. Click the button above or import the repo at [vercel.com/new](https://vercel.com/new)
-2. Add the environment variable: `GROQ_API_KEY` = your Groq API key
+2. Add **`NVIDIA_API_KEY`** (and optionally **`GITHUB_TOKEN`**) in Project → Environment Variables
 3. Deploy — Vercel auto-detects Next.js
 
 ---
 
 ## How the AI Path Generation Works
 
-The Groq prompt enforces strict rules before returning any path:
+The **`/api/generate-flow`** route calls **NVIDIA NIM** with strict prompt rules and post-processing:
 
-1. **Layer ordering** — steps must flow `access → sdk → framework → agent → serving → enterprise`
-2. **Documented connections only** — only officially-documented service relationships are used
-3. **Self-verification** — the model checks layer order, connection validity, and docs grounding before responding
-4. **Cannot-verify fallback** — unrecognised goals return a structured response listing suggested services to investigate, never a fabricated path
+1. **Layer ordering** — steps follow `access → sdk → framework → agent → serving → enterprise`
+2. **Documented connections only** — paths are constrained to the service list and rules in `route.ts`
+3. **Skill retrieval** — top matching skills (from `data/skills-catalog.ts`) are embedded and injected into the prompt when retrieval succeeds
+4. **Self-verification** — the model is asked to validate the path before returning JSON
+5. **Server-side safety net** — invalid IDs stripped, exclusions filtered, layer order and mandatory co-inclusions enforced, compliance keywords can inject NeMo Guardrails
+6. **Cannot-verify fallback** — `verified: false` with suggested `serviceId`s when no documented path is found
 
 ---
 
@@ -160,7 +176,7 @@ The Groq prompt enforces strict rules before returning any path:
 ```
 nvidia-ecosystem-visualizer/
 ├── app/
-│   ├── api/generate-flow/    # Groq AI path generation endpoint
+│   ├── api/generate-flow/    # NVIDIA NIM path generation (Nemotron + rules)
 │   ├── page.tsx              # Root page — layout, state, layer column headers
 │   ├── layout.tsx            # Root layout
 │   └── globals.css           # Global styles + React Flow theme overrides
@@ -170,18 +186,20 @@ nvidia-ecosystem-visualizer/
 │   ├── NodeTooltip.tsx       # Game HUD hover tooltip
 │   └── Sidebar.tsx           # Goal input · AI path navigator · explore panel
 ├── data/
-│   └── nvidia.ts             # 18 services with source comments → official NVIDIA docs
-├── types/
-│   └── ecosystem.ts          # TypeScript types + NVIDIA brand colour constants
-└── lib/
-    └── workflow.ts           # Pure helpers: getWorkflowNodeIds, getWorkflowEdgePairs
+│   ├── nvidia.ts             # 25 services + workflows + source comments → official docs
+│   └── skills-catalog.ts     # Static NVIDIA skills baseline + GitHub raw URLs
+├── lib/
+│   ├── skills-retriever.ts   # Embedding NIM + cosine top-K for prompt grounding
+│   └── workflow.ts           # Pure helpers: getWorkflowNodeIds, getWorkflowEdgePairs
+└── types/
+    └── ecosystem.ts          # TypeScript types + NVIDIA brand colour constants
 ```
 
 ---
 
 ## Data Integrity
 
-Every entry in `data/nvidia.ts` includes a source comment linking to the exact official NVIDIA page it was pulled from (`docs.nvidia.com`, `developer.nvidia.com`). No descriptions are invented or inferred.
+Every entry in `data/nvidia.ts` includes a source comment linking to the official NVIDIA page it was pulled from (`docs.nvidia.com`, `developer.nvidia.com`, product pages). No descriptions are invented or inferred.
 
 ---
 

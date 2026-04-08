@@ -141,6 +141,7 @@ export default function Sidebar({
         error?:             string;
         latencyMs?:         number;
         reasoning?:         string | null;
+        reasoningEnabled?:  boolean;
       };
 
       // Hard API / network error
@@ -149,7 +150,7 @@ export default function Sidebar({
         return;
       }
 
-      // Groq couldn't verify a valid documented path
+      // Model returned verified:false — no documented NVIDIA path for this goal
       if (data.verified === false) {
         setUnverified({
           message:           data.message ?? 'No documented NVIDIA path found for this goal.',
@@ -240,7 +241,7 @@ export default function Sidebar({
                 </p>
               </div>
 
-              {/* Textarea */}
+              {/* Textarea — taller default so long prompts are readable (vertical space) */}
               <div className="relative">
                 <textarea
                   ref={inputRef}
@@ -248,8 +249,8 @@ export default function Sidebar({
                   onChange={(e) => { setGoal(e.target.value); setError(null); setUnverified(null); }}
                   onKeyDown={handleKey}
                   placeholder="e.g. Deploy a medical imaging model with low-latency inference…"
-                  rows={3}
-                  className="w-full bg-[#0d1117] border border-[#1e293b] rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#76b900] transition-colors resize-none"
+                  rows={7}
+                  className="w-full min-h-[10.5rem] bg-[#0d1117] border border-[#1e293b] rounded-lg px-3 py-2.5 pr-11 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#76b900] transition-colors resize-y leading-relaxed"
                 />
                 <button
                   onClick={handleGenerate}
@@ -399,50 +400,22 @@ export default function Sidebar({
               transition={{ duration: 0.2 }}
               className="flex flex-col h-full"
             >
-              {/* Goal header */}
-              <div className="px-6 pt-5 pb-4 border-b border-[#1a1a1a] shrink-0">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <Sparkles size={10} className="text-[#76b900]" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#76b900]">
-                        AI Generated
-                      </span>
-                    </div>
-                    <h2 className="text-white font-bold text-base leading-snug">
-                      {activeWorkflow.goal}
-                    </h2>
-                  </div>
-                  <button
-                    onClick={onExitWorkflow}
-                    className="shrink-0 text-slate-500 hover:text-white transition-colors mt-0.5"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-
-                {/* Progress bar */}
-                <div className="h-1 bg-[#1a1a1a] rounded-full overflow-hidden mt-3">
-                  <motion.div
-                    className="h-full rounded-full"
-                    style={{ background: 'linear-gradient(90deg, #76b900, #a3e635)' }}
-                    animate={{
-                      width: `${(activeStepIndex / Math.max(activeWorkflow.steps.length - 1, 1)) * 100}%`,
-                    }}
-                    transition={{ duration: 0.4 }}
-                  />
-                </div>
-                {/* Latency inline with step counter */}
-                <div className="flex items-center justify-between mt-1.5">
-                  <p className="text-sm text-slate-500">
-                    Step {activeStepIndex + 1} of {activeWorkflow.steps.length}
-                  </p>
-                  {latencyMs && (
-                    <span className="text-[10px] font-mono text-slate-600">
-                      {latencyMs}ms · Nemotron 49B
-                    </span>
+              {/* Compact workflow chrome — goal text hidden to maximize step list space */}
+              <div className="px-4 pt-3 pb-2 border-b border-[#1a1a1a] shrink-0 flex items-center justify-between gap-2">
+                <p className="text-[11px] text-slate-500 tabular-nums">
+                  Step {activeStepIndex + 1} of {activeWorkflow.steps.length}
+                  {latencyMs != null && (
+                    <span className="text-slate-600 font-mono ml-2">{latencyMs}ms</span>
                   )}
-                </div>
+                </p>
+                <button
+                  type="button"
+                  onClick={onExitWorkflow}
+                  className="shrink-0 p-1 rounded-md text-slate-500 hover:text-white hover:bg-white/5 transition-colors"
+                  aria-label="Close workflow"
+                >
+                  <X size={14} />
+                </button>
               </div>
 
               {/* Steps list — reasoning toggle lives inside so it scrolls with steps */}
@@ -701,10 +674,10 @@ export default function Sidebar({
         </AnimatePresence>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────────────────────── */}
-      <div className="px-6 py-4 border-t border-[#1a1a1a] shrink-0">
+      {/* ── Footer — single “powered by” tag only ───────────────────────── */}
+      <div className="px-4 py-2 border-t border-[#1a1a1a] shrink-0">
         <div
-          className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full mb-3"
+          className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full"
           style={{ background: '#76b90012', border: '1px solid #76b90030' }}
         >
           <span
@@ -715,11 +688,6 @@ export default function Sidebar({
             Powered by Nemotron
           </span>
         </div>
-        <p className="text-sm text-slate-700 leading-relaxed">
-          All data sourced from official NVIDIA documentation.
-          <br />
-          <span className="text-slate-600">docs.nvidia.com · developer.nvidia.com</span>
-        </p>
       </div>
     </aside>
   );

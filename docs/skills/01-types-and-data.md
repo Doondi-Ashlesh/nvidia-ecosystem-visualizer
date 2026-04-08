@@ -44,7 +44,7 @@ Constants driving column headers, hexagon colors, glow effects, and column order
 
 ---
 
-## NVIDIA Services (`data/nvidia.ts`) — 18 nodes across 6 layers
+## NVIDIA Services (`data/nvidia.ts`) — 25 nodes across 6 layers
 
 | Layer | Services |
 |---|---|
@@ -104,7 +104,7 @@ Simple keyword matching. Maps terms like "agent", "agentic", "orchestrate" to th
 ```typescript
 import { NVIDIA_SERVICES, NVIDIA_WORKFLOWS } from '@/data/nvidia';
 
-console.log(NVIDIA_SERVICES.length);  // → 18
+console.log(NVIDIA_SERVICES.length);  // → 25
 console.log(NVIDIA_WORKFLOWS.length); // → 6
 
 // Verify agent layer
