@@ -12,9 +12,9 @@ Developers approaching NVIDIA's AI stack face a fragmented landscape — NIM, Ne
 
 This tool solves that by:
 
-- Visualising all **18 official NVIDIA AI services** as an interactive hexagonal graph
+- Visualising all **25 official NVIDIA AI services** as an interactive hexagonal graph
 - Drawing **documented connection edges** between services (no invented relationships)
-- Letting you describe any goal in plain English — **Groq AI maps the right services in the correct layer order**
+- Letting you describe any goal in plain English — **LlaMa 3.3 Nemotron super 49b v1 AI maps the right services in the correct layer order**
 - Highlighting your path on the graph with **animated edges + step-by-step guidance**
 - **Explore mode** — click any node to see its official description and docs in the sidebar
 
@@ -23,7 +23,7 @@ This tool solves that by:
 ## Screenshots
 
 ### AI-Generated Workflow Path
-Describe a goal → Groq maps the exact NVIDIA services with roles and actions per step.
+Describe a goal → Nemotron maps the exact NVIDIA services with roles and actions per step.
 
 ![AI Path — Fine-tune an LLM](media/Screenshot%202026-04-02%20213152.png)
 
