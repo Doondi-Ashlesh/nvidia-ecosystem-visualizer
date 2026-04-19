@@ -303,6 +303,19 @@ export async function POST(request: Request) {
       return { ...s, role: svc?.shortDescription ?? s.role };
     });
 
+    // Safety cap: if the model over-corrected under retry feedback and
+    // emitted > schema max, truncate instead of 502. Keep the first N.
+    // Observed live: retry feedback sometimes makes the model emit MORE
+    // services than before, inflating the path. We'd rather ship 15 of 17
+    // than fail the whole pipeline.
+    const MAX_STEPS = 15;
+    if (steps.length > MAX_STEPS) {
+      console.warn(
+        `[generate-flow][${correlationId}] truncating ${steps.length} steps to ${MAX_STEPS} (model over-emitted)`,
+      );
+      steps = steps.slice(0, MAX_STEPS);
+    }
+
     // Final schema validation — guarantees Stage 3 receives well-formed path.
     const stepsCheck = WorkflowStepsSchema.safeParse(steps);
     if (!stepsCheck.success) {
