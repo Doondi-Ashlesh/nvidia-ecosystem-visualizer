@@ -32,6 +32,10 @@ import {
   validateNarrative,
   buildNarrativeRepromptFeedback,
 } from '@/lib/validators/narrative';
+import {
+  validatePythonSyntax,
+  buildPythonSyntaxRepromptFeedback,
+} from '@/lib/validators/python-syntax';
 import { extractParseableObjects } from '@/lib/json-repair-nbjson';
 import {
   GenerateNotebookRequestSchema,
@@ -434,7 +438,35 @@ Output ONLY a JSON array of cells:
       }
     }
 
-    // Narrative structure validation (layer 3 — shape of the story).
+    // Python syntax check (layer 3 — won't parse). Calls `ast.parse` via a
+    // local Python subprocess. Catches missing `:` on block starters,
+    // unclosed brackets, etc. Runtime-only bugs (wrong args, uncallable
+    // context manager) still require execution — that's Brev's job.
+    const syntaxResult = validatePythonSyntax(
+      schemaResult.data as NotebookCellLike[],
+    );
+    console.log(
+      `[generate-notebook][${correlationId}] Attempt ${attempt} python-syntax: ` +
+        `cells=${syntaxResult.stats.codeCellsChecked} ` +
+        `skipped=${syntaxResult.skipped} ` +
+        `violations=${syntaxResult.violations.length}`,
+    );
+
+    if (!syntaxResult.ok && attempt < 3) {
+      feedback = buildPythonSyntaxRepromptFeedback(syntaxResult);
+      continue;
+    }
+
+    if (!syntaxResult.ok) {
+      console.warn(
+        `[generate-notebook][${correlationId}] Python syntax errors survived retries (${syntaxResult.violations.length}):`,
+      );
+      for (const v of syntaxResult.violations.slice(0, 5)) {
+        console.warn(`  - ${v.message}`);
+      }
+    }
+
+    // Narrative structure validation (layer 4 — shape of the story).
     // Checks that required sections (overview / setup / baseline / eval /
     // summary) are present. Training paths require baseline too.
     const narrativeResult = validateNarrative(

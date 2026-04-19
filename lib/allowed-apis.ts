@@ -228,6 +228,7 @@ export const ALLOWED_APIS: Record<ServiceId, AllowedAPI> = {
     pipPackage: 'cudf-cu12', // depends on CUDA version; rapidsai org has several.
     importRoots: ['cudf', 'dask_cudf', 'cuml', 'cugraph', 'cuspatial', 'cuxfilter'],
     allowedSymbols: [
+      // cuDF — GPU DataFrames
       'cudf.DataFrame',
       'cudf.Series',
       'cudf.read_csv',
@@ -235,9 +236,13 @@ export const ALLOWED_APIS: Record<ServiceId, AllowedAPI> = {
       'cudf.read_json',
       'cudf.concat',
       'cudf.merge',
+      'cudf.get_dummies',
+      'cudf.from_pandas',
+      // Dask-cuDF — out-of-core GPU DataFrames
       'dask_cudf.read_parquet',
       'dask_cudf.read_csv',
       'dask_cudf.from_cudf',
+      // cuML — GPU ML models
       'cuml.ensemble.RandomForestClassifier',
       'cuml.ensemble.RandomForestRegressor',
       'cuml.linear_model.LogisticRegression',
@@ -245,10 +250,19 @@ export const ALLOWED_APIS: Record<ServiceId, AllowedAPI> = {
       'cuml.cluster.KMeans',
       'cuml.neighbors.NearestNeighbors',
       'cuml.preprocessing.StandardScaler',
+      // cuML metrics — real module, was missing from v1. Added 2026-04-19.
+      'cuml.metrics.accuracy_score',
+      'cuml.metrics.precision_score',
+      'cuml.metrics.recall_score',
+      'cuml.metrics.f1_score',
+      'cuml.metrics.roc_auc_score',
+      'cuml.metrics.confusion_matrix',
+      'cuml.metrics.log_loss',
+      // cuGraph
       'cugraph.Graph',
       'cugraph.pagerank',
     ],
-    fixHint: 'RAPIDS is pandas/sklearn-on-GPU. `cudf.read_parquet` → DataFrame, `cuml` for ML. API mirrors pandas / sklearn where possible.',
+    fixHint: 'RAPIDS is pandas/sklearn-on-GPU. `cudf.read_parquet` → DataFrame, `cuml` for ML, `cuml.metrics` for scoring. API mirrors pandas / sklearn where possible.',
   },
   'nemotron': {
     pipPackage: null, // Nemotron is accessed as a model via NIM or HuggingFace.
@@ -434,4 +448,203 @@ export function getAllowedSymbolsSample(serviceId: ServiceId, max: number = 6): 
 export function isInfraOnlyService(serviceId: ServiceId): boolean {
   const api = ALLOWED_APIS[serviceId];
   return Boolean(api && api.importRoots.length === 0 && api.pipPackage === null);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// KNOWN-FAKE SYMBOLS — high-confidence hallucinations the 120B has emitted
+// in live runs. The ordinary allowed-symbol check would already flag these
+// for being absent, but listing them here lets us provide a SPECIFIC fix
+// hint ("use X instead") rather than a generic "not in allowed list".
+//
+// When extending: only add symbols that are confidently fake AND come with
+// a concrete alternative. Do NOT add symbols we're unsure about — false
+// positives on a known-fake list are worse than misses.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface KnownFakeEntry {
+  /** The exact symbol / import path the model hallucinates. */
+  symbol: string;
+  /** Service this is being misattributed to (from the import root). */
+  service: ServiceId;
+  /** Concrete correction the re-prompt should request. */
+  fixHint: string;
+}
+
+export const KNOWN_FAKE_SYMBOLS: KnownFakeEntry[] = [
+  // Observed 2026-04-19 fraud-notebook live run (correlation 3e2dd077).
+  // Model wrote `from cuml.neural_network import MLPClassifier` — cuML has
+  // no `neural_network` module. Real alternatives: a cuml tree/linear model,
+  // or a PyTorch MLP (which RAPIDS integrates with via cudf -> torch.Tensor).
+  {
+    symbol: 'cuml.neural_network',
+    service: 'rapids',
+    fixHint:
+      'cuml.neural_network does not exist. For tabular ML use cuml.ensemble.RandomForestClassifier, cuml.linear_model.LogisticRegression, or cuml.ensemble.GradientBoostingClassifier. For neural-net tabular, use PyTorch directly with cudf→torch.from_dlpack.',
+  },
+  {
+    symbol: 'cuml.neural_network.MLPClassifier',
+    service: 'rapids',
+    fixHint:
+      'cuml.neural_network.MLPClassifier does not exist. Options: (a) sklearn.neural_network.MLPClassifier on CPU, (b) PyTorch nn.Sequential on GPU, (c) swap to cuml.ensemble.RandomForestClassifier (fast, GPU, well-suited to tabular fraud).',
+  },
+
+  // `from tensorrt import nvinfer1` — nvinfer1 is the C++ namespace, not a
+  // Python module. Caused Cell 23 to break. Observed twice now.
+  {
+    symbol: 'tensorrt.nvinfer1',
+    service: 'tensorrt',
+    fixHint:
+      'tensorrt.nvinfer1 is a C++ namespace, not a Python import. Remove the import. Access TensorRT types directly from the `tensorrt` module (e.g. `trt.Builder`, `trt.Logger`, `trt.Runtime`).',
+  },
+
+  // Sometimes emitted as `from nemo.core import Dataset, DataLoader` — no
+  // such classes in nemo.core (NeMo uses torch.utils.data.Dataset directly).
+  {
+    symbol: 'nemo.core.Dataset',
+    service: 'nemo',
+    fixHint:
+      'nemo.core.Dataset does not exist. Use torch.utils.data.Dataset (NeMo models accept standard PyTorch dataloaders). `from torch.utils.data import Dataset, DataLoader`.',
+  },
+  {
+    symbol: 'nemo.core.DataLoader',
+    service: 'nemo',
+    fixHint:
+      'nemo.core.DataLoader does not exist. Use torch.utils.data.DataLoader.',
+  },
+  {
+    symbol: 'nemo.collections.nlp.models.language_modeling.bert',
+    service: 'nemo',
+    fixHint:
+      'This path does not exist in NeMo. For BERT-family models use `from transformers import AutoModel` (HuggingFace) — NeMo does not expose a `bert` submodule under language_modeling.',
+  },
+];
+
+/**
+ * Lookup: is this fully-qualified symbol a known hallucination? Prefix-match
+ * so `cuml.neural_network.MLPClassifier` triggers whether the code wrote
+ * `from cuml.neural_network import MLPClassifier` (fqn = that) or
+ * `cuml.neural_network.MLPClassifier(...)` (attr chain same).
+ */
+export function findKnownFake(fqn: string): KnownFakeEntry | null {
+  for (const entry of KNOWN_FAKE_SYMBOLS) {
+    if (fqn === entry.symbol || fqn.startsWith(entry.symbol + '.')) {
+      return entry;
+    }
+  }
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEPRECATED SYMBOLS — real symbols that existed in older versions but were
+// removed / renamed in the current SDK. Separate from known-fakes because
+// the action is different: "this is real but obsolete; here is the modern
+// equivalent." Observed primarily with TensorRT (big API break in 8.0).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface DeprecatedEntry {
+  /** Attribute or method name (without the parent object prefix). */
+  name: string;
+  /** Parent type/class/module for context (e.g. "Builder", "ICudaEngine"). */
+  parent: string;
+  /** Service id this belongs to. */
+  service: ServiceId;
+  /** Version in which this was removed / renamed. */
+  sinceVersion?: string;
+  /** Modern replacement pattern. */
+  fixHint: string;
+}
+
+export const DEPRECATED_SYMBOLS: DeprecatedEntry[] = [
+  // TensorRT ≤7 → 8.0 API break. The model likes to emit the old API because
+  // it was in most training data but was removed years ago.
+  {
+    name: 'max_workspace_size',
+    parent: 'Builder',
+    service: 'tensorrt',
+    sinceVersion: '8.0',
+    fixHint:
+      '`builder.max_workspace_size` was removed in TensorRT 8.0. Use `config = builder.create_builder_config(); config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 1 << 30)`.',
+  },
+  {
+    name: 'fp16_mode',
+    parent: 'Builder',
+    service: 'tensorrt',
+    sinceVersion: '8.0',
+    fixHint:
+      '`builder.fp16_mode = True` was removed in TensorRT 8.0. Use `config.set_flag(trt.BuilderFlag.FP16)`.',
+  },
+  {
+    name: 'int8_mode',
+    parent: 'Builder',
+    service: 'tensorrt',
+    sinceVersion: '8.0',
+    fixHint:
+      '`builder.int8_mode = True` was removed in TensorRT 8.0. Use `config.set_flag(trt.BuilderFlag.INT8)` and provide an int8 calibrator.',
+  },
+  {
+    name: 'build_cuda_engine',
+    parent: 'Builder',
+    service: 'tensorrt',
+    sinceVersion: '8.0',
+    fixHint:
+      '`builder.build_cuda_engine(network)` was removed in TensorRT 8.0. Use `serialized = builder.build_serialized_network(network, config)` then `runtime.deserialize_cuda_engine(serialized)`.',
+  },
+  {
+    name: 'max_batch_size',
+    parent: 'ICudaEngine',
+    service: 'tensorrt',
+    sinceVersion: '8.5',
+    fixHint:
+      '`engine.max_batch_size` is deprecated; explicit-batch engines specify batch in the input tensor shape. Set batch via the dynamic-shapes optimisation profile on the IBuilderConfig.',
+  },
+  {
+    name: 'binding_is_input',
+    parent: 'ICudaEngine',
+    service: 'tensorrt',
+    sinceVersion: '8.5',
+    fixHint:
+      '`engine.binding_is_input(binding)` is deprecated. Use `engine.get_tensor_mode(name) == trt.TensorIOMode.INPUT`.',
+  },
+  {
+    name: 'get_binding_shape',
+    parent: 'ICudaEngine',
+    service: 'tensorrt',
+    sinceVersion: '8.5',
+    fixHint:
+      '`engine.get_binding_shape(binding)` is deprecated. Use `engine.get_tensor_shape(name)`.',
+  },
+  {
+    name: 'execute_async',
+    parent: 'IExecutionContext',
+    service: 'tensorrt',
+    sinceVersion: '8.5',
+    fixHint:
+      '`context.execute_async(batch_size, bindings, stream)` is deprecated. Use `context.execute_async_v3(stream_handle)` with `set_tensor_address(name, ptr)` for each IO tensor.',
+  },
+];
+
+/**
+ * Lookup: is this `parent.name` attribute chain a deprecated API call?
+ * Used by the AST validator when it walks attribute chains like
+ * `builder.max_workspace_size = ...` or `context.execute_async(...)`.
+ */
+export function findDeprecated(parent: string, name: string): DeprecatedEntry | null {
+  for (const entry of DEPRECATED_SYMBOLS) {
+    // Match on exact parent (Builder, ICudaEngine) or lowercase common names
+    // (builder, engine, context) as used at call sites.
+    if (entry.name !== name) continue;
+    const hints = [
+      entry.parent.toLowerCase(),
+      entry.parent,
+    ];
+    if (hints.includes(parent)) return entry;
+    // Also accept common variable names — model tends to use these.
+    const commonVarNames: Record<string, string[]> = {
+      Builder: ['builder'],
+      ICudaEngine: ['engine'],
+      IExecutionContext: ['context', 'ctx', 'exec_context'],
+    };
+    if (commonVarNames[entry.parent]?.includes(parent)) return entry;
+  }
+  return null;
 }

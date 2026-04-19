@@ -36,6 +36,8 @@ import {
   isSymbolAllowed,
   getAllowedSymbolsSample,
   isInfraOnlyService,
+  findKnownFake,
+  findDeprecated,
   type ServiceId,
 } from '@/lib/allowed-apis';
 
@@ -50,6 +52,26 @@ export type ASTViolation =
       lineNumber: number;
       symbol: string;         // e.g. "nemo_curator.magic"
       service: ServiceId;     // "nemo-curator"
+      message: string;
+      reprompt: string;
+    }
+  | {
+      code: 'known_fake_symbol';
+      cellIndex: number;
+      lineNumber: number;
+      symbol: string;
+      service: ServiceId;
+      message: string;
+      reprompt: string;
+    }
+  | {
+      code: 'deprecated_api';
+      cellIndex: number;
+      lineNumber: number;
+      parent: string;         // e.g. "builder"
+      name: string;           // e.g. "max_workspace_size"
+      service: ServiceId;
+      sinceVersion?: string;
       message: string;
       reprompt: string;
     }
@@ -81,6 +103,7 @@ export interface ASTValidationResult {
     codeCellsChecked: number;
     importsChecked: number;
     nvidiaImportsChecked: number;
+    attributeChainsChecked: number;
   };
 }
 
@@ -212,6 +235,49 @@ function normaliseMultilineImports(source: string): string {
 }
 
 // ──────────────────────────────────────────────────────────────────────
+// Attribute-chain extraction — finds `parent.member(...)` or `parent.member =`
+// patterns where `parent` is likely a named object (variable) whose API we
+// have deprecation records for. Examples we want to catch:
+//
+//   builder.max_workspace_size = 1 << 30   # deprecated TensorRT
+//   builder.build_cuda_engine(network)      # deprecated TensorRT
+//   engine.binding_is_input(i)              # deprecated TensorRT
+//   context.execute_async(...)              # deprecated TensorRT
+//
+// We match a restrictive pattern (identifier.identifier) rather than a full
+// Python AST parse. That misses chains like `foo.bar.baz()` but reliably
+// catches the two-identifier forms which account for 95%+ of deprecated
+// API usage observed in generated notebooks.
+// ──────────────────────────────────────────────────────────────────────
+
+function extractAttributeAccesses(
+  source: string,
+): Array<{ parent: string; name: string; lineNumber: number; raw: string }> {
+  const results: Array<{ parent: string; name: string; lineNumber: number; raw: string }> = [];
+  const lines = source.split('\n');
+  // Pattern: word.word followed by `(`, `=` (assignment), or `[`.
+  // Skip call sites inside strings? For generated notebooks the practical
+  // hit rate is very high without string-context tracking — if the model
+  // writes `builder.max_workspace_size` inside a docstring it's still a
+  // signal worth surfacing.
+  const CALL_OR_ASSIGN = /\b([a-zA-Z_]\w*)\.([a-zA-Z_]\w*)\s*(\(|=[^=])/g;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    let m: RegExpExecArray | null;
+    CALL_OR_ASSIGN.lastIndex = 0;
+    while ((m = CALL_OR_ASSIGN.exec(line)) !== null) {
+      results.push({
+        parent: m[1],
+        name: m[2],
+        lineNumber: i + 1,
+        raw: line.trim(),
+      });
+    }
+  }
+  return results;
+}
+
+// ──────────────────────────────────────────────────────────────────────
 // subprocess / shell-command extraction (for CLI hallucinations)
 // ──────────────────────────────────────────────────────────────────────
 
@@ -265,6 +331,7 @@ export function validateNotebookAST(
     codeCellsChecked: 0,
     importsChecked: 0,
     nvidiaImportsChecked: 0,
+    attributeChainsChecked: 0,
   };
 
   for (let cellIdx = 0; cellIdx < cells.length; cellIdx++) {
@@ -302,6 +369,22 @@ export function validateNotebookAST(
         continue;
       }
 
+      // Known-fake symbols take priority: they match a specific hallucination
+      // pattern we've observed, and come with a concrete "use X instead" hint.
+      const fake = findKnownFake(imp.fqn);
+      if (fake) {
+        violations.push({
+          code: 'known_fake_symbol',
+          cellIndex: cellIdx,
+          lineNumber: imp.lineNumber,
+          symbol: imp.fqn,
+          service: fake.service,
+          message: `Cell ${cellIdx + 1} line ${imp.lineNumber}: "${imp.fqn}" is a known fake symbol.`,
+          reprompt: `\`${imp.raw}\` — ${fake.fixHint}`,
+        });
+        continue;
+      }
+
       if (!isSymbolAllowed(imp.fqn, service)) {
         const samples = getAllowedSymbolsSample(service, 6);
         violations.push({
@@ -319,6 +402,36 @@ export function validateNotebookAST(
             (ALLOWED_APIS[service].fixHint ? ` Hint: ${ALLOWED_APIS[service].fixHint}` : ''),
         });
       }
+    }
+
+    // ── Deprecated API attribute chains ──────────────────────
+    // Walk `parent.name(...)` and `parent.name = ...` sites. If the
+    // (parent, name) pair matches a DEPRECATED_SYMBOLS entry, surface
+    // it with the modern replacement as the fix hint.
+    const attrs = extractAttributeAccesses(src);
+    stats.attributeChainsChecked += attrs.length;
+    // Dedup so a deprecated call used multiple times only violates once
+    // per cell (still gets a violation but doesn't flood the reprompt).
+    const seenInCell = new Set<string>();
+    for (const attr of attrs) {
+      const key = `${attr.parent}.${attr.name}`;
+      if (seenInCell.has(key)) continue;
+      const dep = findDeprecated(attr.parent, attr.name);
+      if (!dep) continue;
+      seenInCell.add(key);
+      violations.push({
+        code: 'deprecated_api',
+        cellIndex: cellIdx,
+        lineNumber: attr.lineNumber,
+        parent: attr.parent,
+        name: attr.name,
+        service: dep.service,
+        sinceVersion: dep.sinceVersion,
+        message:
+          `Cell ${cellIdx + 1} line ${attr.lineNumber}: ${attr.parent}.${attr.name} is deprecated` +
+          (dep.sinceVersion ? ` (removed since ${dep.service} ${dep.sinceVersion}).` : '.'),
+        reprompt: `\`${attr.raw}\` — ${dep.fixHint}`,
+      });
     }
 
     // ── Shell-command hallucinations ──────────────────────────
