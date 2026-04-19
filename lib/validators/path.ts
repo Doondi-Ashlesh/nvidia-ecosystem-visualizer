@@ -52,6 +52,8 @@ const LLM_ONLY_SERVICES = new Set([
   'tensorrt-llm',    // LLM-specific inference engine
   'megatron-lm',     // LLM pretraining
   'nemo-gym',        // RLHF environment
+  'nemo-curator',    // LLM pre-training data cleaning
+  'blueprints',      // "reference apps for generative AI use cases"
 ]);
 
 /**
@@ -82,43 +84,50 @@ export function isLLMUseCase(goalSpec: GoalSpec): boolean {
     .join(' ')
     .toLowerCase();
 
-  const LLM_SIGNALS = [
-    'llm',
-    'language model',
-    'chatbot',
-    'chat bot',
-    'conversational',
-    'rag',
-    'retrieval-augmented',
-    'generative ai',
-    'text generation',
-    'summarization',
-    'question answering',
-    'instruction following',
-    'nemotron',
-    'llama',
-    'mistral',
-    'prompt',
+  // Word-boundary regex signals. We use `\b` so that single-word signals
+  // (e.g. 'prompt', 'rag', 'llm') don't false-positive inside other words —
+  // 'promotion' should NOT trigger 'prompt', 'ragged' should NOT trigger 'rag'.
+  // Observed live: a fraud-detection GoalSpec whose inferred requirement
+  // mentioned "model version registry and PROMotion pipeline" falsely
+  // matched the 'prompt' signal and disabled the LLM-misfit validator.
+  const LLM_SIGNAL_PATTERNS: RegExp[] = [
+    /\bllm\b/,
+    /\blanguage model\b/,
+    /\bchatbot\b/,
+    /\bchat bot\b/,
+    /\bconversational\b/,
+    /\brag\b/,
+    /\bretrieval[-\s]augmented\b/,
+    /\bgenerative ai\b/,
+    /\btext generation\b/,
+    /\bsummariz/,
+    /\bquestion answering\b/,
+    /\binstruction[-\s]following\b/,
+    /\bnemotron\b/,
+    /\bllama\b/,
+    /\bmistral\b/,
+    /\bprompt\b/,
   ];
-  return LLM_SIGNALS.some((kw) => haystack.includes(kw));
+  return LLM_SIGNAL_PATTERNS.some((re) => re.test(haystack));
 }
 
-const NON_LLM_SIGNALS = [
-  'tabular',
-  'fraud detection',
-  'anomaly detection',
-  'recommendation',
-  'recommender',
-  'image classification',
-  'object detection',
-  'segmentation',
-  'speech recognition',
-  'asr',
-  'transcription',
-  'time series',
-  'forecasting',
-  'churn',
-  'predictive maintenance',
+// Word-boundary regex signals for non-LLM use cases.
+const NON_LLM_SIGNAL_PATTERNS: RegExp[] = [
+  /\btabular\b/,
+  /\bfraud detection\b/,
+  /\banomaly detection\b/,
+  /\brecommendation\b/,
+  /\brecommender\b/,
+  /\bimage classification\b/,
+  /\bobject detection\b/,
+  /\bsegmentation\b/,
+  /\bspeech recognition\b/,
+  /\basr\b/,
+  /\btranscription\b/,
+  /\btime series\b/,
+  /\bforecasting\b/,
+  /\bchurn\b/,
+  /\bpredictive maintenance\b/,
 ];
 
 export function hasStrongNonLLMSignal(goalSpec: GoalSpec): boolean {
@@ -129,7 +138,7 @@ export function hasStrongNonLLMSignal(goalSpec: GoalSpec): boolean {
   ]
     .join(' ')
     .toLowerCase();
-  return NON_LLM_SIGNALS.some((kw) => haystack.includes(kw));
+  return NON_LLM_SIGNAL_PATTERNS.some((re) => re.test(haystack));
 }
 
 // ──────────────────────────────────────────────────────────────────────
