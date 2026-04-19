@@ -24,6 +24,29 @@ import { validateNarrative } from '../lib/validators/narrative';
 import { validatePythonSyntax } from '../lib/validators/python-syntax';
 import type { WorkflowStep } from '../types/ecosystem';
 
+// Node's fetch uses undici, which defaults to a 5-min headers-timeout
+// and 5-min body-timeout. Our notebook generation can take 10–30 min
+// end-to-end (multiple LLM retries + validator loops), so disable these
+// client-side timeouts by loading undici dynamically (it ships with Node
+// but its types aren't declared unless @types/node is recent enough to
+// include them — dynamic import sidesteps the type check).
+async function disableClientTimeouts(): Promise<void> {
+  try {
+    // @ts-expect-error — undici is a built-in but TS types may be absent.
+    const undici = await import('undici');
+    undici.setGlobalDispatcher(
+      new undici.Agent({
+        headersTimeout: 0, // disable
+        bodyTimeout: 0, // disable
+        connectTimeout: 30_000, // 30s TCP connect
+      }),
+    );
+  } catch {
+    // Fallback: environment doesn't expose undici. fetch will use defaults.
+    console.warn('undici not loadable; fetch will use default 5-min timeout.');
+  }
+}
+
 interface NotebookCellLike {
   cell_type: 'code' | 'markdown' | string;
   source: string | string[];
@@ -71,6 +94,7 @@ async function runGeneration(): Promise<{ body: string; latencyMs: number; statu
 }
 
 async function main() {
+  await disableClientTimeouts();
   console.log(`\n=== Canonical A/B: ${label} ===`);
   console.log(`Branch:   ${currentBranch()}`);
   console.log(`Commit:   ${currentSha()}`);
