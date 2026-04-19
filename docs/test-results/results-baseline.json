@@ -1,0 +1,305 @@
+[
+  {
+    "status": "OK",
+    "test_id": "TC-M1",
+    "category": "MATCH",
+    "input": "build a RAG pipeline for enterprise document search",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 141869,
+    "latency_s": 141.9,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 1,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "streaming-data-to-rag",
+      "aiq"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "enterprise knowledge management",
+    "summary_len": 615,
+    "perf_goal_details": [
+      "retrieval_recall_at_5: >=0.85",
+      "inference_latency_p95: <300ms",
+      "answer_relevance_score: >=0.8 (on a 0-1 scale)",
+      "hallucination_rate: <5%",
+      "throughput_req_per_sec: >=50 req/s"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-M2",
+    "category": "MATCH",
+    "input": "deploy a customer service chatbot with AI",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 137391,
+    "latency_s": 137.4,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "ai-virtual-assistant",
+      "rag",
+      "aiq"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "customer service automation",
+    "summary_len": 586,
+    "perf_goal_details": [
+      "inference_latency_p95: <500ms",
+      "intent_classification_accuracy: >90%",
+      "throughput_req_per_second: >50 req/s",
+      "customer_satisfaction_score (CSAT): >4.0/5.0"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-M3",
+    "category": "MATCH",
+    "input": "build a multi-agent system for retail e-commerce",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 165346,
+    "latency_s": 165.3,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 2,
+    "blueprint_names": [
+      "aiq",
+      "Retail-Agentic-Commerce"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "retail e-commerce",
+    "summary_len": 590,
+    "perf_goal_details": [
+      "agent_response_latency_p95: <300ms",
+      "recommendation_hitrate_at_10: >80%",
+      "inventory_sync_latency_p99: <5s",
+      "system_throughput_rps: >1000 req/s",
+      "uptime_sla: 99.9%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P1",
+    "category": "PARTIAL",
+    "input": "build a real-time fraud detection system for banking",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 58693,
+    "latency_s": 58.7,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 3,
+    "conflicts": 2,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "streaming-data-to-rag"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "banking fraud detection",
+    "summary_len": 489,
+    "perf_goal_details": [
+      "inference_latency_p95: <50ms",
+      "throughput: >20,000 transactions/second",
+      "detection_recall: >95%",
+      "false_positive_rate: <0.5%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P2",
+    "category": "PARTIAL",
+    "input": "create an AI-powered drug discovery pipeline",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 151446,
+    "latency_s": 151.4,
+    "perf_goals": 4,
+    "inferred_reqs": 3,
+    "gaps": 3,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "Retail-Agentic-Commerce",
+      "bring-llms-to-nim"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "AI-driven drug discovery (computational pharmacology)",
+    "summary_len": 509,
+    "perf_goal_details": [
+      "virtual_screening_throughput: >10^6 molecules/day",
+      "admet_prediction_accuracy: >90% AUROC on Tox21 benchmark",
+      "generative_model_novelty: >70% generated molecules with Tanimoto similarity <0.4 to training set",
+      "docking_score_enrichment: 5x top 1% hit rate improvement over random"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P3",
+    "category": "PARTIAL",
+    "input": "deploy a recommendation engine for a streaming platform",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 69492,
+    "latency_s": 69.5,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 5,
+    "conflicts": 2,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "streaming-data-to-rag"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "video streaming recommendation",
+    "summary_len": 625,
+    "perf_goal_details": [
+      "inference_latency_p95: <50ms",
+      "recall_at_10: >0.60",
+      "ctr_lift_over_baseline: >5%",
+      "request_throughput: >10,000 req/s",
+      "model_freshness: <6 hours"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-N1",
+    "category": "NOVEL",
+    "input": "build an autonomous drone navigation system with computer vision",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 105146,
+    "latency_s": 105.1,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "ai-virtual-assistant",
+      "aiq"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "autonomous aerial robotics (drone-based computer vision navigation)",
+    "summary_len": 563,
+    "perf_goal_details": [
+      "object_detection_latency_p95: <40ms",
+      "end_to_end_control_loop_latency_p95: <100ms",
+      "positioning_error_rmse: <0.5m",
+      "frame_processing_throughput: >30 FPS",
+      "mission_success_rate_in_varied_conditions: >95%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-N2",
+    "category": "NOVEL",
+    "input": "create an AI-powered climate modeling simulation",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 79727,
+    "latency_s": 79.7,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "Retail-Agentic-Commerce",
+      "data-flywheel",
+      "bring-llms-to-nim"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "climate science and environmental modeling",
+    "summary_len": 581,
+    "perf_goal_details": [
+      "simulation_throughput_simulated_years_per_day: >1000 years/day",
+      "temperature_forecast_rmse_vs_baseline: <0.5\u00b0C",
+      "inference_latency_per_simulation_step: <50 ms",
+      "energy_consumption_per_simulated_year: <1 kWh"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-V1",
+    "category": "VAGUE",
+    "input": "chatbot",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 126078,
+    "latency_s": 126.1,
+    "perf_goals": 4,
+    "inferred_reqs": 3,
+    "gaps": 4,
+    "conflicts": 1,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "ai-virtual-assistant"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "enterprise customer service chatbot",
+    "summary_len": 594,
+    "perf_goal_details": [
+      "inference_latency_p95: <300ms",
+      "intent_classification_accuracy: >88%",
+      "throughput_rps: >50 req/s",
+      "retrieval_recall@5: >80%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-V2",
+    "category": "VAGUE",
+    "input": "optimize inference",
+    "mode": "baseline",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 79714,
+    "latency_s": 79.7,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 3,
+    "conflicts": 2,
+    "blueprints_matched": 0,
+    "blueprint_names": [],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "general-purpose AI inference serving",
+    "summary_len": 524,
+    "perf_goal_details": [
+      "inference_latency_p95: <100ms",
+      "throughput: >500 req/s per GPU",
+      "accuracy_retention: >99% of baseline",
+      "cost_per_1k_tokens: <$0.0005"
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+TC-M1|MATCH|build a RAG pipeline for enterprise document search|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-M2|MATCH|deploy a customer service chatbot with AI|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-M3|MATCH|build a multi-agent system for retail e-commerce|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-P1|PARTIAL|build a real-time fraud detection system for banking|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-P2|PARTIAL|create an AI-powered drug discovery pipeline|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-P3|PARTIAL|deploy a recommendation engine for a streaming platform|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-N1|NOVEL|build an autonomous drone navigation system with computer vision|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-N2|NOVEL|create an AI-powered climate modeling simulation|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-V1|VAGUE|chatbot|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character
+TC-V2|VAGUE|optimize inference|  File "<string>", line 9
+    print(f"API_ERROR|{d[\"error\"]}|{d.get(\"detail\",\"\")[:100]}")
+                          ^
+SyntaxError: unexpected character after line continuation character

@@ -1,0 +1,379 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+\title{Data-Flow Driven Service Orchestration for NVIDIA AI Ecosystems: An Experimentation Study on LLM-Based Pipeline Generation}
+
+\author{
+\IEEEauthorblockN{Doondi Ashlesh}
+\IEEEauthorblockA{
+\textit{Independent Researcher} \\
+ashlesh@example.com}
+}
+
+\maketitle
+
+\begin{abstract}
+We present an experimentation study on automating NVIDIA AI service orchestration through large language model (LLM) inference. Starting from a baseline system using 13 hardcoded keyword rules that produced 4-service paths rated 4/10, we conducted 9 systematic experiments across 10 enterprise use cases to optimize service path generation, goal specification inference, and production notebook code generation. Our key finding is that a 3-sentence data-flow prompt---requiring the model to describe inputs and outputs per service---outperforms complex rule systems by naturally filtering incorrect services through architectural reasoning. This approach, combined with real NVIDIA SDK code pattern grounding, achieves an average path quality of 8.7/10 and notebook code quality of 8.0/10 across healthcare, financial, and e-commerce domains. We document all optimization attempts, including those that failed, providing a data-driven methodology for LLM-based software architecture generation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+NVIDIA NIM, large language models, service orchestration, code generation, AI pipeline automation, prompt engineering, Nemotron
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+NVIDIA offers over 25 AI services spanning six architectural layers: Access, SDK/Runtime, Frameworks, Agentic AI, Serving, and Enterprise. Developers face a significant challenge in selecting the correct subset of services for their specific use case, understanding how these services connect, and implementing a production-ready pipeline.
+
+We developed an AI-powered orchestration tool that accepts natural language goal descriptions and produces: (1)~a structured goal specification with measurable performance targets, (2)~an ordered NVIDIA service path with data flow descriptions, and (3)~a production-ready Jupyter notebook with real NVIDIA SDK code.
+
+This paper documents 9 experiments conducted to optimize this pipeline, testing approaches including adversary loops, domain template caching, asymmetric model pairing, ground truth injection, and data-flow prompting. We report both successful and failed optimizations, providing a reproducible methodology for LLM-based service orchestration.
+
+\section{System Architecture}
+
+\subsection{Pipeline Overview}
+
+The final pipeline consists of three LLM calls plus one templating stage:
+
+\begin{enumerate}
+    \item \textbf{Stage 1 --- GoalSpec Generation:} User goal $\rightarrow$ Nemotron 120B with adversary loop $\rightarrow$ structured requirements specification (\textasciitilde60--220s)
+    \item \textbf{Stage 2 --- Service Path:} GoalSpec $\rightarrow$ Nemotron 120B with data-flow prompt $\rightarrow$ ordered NVIDIA services with inputs/outputs (\textasciitilde80--120s)
+    \item \textbf{Stage 3 --- Scaffolding:} GoalSpec + path $\rightarrow$ templated markdown documents (PRD, stack, architecture, CLAUDE.md) $\rightarrow$ instant, zero LLM calls
+    \item \textbf{Stage 4 --- Notebook:} Goal + path + 12 NVIDIA code patterns $\rightarrow$ Nemotron 120B $\rightarrow$ production .ipynb (\textasciitilde150--300s)
+\end{enumerate}
+
+\subsection{Model Configuration}
+
+All experiments use \texttt{nvidia/nemotron-3-super-120b-a12b} via the NVIDIA NIM API (shared multi-tenant cloud). The model's native \texttt{<think>} tags for chain-of-thought reasoning required custom parsing and retry logic.
+
+\section{Experimental Setup}
+
+\subsection{Test Cases}
+
+We define three tiers of test cases:
+
+\begin{table}[h]
+\centering
+\caption{Standard Test Cases}
+\label{tab:testcases}
+\begin{tabular}{@{}clc@{}}
+\toprule
+\textbf{ID} & \textbf{Input} & \textbf{Complexity} \\
+\midrule
+TC-1 & ``chatbot'' & Minimal \\
+TC-2 & ``build a medical RAG chatbot'' & Medium \\
+TC-3 & ``fine-tune an LLM for code gen'' & Medium \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the comprehensive test suite (Experiment~7), we expanded to 10 cases across four categories: MATCH (direct blueprint coverage), PARTIAL (related blueprints), NOVEL (no blueprint), and VAGUE (minimal input).
+
+\subsection{Evaluation Metrics}
+
+\begin{itemize}
+    \item \textbf{Path quality} (1--10): Correct services, no unnecessary inclusions, proper domain differentiation
+    \item \textbf{Notebook quality} (1--10): Correct NVIDIA SDK API usage, no hallucinated function names
+    \item \textbf{Latency}: Wall-clock time including NIM API queue wait
+    \item \textbf{Service count}: Number of services in generated path
+    \item \textbf{NVIDIA service mentions}: Count of specific NVIDIA service names in inferred requirements
+\end{itemize}
+
+\section{Experiments and Results}
+
+\subsection{Experiment 1: Baseline Adversary Loop}
+
+\textbf{Architecture:} Planner (120B) $\rightarrow$ Adversary (120B) $\rightarrow$ Resolution (120B) $\rightarrow$ loop until convergence.
+
+\textbf{Convergence criteria:} Zero challenges from adversary, stagnation detection (improvement $<$20\% over 2 rounds), timeout (4 min), or hard cap (5 rounds).
+
+\begin{table}[h]
+\centering
+\caption{Baseline Results (TC-2)}
+\label{tab:baseline}
+\begin{tabular}{@{}lr@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Exit reason & Timeout \\
+Rounds completed & 2 \\
+Total latency & 365s \\
+Performance goals & 4 \\
+Inferred requirements & 11 (up from 4 in draft) \\
+Gaps identified & 5 \\
+Conflicts detected & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key observation:} Major improvement occurs in round 1$\rightarrow$2 (inferred requirements: 4$\rightarrow$9, +125\%). Diminishing returns after round 2 (challenges: 7$\rightarrow$5, --29\%).
+
+\subsection{Experiment 2: Single-Pass Self-Critique}
+
+\textbf{Hypothesis:} Combining planner, adversary, and resolution into a single prompt reduces 3 NIM calls to 1.
+
+\begin{table}[h]
+\centering
+\caption{Self-Critique vs. Baseline (TC-2)}
+\label{tab:selfcritique}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Metric} & \textbf{Baseline} & \textbf{Self-Critique} & \textbf{$\Delta$} \\
+\midrule
+Latency & 365s & 73s & --80\% \\
+NIM calls & 5+ & 1 & --80\% \\
+Perf goals & 4 & 5 & +25\% \\
+Inferred reqs & 11 & 9 & --18\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Verdict:} 5$\times$ faster but fewer inferred requirements. The adversary loop's depth was sacrificed for speed.
+
+\subsection{Experiment 3: Asymmetric Model Pairing}
+
+\textbf{Hypothesis:} Using a 49B model for adversary review reduces call time without quality loss.
+
+\textbf{Result:} The 49B adversary was less thorough than the 120B, generating false-positive challenges that triggered unnecessary resolution rounds. Latency: 315s (vs. 365s baseline). Quality was \textit{worse} due to noisy adversary feedback.
+
+\textbf{Verdict:} Rejected. The smaller model lacks the judgment to distinguish real issues from nitpicks.
+
+\subsection{Experiment 4: Domain Template Caching}
+
+\textbf{Hypothesis:} Pre-built domain templates (healthcare, RAG, training, etc.) injected into the planner prompt will produce richer first-pass GoalSpecs.
+
+\textbf{Result:} For exact-match domains (TC-2 medical $\rightarrow$ healthcare template), the adversary approved on round 1 (161s, 3 NIM calls). However, the template matching was too loose---``deploy'' template fired for fraud detection, drug discovery, and drone navigation.
+
+\textbf{Verdict:} Rejected for default pipeline. Templates add noise for novel domains.
+
+\subsection{Experiment 5: Combined Optimizations}
+
+\textbf{Hypothesis:} Combining domain templates with the 49B adversary yields best of both.
+
+\textbf{Result:} 344s latency, timeout exit. The 49B adversary found issues the 120B wouldn't, leading to unnecessary extra rounds. \textit{Worse} than cached-only.
+
+\textbf{Verdict:} Rejected. Combining optimizations does not always help.
+
+\subsection{Experiment 6: Grounded Adversary}
+
+\textbf{Hypothesis:} Replacing the subjective adversary with a fact-checker grounded in real NVIDIA blueprint data improves challenge quality.
+
+\textbf{Architecture:} 15 NVIDIA AI Blueprint repositories fetched from GitHub. Services, compliance requirements, and architecture patterns extracted per blueprint. Adversary must cite evidence from blueprints for every challenge.
+
+\textbf{Result (TC-2):} Every adversary challenge cited a real blueprint (e.g., ``ambient-healthcare-agents blueprint requires NeMo Guardrails''). Gaps reduced 5$\rightarrow$2 (higher quality, fewer false positives). Latency: 302s.
+
+\textbf{Verdict:} Effective for adversary validation, but hurt planner quality when injected into the planner prompt (Experiment~7).
+
+\subsection{Experiment 7: Comprehensive Test Suite}
+
+\textbf{Purpose:} Determine if optimizations generalize beyond TC-2.
+
+\textbf{Method:} 10 enterprise use cases tested with both baseline and grounded-default modes (draft-only, same model).
+
+\begin{table}[h]
+\centering
+\caption{Comprehensive Test Results}
+\label{tab:comprehensive}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Category} & \textbf{Default} & \textbf{Baseline} & \textbf{Ties} \\
+\midrule
+MATCH (3 cases) & 0 wins & 1 win & 2 \\
+PARTIAL (3 cases) & 1 win & 2 wins & 0 \\
+NOVEL (2 cases) & 0 wins & 2 wins & 0 \\
+VAGUE (2 cases) & 1 win & 1 win & 0 \\
+\midrule
+\textbf{Total} & \textbf{2 wins} & \textbf{6 wins} & \textbf{2} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key finding:} The grounded default pipeline was overfitting to TC-2. Baseline planner (no templates, no ground truth) won 6/10 cases. Template matching fired on wrong domains; blueprint retrieval returned noise for novel domains.
+
+\textbf{Decision:} Reverted to baseline planner. Ground truth reserved for adversary validation only.
+
+\subsection{Experiment 8: Data-Flow Prompt}
+
+\textbf{Hypothesis:} Replacing 13 hardcoded keyword rules with a prompt that asks for data flow (inputs/outputs per service) will naturally filter incorrect services.
+
+\textbf{The prompt (3 sentences):}
+\begin{enumerate}
+    \item ``Produce a complete production-ready implementation path using NVIDIA services.''
+    \item ``Describe the DATA FLOW---what goes into each service and what comes out.''
+    \item ``If a service cannot be placed in the data flow with concrete inputs and outputs, do not include it.''
+\end{enumerate}
+
+\begin{table}[h]
+\centering
+\caption{Data-Flow Prompt Results (7 Test Cases)}
+\label{tab:dataflow}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Test Case} & \textbf{Services} & \textbf{Correct} & \textbf{Rating} \\
+\midrule
+Healthcare & 8 & 8 & 9/10 \\
+Fraud detection & 9 & 9 & 9/10 \\
+Warehouse logistics & 5 & 5 & 9.5/10 \\
+Drone navigation & 9 & 9 & 9/10 \\
+Chatbot (vague) & 7 & 6 & 8/10 \\
+Recommendation engine & 10 & 9 & 8.5/10 \\
+Drug discovery & 6 & 6 & 8/10 \\
+\midrule
+\textbf{Average} & \textbf{7.7} & \textbf{7.4} & \textbf{8.7/10} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key finding:} The 120B model does not need rules---it needs the right \textit{framing}. The data-flow constraint forces architectural thinking: services that cannot be placed in a concrete data flow are naturally excluded.
+
+\textbf{Notable differentiations:}
+\begin{itemize}
+    \item Fraud detection: used \texttt{tensorrt} (not \texttt{tensorrt-llm})---fraud models are not LLMs
+    \item Warehouse logistics: used \texttt{cuopt} + \texttt{rapids}, no LLM services
+    \item Drug discovery: no LLM-specific services for molecular models
+\end{itemize}
+
+\subsection{Experiment 9: End-to-End Pipeline Validation}
+
+\textbf{Purpose:} Validate the complete pipeline (GoalSpec $\rightarrow$ path $\rightarrow$ notebook) across three fundamentally different domains.
+
+\subsubsection{Code Pattern Grounding}
+
+Notebook quality was the critical gap. Without grounding, the model hallucinated NVIDIA APIs (5.5/10). We extracted 12 real code patterns from NVIDIA GitHub repositories:
+
+\begin{itemize}
+    \item \texttt{nemo\_curator}: \texttt{Pipeline} + \texttt{ProcessingStage}
+    \item \texttt{nemoguardrails}: \texttt{LLMRails} + \texttt{RailsConfig}
+    \item \texttt{modelopt.torch.quantization}: \texttt{mtq.quantize()}
+    \item \texttt{tritonclient.http}: \texttt{InferenceServerClient}
+    \item \texttt{trtexec}: \texttt{--onnx}, \texttt{--saveEngine}, \texttt{--fp16}
+    \item \texttt{cudf}: \texttt{read\_parquet}, GPU DataFrames
+    \item \texttt{nemo-evaluator-launcher}: CLI-based evaluation
+\end{itemize}
+
+With grounding, notebook quality improved to 8.0/10---a 45\% improvement.
+
+\subsubsection{Cross-Domain Results}
+
+\begin{table}[h]
+\centering
+\caption{End-to-End Pipeline Results}
+\label{tab:e2e}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Domain} & \textbf{Path} & \textbf{Notebook} & \textbf{Combined} \\
+\midrule
+Healthcare CDSS & 8.5/10 & 8/10 & 8.25/10 \\
+Banking Fraud & 8.5/10 & 8/10 & 8.25/10 \\
+E-Commerce Recs & 9/10 & 8/10 & 8.5/10 \\
+\midrule
+\textbf{Average} & \textbf{8.7/10} & \textbf{8/10} & \textbf{8.3/10} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Cross-Domain Differentiation}
+
+\begin{table}[h]
+\centering
+\caption{Service Selection by Domain}
+\label{tab:crossdomain}
+\begin{tabular}{@{}L{2.2cm}L{1.8cm}L{1.8cm}L{1.8cm}@{}}
+\toprule
+\textbf{Aspect} & \textbf{Healthcare} & \textbf{Fraud} & \textbf{E-Commerce} \\
+\midrule
+Model type & Clinical classifier & Tabular MLP & Two-tower reranker \\
+TensorRT variant & TensorRT & Optimizer only & TensorRT \\
+Guardrails & Yes (HIPAA) & No & Yes (GDPR) \\
+RAG/Retriever & Missing & Not needed & Not needed \\
+RAPIDS & EHR data & Transaction ETL & Click streams \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The system correctly differentiated all three domains without domain-specific rules---the data-flow prompt alone drove appropriate service selection.
+
+\section{Failed Optimizations}
+
+We document optimizations that were tested and removed, as negative results inform future work:
+
+\begin{table}[h]
+\centering
+\caption{Rejected Optimizations}
+\label{tab:rejected}
+\begin{tabular}{@{}L{2.5cm}L{5cm}@{}}
+\toprule
+\textbf{Optimization} & \textbf{Reason for Removal} \\
+\midrule
+Self-critique prompt & Fewer perf goals than baseline (3.9 vs 4.4 avg across 10 cases) \\
+Domain templates & Wrong templates fired for unrelated domains (``deploy'' for fraud detection) \\
+49B adversary & Less thorough, false-positive challenges, counterproductive with caching \\
+Ground truth in planner & Confused model on novel domains; irrelevant blueprints as context \\
+13 keyword rules & Constrained 120B to 4 services; replaced by data-flow prompt \\
+Path adversary loop & Added 200+s for marginal improvement; single call already 8.7/10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Known Limitations}
+
+\begin{enumerate}
+    \item \textbf{NeMo training CLI:} The model fabricates CLI commands (\texttt{nemo train retrieval}) that do not exist. Code grounding covers SDK APIs but not CLI interfaces.
+    \item \textbf{Syntax errors:} Stray \texttt{\}} characters occasionally appear at end of code cells.
+    \item \textbf{NeMo Retriever inconsistency:} Healthcare use cases sometimes omit NeMo Retriever despite the GoalSpec mentioning clinical guidelines.
+    \item \textbf{NeMo Evaluator config:} Generated YAML configs use fabricated NeMo collection paths.
+    \item \textbf{Non-determinism:} Temperature 0 on shared NIM API does not guarantee full determinism due to infrastructure-level variance.
+    \item \textbf{Latency:} Total pipeline time of 5--10 minutes on shared NIM API; self-hosted NIM would reduce this 2--5$\times$.
+\end{enumerate}
+
+\section{Conclusion}
+
+Through 9 experiments and 10 enterprise test cases, we established that:
+
+\begin{enumerate}
+    \item \textbf{Data-flow prompting outperforms hardcoded rules} for service orchestration. The 120B model reasons correctly about which services belong in a pipeline when asked to describe concrete inputs and outputs---no domain-specific rules needed.
+    \item \textbf{Code pattern grounding eliminates API hallucination.} Injecting 12 real NVIDIA SDK patterns into the notebook generation prompt improved code quality from 5.5/10 to 8.0/10.
+    \item \textbf{Simpler architectures often outperform complex ones.} The adversary loop, domain templates, and ground truth injection each added complexity without proportional quality gains. The final pipeline uses the simplest effective approach at each stage.
+    \item \textbf{Negative results are informative.} Six of nine experiments produced optimizations that were ultimately rejected. Documenting these prevents re-exploring dead ends.
+\end{enumerate}
+
+The resulting system accepts a natural language goal and produces a structured requirements specification, a correct NVIDIA service path, scaffolding documentation, and a production-ready Jupyter notebook---achieving 8.3/10 combined quality across three fundamentally different enterprise domains.
+
+\section*{Acknowledgments}
+
+The authors thank Antonio Martinez Torres (Sr.~DevRel, NVIDIA) and Jeremy Coupe (DevRel, NVIDIA) for feedback on the initial prototype and architectural guidance, particularly the two-agent adversary pattern and scaffolding-driven development concepts.
+
+\begin{thebibliography}{00}
+\bibitem{b1} NVIDIA Corporation, ``NVIDIA NIM Microservices,'' 2026. [Online]. Available: https://developer.nvidia.com/nim
+\bibitem{b2} NVIDIA Corporation, ``NeMo Framework,'' 2026. [Online]. Available: https://developer.nvidia.com/nemo
+\bibitem{b3} NVIDIA Corporation, ``NeMo Guardrails,'' 2026. [Online]. Available: https://github.com/NVIDIA/NeMo-Guardrails
+\bibitem{b4} NVIDIA Corporation, ``NVIDIA AI Blueprints,'' 2026. [Online]. Available: https://github.com/NVIDIA-AI-Blueprints
+\bibitem{b5} NVIDIA Corporation, ``TensorRT-LLM,'' 2026. [Online]. Available: https://github.com/NVIDIA/TensorRT-LLM
+\bibitem{b6} NVIDIA Corporation, ``NVIDIA Model Optimizer,'' 2026. [Online]. Available: https://github.com/NVIDIA/TensorRT-Model-Optimizer
+\bibitem{b7} NVIDIA Corporation, ``Triton Inference Server,'' 2026. [Online]. Available: https://github.com/triton-inference-server
+\bibitem{b8} A. Karpathy, ``Sharing Intent, Not Code,'' 2025. [Online]. Personal communication via social media.
+\bibitem{b9} NVIDIA Corporation, ``Retail Agentic Commerce Blueprint,'' 2026. [Online]. Available: https://github.com/NVIDIA-AI-Blueprints/Retail-Agentic-Commerce
+\end{thebibliography}
+
+\end{document}
