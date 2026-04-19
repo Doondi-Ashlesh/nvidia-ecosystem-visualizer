@@ -1,0 +1,300 @@
+[
+  {
+    "status": "OK",
+    "test_id": "TC-M1",
+    "category": "MATCH",
+    "input": "build a RAG pipeline for enterprise document search",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 141367,
+    "latency_s": 141.4,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 5,
+    "conflicts": 1,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "streaming-data-to-rag",
+      "aiq"
+    ],
+    "domain_template": "rag",
+    "nvidia_svc_mentions": 0,
+    "domain": "enterprise knowledge management",
+    "summary_len": 459,
+    "perf_goal_details": [
+      "retrieval_recall_at_5: >85%",
+      "end_to_end_latency_p95: <2000ms",
+      "answer_faithfulness_score: >90%",
+      "query_throughput_qps: >50 req/s",
+      "retrieval_precision_at_5: >70%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-M2",
+    "category": "MATCH",
+    "input": "deploy a customer service chatbot with AI",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 118129,
+    "latency_s": 118.1,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "ai-virtual-assistant",
+      "rag",
+      "aiq"
+    ],
+    "domain_template": "deploy",
+    "nvidia_svc_mentions": 0,
+    "domain": "enterprise customer service automation",
+    "summary_len": 601,
+    "perf_goal_details": [
+      "inference_latency_p99: <500ms",
+      "throughput: >150 req/s",
+      "intent_classification_accuracy: >92%",
+      "fallback_rate: <5%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-M3",
+    "category": "MATCH",
+    "input": "build a multi-agent system for retail e-commerce",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 129961,
+    "latency_s": 130.0,
+    "perf_goals": 5,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 3,
+    "blueprints_matched": 2,
+    "blueprint_names": [
+      "aiq",
+      "Retail-Agentic-Commerce"
+    ],
+    "domain_template": "agent",
+    "nvidia_svc_mentions": 1,
+    "domain": "retail e-commerce multi-agent system",
+    "summary_len": 643,
+    "perf_goal_details": [
+      "task_completion_rate: >80%",
+      "tool_call_accuracy: >95%",
+      "average_agent_response_latency_p95: <500ms",
+      "system_throughput: >1000 concurrent agent sessions",
+      "recommendation_precision_at_10: >0.70"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P1",
+    "category": "PARTIAL",
+    "input": "build a real-time fraud detection system for banking",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 53660,
+    "latency_s": 53.7,
+    "perf_goals": 4,
+    "inferred_reqs": 3,
+    "gaps": 3,
+    "conflicts": 2,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "streaming-data-to-rag"
+    ],
+    "domain_template": "deploy",
+    "nvidia_svc_mentions": 0,
+    "domain": "banking fraud detection",
+    "summary_len": 519,
+    "perf_goal_details": [
+      "inference_latency_p99: <300ms",
+      "throughput: >500 req/s",
+      "detection_recall: >96%",
+      "false_positive_rate: <0.5%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P2",
+    "category": "PARTIAL",
+    "input": "create an AI-powered drug discovery pipeline",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 54718,
+    "latency_s": 54.7,
+    "perf_goals": 3,
+    "inferred_reqs": 3,
+    "gaps": 3,
+    "conflicts": 1,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "Retail-Agentic-Commerce",
+      "bring-llms-to-nim"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "AI-driven drug discovery and molecular design",
+    "summary_len": 500,
+    "perf_goal_details": [
+      "virtual_screening_throughput: >10,000 molecules/sec",
+      "binding_affinity_prediction_accuracy: RMSE < 1.5 kcal/mol (or R^2 > 0.7)",
+      "molecular_generation_validity_rate: >90% chemically valid molecules"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-P3",
+    "category": "PARTIAL",
+    "input": "deploy a recommendation engine for a streaming platform",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 128292,
+    "latency_s": 128.3,
+    "perf_goals": 4,
+    "inferred_reqs": 4,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "streaming-data-to-rag"
+    ],
+    "domain_template": "deploy",
+    "nvidia_svc_mentions": 0,
+    "domain": "streaming media recommendation",
+    "summary_len": 696,
+    "perf_goal_details": [
+      "inference_latency_p99: <200ms",
+      "throughput: >2000 req/s",
+      "recommendation_quality_ndcg@10: >0.65",
+      "cache_hit_rate: >80%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-N1",
+    "category": "NOVEL",
+    "input": "build an autonomous drone navigation system with computer vision",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 104018,
+    "latency_s": 104.0,
+    "perf_goals": 4,
+    "inferred_reqs": 3,
+    "gaps": 3,
+    "conflicts": 1,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "rag",
+      "ai-virtual-assistant",
+      "aiq"
+    ],
+    "domain_template": "agent",
+    "nvidia_svc_mentions": 0,
+    "domain": "autonomous aerial robotics (drone navigation)",
+    "summary_len": 602,
+    "perf_goal_details": [
+      "perception_inference_latency_p95: <50ms",
+      "navigation_success_rate: >90%",
+      "obstacle_detection_recall: >95%",
+      "control_loop_frequency: >30Hz"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-N2",
+    "category": "NOVEL",
+    "input": "create an AI-powered climate modeling simulation",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 100544,
+    "latency_s": 100.5,
+    "perf_goals": 3,
+    "inferred_reqs": 2,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 3,
+    "blueprint_names": [
+      "Retail-Agentic-Commerce",
+      "data-flywheel",
+      "bring-llms-to-nim"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 0,
+    "domain": "climate science and environmental modeling",
+    "summary_len": 582,
+    "perf_goal_details": [
+      "inference_latency_per_forecast_step: <100ms",
+      "temperature_prediction_rmse_vs_physics_model: <0.5\u00b0C",
+      "ensemble_throughput: >10,000 members/hr"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-V1",
+    "category": "VAGUE",
+    "input": "chatbot",
+    "mode": "default",
+    "exit_reason": "approved",
+    "rounds": 1,
+    "latency_ms": 110331,
+    "latency_s": 110.3,
+    "perf_goals": 3,
+    "inferred_reqs": 3,
+    "gaps": 3,
+    "conflicts": 1,
+    "blueprints_matched": 1,
+    "blueprint_names": [
+      "ai-virtual-assistant"
+    ],
+    "domain_template": null,
+    "nvidia_svc_mentions": 1,
+    "domain": "enterprise customer service chatbot",
+    "summary_len": 565,
+    "perf_goal_details": [
+      "inference_latency_p95: <500ms",
+      "throughput_req_per_second: >20 req/s",
+      "answer_relevance_accuracy: >80%"
+    ]
+  },
+  {
+    "status": "OK",
+    "test_id": "TC-V2",
+    "category": "VAGUE",
+    "input": "optimize inference",
+    "mode": "default",
+    "exit_reason": "timeout",
+    "rounds": 1,
+    "latency_ms": 274699,
+    "latency_s": 274.7,
+    "perf_goals": 4,
+    "inferred_reqs": 9,
+    "gaps": 4,
+    "conflicts": 2,
+    "blueprints_matched": 0,
+    "blueprint_names": [],
+    "domain_template": "deploy",
+    "nvidia_svc_mentions": 4,
+    "domain": "general purpose LLM inference serving",
+    "summary_len": 728,
+    "perf_goal_details": [
+      "inference_latency_p99: <200ms",
+      "throughput: >500 req/s",
+      "cost_per_inference: <$0.002 USD",
+      "model_accuracy_drop_post_optimization: <1%"
+    ]
+  }
+]

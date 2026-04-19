@@ -6,12 +6,13 @@
  * Source URLs are noted per entry in code comments.
  */
 
-import type { Service, Workflow } from '@/types/ecosystem';
-import { STATIC_SKILLS } from '@/data/skills-catalog';
+import type { Service, Skill, Workflow } from '@/types/ecosystem';
 
-/** Helper — pull skills for a given serviceId from the static catalog */
-function skillsFor(serviceId: string) {
-  return STATIC_SKILLS.find(s => s.serviceId === serviceId)?.skills ?? [];
+// Skills catalog was removed (Exp 7 — retrieval added noise, replaced by
+// data-flow prompting in stage 3). skillsFor() now always returns [].
+// Kept as a helper so re-introducing per-service skills later is one edit.
+function skillsFor(_serviceId: string): Skill[] {
+  return [];
 }
 
 // ---------------------------------------------------------------------------

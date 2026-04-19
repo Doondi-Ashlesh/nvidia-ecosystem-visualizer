@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, ChevronRight, ChevronLeft, X, ExternalLink,
-  Compass, Loader2, AlertCircle, Send, Brain,
+  Compass, Loader2, AlertCircle, Send, Brain, Download,
 } from 'lucide-react';
 import {
   LAYER_COLORS,
@@ -13,8 +13,30 @@ import {
   type Service,
   type Workflow,
   type WorkflowStep,
+  type GoalSpec,
 } from '@/types/ecosystem';
 import { NVIDIA_SERVICES } from '@/data/nvidia';
+
+function serviceFromCatalog(serviceId: string) {
+  return NVIDIA_SERVICES.find((s) => s.id === serviceId);
+}
+
+/** Product title — always from `data/nvidia.ts`, never model-invented labels */
+function catalogStepTitle(serviceId: string): string {
+  const svc = serviceFromCatalog(serviceId);
+  if (svc) return svc.name;
+  return serviceId
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+/** Subtitle — official `shortDescription` from catalog; model `role` only if id unknown */
+function catalogStepSubtitle(serviceId: string, modelRole: string): string {
+  const svc = serviceFromCatalog(serviceId);
+  if (svc) return svc.shortDescription;
+  return modelRole || '';
+}
 
 // NVIDIA palette difficulty colours
 const DIFF_COLORS = {
@@ -28,11 +50,14 @@ interface SidebarProps {
   activeWorkflow: Workflow | null;
   activeStepIndex: number;
   hoveredService: Service | null;
+  goalSpec: GoalSpec | null;
+  onGoalSpecReady: (spec: GoalSpec) => void;
   onSelectWorkflow: (wf: Workflow) => void;
   onExplore: () => void;
   onStepChange: (index: number) => void;
   onExitWorkflow: () => void;
   onBackToInitial: () => void;
+  onNotebookReady?: (notebookJson: string) => void;
   isOpen?: boolean;
   onClose?: () => void;
 }
@@ -97,27 +122,32 @@ export default function Sidebar({
   activeWorkflow,
   activeStepIndex,
   hoveredService,
+  goalSpec,
+  onGoalSpecReady,
   onSelectWorkflow,
   onExplore,
   onStepChange,
   onExitWorkflow,
   onBackToInitial,
+  onNotebookReady,
   isOpen = false,
   onClose,
 }: SidebarProps) {
   const [goal, setGoal]           = useState('');
   const [loading, setLoading]     = useState(false);
   const [error, setError]         = useState<string | null>(null);
-  const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [reasoning, setReasoning] = useState<string | null>(null);
   const [showReasoning, setShowReasoning] = useState(false);
   const [unverified, setUnverified] = useState<{
     message: string;
     suggestedServices: Array<{ id: string; name: string; officialUrl: string }>;
   } | null>(null);
+  const [exportingNotebook, setExportingNotebook] = useState(false);
+  const [exportNotebookError, setExportNotebookError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleGenerate = useCallback(async () => {
+  // Stage 1: Analyze goal → produce GoalSpec
+  const handleAnalyze = useCallback(async () => {
     const trimmed = goal.trim();
     if (!trimmed || loading) return;
 
@@ -126,10 +156,42 @@ export default function Sidebar({
     setUnverified(null);
 
     try {
+      const res = await fetch('/api/analyze-requirements', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ input: trimmed }),
+      });
+
+      const data = (await res.json()) as {
+        goalSpec?: GoalSpec;
+        error?:    string;
+      };
+
+      if (data.error || !data.goalSpec) {
+        setError(data.error ?? 'Failed to analyze requirements');
+        return;
+      }
+
+      onGoalSpecReady(data.goalSpec);
+    } catch {
+      setError('Network error — check your connection');
+    } finally {
+      setLoading(false);
+    }
+  }, [goal, loading, onGoalSpecReady]);
+
+  // Stage 2: GoalSpec → service path
+  const handleConfirmGoalSpec = useCallback(async () => {
+    if (!goalSpec || loading) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
       const res = await fetch('/api/generate-flow', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ goal: trimmed }),
+        body:    JSON.stringify({ goalSpec }),
       });
 
       const data = (await res.json()) as {
@@ -139,41 +201,30 @@ export default function Sidebar({
         message?:           string;
         suggestedServices?: Array<{ id: string; name: string; officialUrl: string }>;
         error?:             string;
-        latencyMs?:         number;
         reasoning?:         string | null;
-        reasoningEnabled?:  boolean;
       };
 
-      // Hard API / network error
       if (data.error) {
         setError(data.error);
         return;
       }
 
-      // Model returned verified:false — no documented NVIDIA path for this goal
       if (data.verified === false) {
         setUnverified({
-          message:           data.message ?? 'No documented NVIDIA path found for this goal.',
+          message:           data.message ?? 'No NVIDIA path found for these requirements.',
           suggestedServices: data.suggestedServices ?? [],
         });
         return;
       }
 
-      if (!res.ok) {
-        setError('Something went wrong — try rephrasing');
-        return;
-      }
-
-      // Build a synthetic Workflow from the AI response
       const wf: Workflow = {
         id:          `ai-${Date.now()}`,
-        goal:        data.goal ?? trimmed,
-        description: `AI-generated path for: ${trimmed}`,
+        goal:        data.goal ?? goalSpec.summary,
+        description: `AI-generated path for: ${goalSpec.summary}`,
         difficulty:  'intermediate',
         steps:       data.steps ?? [],
       };
 
-      setLatencyMs(data.latencyMs ?? null);
       setReasoning(data.reasoning ?? null);
       setShowReasoning(false);
       onSelectWorkflow(wf);
@@ -183,17 +234,54 @@ export default function Sidebar({
     } finally {
       setLoading(false);
     }
-  }, [goal, loading, onSelectWorkflow]);
+  }, [goalSpec, loading, onSelectWorkflow]);
 
   const handleKey = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
-        handleGenerate();
+        handleAnalyze();
       }
     },
-    [handleGenerate],
+    [handleAnalyze],
   );
+
+  // Stage 3: Generate notebook from path (LLM call with code grounding)
+  const handleExportNotebook = useCallback(async () => {
+    if (!activeWorkflow || exportingNotebook) return;
+    setExportNotebookError(null);
+    setExportingNotebook(true);
+    try {
+      const res = await fetch('/api/generate-notebook', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          goal:  activeWorkflow.goal,
+          steps: activeWorkflow.steps,
+          // Pass GoalSpec when available so the notebook generator has PRD-style
+          // context (performance targets, compliance, inferred requirements).
+          ...(goalSpec ? { goalSpec } : {}),
+        }),
+      });
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(err.error ?? `Notebook generation failed (${res.status})`);
+      }
+      const text = await res.text();
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nvidia-pipeline-${activeWorkflow.id.replace(/[^a-zA-Z0-9-_]/g, '_')}.ipynb`;
+      a.click();
+      URL.revokeObjectURL(url);
+      onNotebookReady?.(text);
+    } catch (e) {
+      setExportNotebookError(e instanceof Error ? e.message : 'Notebook generation failed');
+    } finally {
+      setExportingNotebook(false);
+    }
+  }, [activeWorkflow, exportingNotebook, onNotebookReady, goalSpec]);
 
   return (
     <aside className={`fixed top-0 left-0 bottom-0 w-72 z-30 flex flex-col bg-[#050505] border-r border-[#1a1a1a] overflow-hidden transition-transform duration-300 ease-in-out sm:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -239,6 +327,11 @@ export default function Sidebar({
                 <p className="text-sm text-slate-600 mt-1">
                   Describe your goal — Nemotron will map the right NVIDIA services.
                 </p>
+                <p className="text-[11px] text-slate-600 mt-2 leading-snug">
+                  Stronger prompts name <span className="text-slate-500">domain</span> (e.g. healthcare RAG),{' '}
+                  <span className="text-slate-500">data placement</span> (on-prem vs cloud), and{' '}
+                  <span className="text-slate-500">scale</span> (team vs enterprise).
+                </p>
               </div>
 
               {/* Textarea — taller default so long prompts are readable (vertical space) */}
@@ -248,12 +341,12 @@ export default function Sidebar({
                   value={goal}
                   onChange={(e) => { setGoal(e.target.value); setError(null); setUnverified(null); }}
                   onKeyDown={handleKey}
-                  placeholder="e.g. Deploy a medical imaging model with low-latency inference…"
+                  placeholder="e.g. Enterprise RAG on our on-prem clinical docs + pubmed abstracts, HIPAA-aware, multi-region…"
                   rows={7}
                   className="w-full min-h-[10.5rem] bg-[#0d1117] border border-[#1e293b] rounded-lg px-3 py-2.5 pr-11 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#76b900] transition-colors resize-y leading-relaxed"
                 />
                 <button
-                  onClick={handleGenerate}
+                  onClick={handleAnalyze}
                   disabled={!goal.trim() || loading}
                   className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-md flex items-center justify-center transition-all disabled:opacity-30"
                   style={{ background: goal.trim() && !loading ? '#76b900' : '#1e293b' }}
@@ -390,6 +483,99 @@ export default function Sidebar({
             </motion.div>
           )}
 
+          {/* ── GOALSPEC — requirements display + confirm ───────────── */}
+          {mode === 'goalspec' && goalSpec && (
+            <motion.div
+              key="goalspec"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              className="flex flex-col gap-3"
+            >
+              {/* Domain badge */}
+              <div className="px-3 py-2 rounded-lg" style={{ background: 'rgba(118,185,0,0.1)', border: '1px solid rgba(118,185,0,0.2)' }}>
+                <p className="text-[10px] uppercase tracking-widest" style={{ color: '#76b900' }}>Domain</p>
+                <p className="text-white text-sm font-semibold mt-0.5">{goalSpec.domain}</p>
+                <p className="text-slate-400 text-xs mt-0.5">{goalSpec.use_case_type}</p>
+              </div>
+
+              {/* Summary */}
+              <p className="text-slate-300 text-xs leading-relaxed">{goalSpec.summary}</p>
+
+              {/* Performance goals */}
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: '#76b900' }}>Performance Goals</p>
+                {goalSpec.performance_goals.map((pg, i) => (
+                  <div key={i} className="flex justify-between text-xs py-0.5">
+                    <span className="text-slate-400">{pg.metric}</span>
+                    <span className="text-white font-mono">{pg.target}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Compliance */}
+              {goalSpec.constraints.compliance.length > 0 && (
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: '#76b900' }}>Compliance</p>
+                  <div className="flex flex-wrap gap-1">
+                    {goalSpec.constraints.compliance.map((c, i) => (
+                      <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-red-900/30 text-red-300 border border-red-800/30">{c}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Inferred requirements */}
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-widest mb-1" style={{ color: '#76b900' }}>Inferred Requirements</p>
+                {goalSpec.inferred_requirements.map((r, i) => (
+                  <p key={i} className="text-xs text-slate-400 py-0.5">• {r.requirement}</p>
+                ))}
+              </div>
+
+              {/* Gaps */}
+              {goalSpec.gaps.length > 0 && (
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-widest mb-1 text-amber-400">Gaps</p>
+                  {goalSpec.gaps.map((g, i) => (
+                    <p key={i} className="text-xs text-amber-300/70 py-0.5">• {g.gap}</p>
+                  ))}
+                </div>
+              )}
+
+              {/* Error */}
+              {error && (
+                <div className="flex items-start gap-2 p-2 rounded-lg bg-red-900/20 border border-red-800/30">
+                  <AlertCircle size={14} className="text-red-400 mt-0.5 shrink-0" />
+                  <p className="text-xs text-red-300">{error}</p>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-2 mt-1">
+                <button
+                  onClick={handleConfirmGoalSpec}
+                  disabled={loading}
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold text-black transition-all"
+                  style={{ background: loading ? '#4a7300' : '#76b900' }}
+                >
+                  {loading ? (
+                    <><Loader2 size={14} className="animate-spin" /> Generating path...</>
+                  ) : (
+                    <><Sparkles size={14} /> Generate Path</>
+                  )}
+                </button>
+                <button
+                  onClick={onBackToInitial}
+                  disabled={loading}
+                  className="px-3 py-2.5 rounded-lg text-xs text-slate-400 border border-slate-700 hover:border-slate-500 transition-colors"
+                >
+                  Edit
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           {/* ── WORKFLOW — step navigator ─────────────────────────────── */}
           {mode === 'workflow' && activeWorkflow && (
             <motion.div
@@ -402,11 +588,8 @@ export default function Sidebar({
             >
               {/* Compact workflow chrome — goal text hidden to maximize step list space */}
               <div className="px-4 pt-3 pb-2 border-b border-[#1a1a1a] shrink-0 flex items-center justify-between gap-2">
-                <p className="text-[11px] text-slate-500 tabular-nums">
+                <p className="text-[11px] text-slate-500 tabular-nums min-w-0">
                   Step {activeStepIndex + 1} of {activeWorkflow.steps.length}
-                  {latencyMs != null && (
-                    <span className="text-slate-600 font-mono ml-2">{latencyMs}ms</span>
-                  )}
                 </p>
                 <button
                   type="button"
@@ -484,15 +667,11 @@ export default function Sidebar({
                           {idx + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-semibold truncate">
-                            {NVIDIA_SERVICES.find((s) => s.id === step.serviceId)?.name ??
-                              step.serviceId
-                                .split('-')
-                                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                                .join(' ')}
+                          <p className="text-white text-sm font-semibold break-words">
+                            {catalogStepTitle(step.serviceId)}
                           </p>
-                          <p className="text-slate-500 text-xs">
-                            {step.role || NVIDIA_SERVICES.find((s) => s.id === step.serviceId)?.tags[0] || ''}
+                          <p className="text-slate-500 text-xs leading-snug break-words mt-0.5">
+                            {catalogStepSubtitle(step.serviceId, step.role)}
                           </p>
                         </div>
                       </div>
@@ -514,6 +693,29 @@ export default function Sidebar({
                     </button>
                   );
                 })}
+              </div>
+
+              {/* Export orchestration notebook */}
+              <div className="px-4 pt-2 shrink-0 space-y-1">
+                <button
+                  type="button"
+                  onClick={handleExportNotebook}
+                  disabled={exportingNotebook}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-[#76b90040] text-sm font-semibold text-[#76b900] hover:bg-[#76b90012] transition-all disabled:opacity-40"
+                >
+                  {exportingNotebook ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Download size={14} />
+                  )}
+                  Download Jupyter notebook
+                </button>
+                {exportNotebookError && (
+                  <p className="text-[11px] text-red-400 px-1">{exportNotebookError}</p>
+                )}
+                <p className="text-[10px] text-slate-600 px-1 leading-snug">
+                  Plan + per-step stubs (NIM, NGC, NeMo, …) — fill in your env and data paths.
+                </p>
               </div>
 
               {/* Nav footer */}

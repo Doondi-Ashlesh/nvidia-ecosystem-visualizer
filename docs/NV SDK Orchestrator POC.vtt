@@ -1,0 +1,2184 @@
+WEBVTT
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/7-0
+00:00:03.055 --> 00:00:03.575
+<v Mark Moyou>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/9-0
+00:00:03.055 --> 00:00:06.545
+<v Doondi Ashlesh>All right,
+so when the user first lands on this page,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/9-1
+00:00:06.545 --> 00:00:10.359
+<v Doondi Ashlesh>he has two options.
+One is he can specify his goal and let</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/9-2
+00:00:10.359 --> 00:00:15.400
+<v Doondi Ashlesh>the AI patch generator build a specified
+path with the services to, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/9-3
+00:00:15.400 --> 00:00:19.343
+<v Doondi Ashlesh>address his use case.
+Or if the user has a use call specific</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/9-4
+00:00:19.343 --> 00:00:22.575
+<v Doondi Ashlesh>service that he wants to, you know,
+explore more.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/12-0
+00:00:22.615 --> 00:00:27.835
+<v Doondi Ashlesh>He can try the Explorer freely mode.
+So first we'll start with the Explorer</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/12-1
+00:00:27.835 --> 00:00:31.887
+<v Doondi Ashlesh>freely mode and then dive into the AI
+path generator mode.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/12-2
+00:00:31.887 --> 00:00:37.382
+<v Doondi Ashlesh>So each service mentioned here is an AV
+service organized based on the layer it</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/12-3
+00:00:37.382 --> 00:00:39.855
+<v Doondi Ashlesh>fits in, starting with access layer.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/17-0
+00:00:41.135 --> 00:00:47.340
+<v Doondi Ashlesh>SDK and runtime layer, frameworks,
+Agent AI, serving layer and enterprise.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/17-1
+00:00:47.340 --> 00:00:53.793
+<v Doondi Ashlesh>Each layer represents services from
+Nvidia's own services and if the user has</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/17-2
+00:00:53.793 --> 00:00:58.095
+<v Doondi Ashlesh>a specific service in mind,
+let's say Nvidia build.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/20-0
+00:00:58.775 --> 00:01:04.039
+<v Doondi Ashlesh>So we can just click on the service and
+then he gets a short description of the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/20-1
+00:01:04.039 --> 00:01:09.368
+<v Doondi Ashlesh>what the service does and if he wants to
+explore more he can just click official</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/20-2
+00:01:09.368 --> 00:01:14.566
+<v Doondi Ashlesh>logs and he gets to the official sliding
+page similarly with other services as</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/20-3
+00:01:14.566 --> 00:01:14.895
+<v Doondi Ashlesh>well.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/25-0
+00:01:17.575 --> 00:01:21.935
+<v Doondi Ashlesh>Let's say a toolkit.
+They'll get redirected to the official</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/25-1
+00:01:21.935 --> 00:01:25.932
+<v Doondi Ashlesh>toolkit base.
+So this allows the user to straight away</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/25-2
+00:01:25.932 --> 00:01:31.455
+<v Doondi Ashlesh>go to the service that he's actually
+looking for and explore more about it.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/27-0
+00:01:34.815 --> 00:01:37.332
+<v Doondi Ashlesh>And then comes the actual AI patch
+generator.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/27-1
+00:01:37.332 --> 00:01:39.575
+<v Doondi Ashlesh>Let's say the user has a simple use case.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/28-0
+00:01:40.695 --> 00:01:41.695
+<v Doondi Ashlesh>Like this.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/31-0
+00:01:43.655 --> 00:01:48.585
+<v Doondi Ashlesh>So he types in the prompt saying we have
+three years of customer support tickets</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/31-1
+00:01:48.585 --> 00:01:53.028
+<v Doondi Ashlesh>and want to fine tune a model on them so
+our support team can, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/31-2
+00:01:53.028 --> 00:01:56.619
+<v Doondi Ashlesh>get AI assisted responses.
+So he has a use case like this.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/31-3
+00:01:56.619 --> 00:02:00.088
+<v Doondi Ashlesh>So what he does,
+he just enters the prompt and then says</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/31-4
+00:02:00.088 --> 00:02:03.375
+<v Doondi Ashlesh>shut it back.
+So here's how this whole workflow goes.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/34-0
+00:02:03.655 --> 00:02:09.220
+<v Doondi Ashlesh>When the user hit enter,
+the server sends a HTTP POST request to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/34-1
+00:02:09.220 --> 00:02:14.444
+<v Doondi Ashlesh>name embeddings API,
+which then creates a vector and returns</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/34-2
+00:02:14.444 --> 00:02:20.095
+<v Doondi Ashlesh>it back to the server.
+Now this server again compares the vector.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/37-0
+00:02:20.615 --> 00:02:25.868
+<v Doondi Ashlesh>With the already existing services and
+retrieves top five most relevant skills</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/37-1
+00:02:25.868 --> 00:02:31.187
+<v Doondi Ashlesh>and prepares a system prompt and then
+sends it back to the Nematron model which</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/35-0
+00:02:27.095 --> 00:02:27.255
+<v Antonio Martinez Torres>So.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/37-2
+00:02:31.187 --> 00:02:35.443
+<v Doondi Ashlesh>we're using in this case.
+Then the Nematron model processes the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/37-3
+00:02:35.443 --> 00:02:35.975
+<v Doondi Ashlesh>request.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/40-0
+00:02:36.135 --> 00:02:41.782
+<v Doondi Ashlesh>And sends it back a JSON object with the
+specific goal and the steps to be taken</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/40-1
+00:02:41.782 --> 00:02:47.290
+<v Doondi Ashlesh>and those steps are rendered using the
+front end UI and it for this particular</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/40-2
+00:02:47.290 --> 00:02:51.055
+<v Doondi Ashlesh>use case it gave me a six step process
+starting with.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/41-0
+00:02:51.855 --> 00:02:53.015
+<v Doondi Ashlesh>Can you see catalog?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/43-0
+00:02:55.015 --> 00:02:58.215
+<v Doondi Ashlesh>Moving on to a name of the record.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/46-0
+00:03:03.735 --> 00:03:06.335
+<v Doondi Ashlesh>Going to Nemo for fine tuning the model.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/50-0
+00:03:07.655 --> 00:03:14.698
+<v Doondi Ashlesh>To Nemo guardrails to specify everything
+is following the legal and complaint.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/50-1
+00:03:14.698 --> 00:03:18.175
+<v Doondi Ashlesh>Then turns RTLL for optimize inference.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/52-0
+00:03:19.175 --> 00:03:25.775
+<v Doondi Ashlesh>Then deadline the whole model using name.
+Let's say if if he has a specific.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/54-0
+00:03:26.695 --> 00:03:29.415
+<v Doondi Ashlesh>Even more specific query something like
+this.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/56-0
+00:03:36.695 --> 00:03:38.895
+<v Doondi Ashlesh>Yeah, you can enter the part.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/60-0
+00:03:40.975 --> 00:03:45.961
+<v Antonio Martinez Torres>So while you're quick question,
+while you're doing this,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/58-0
+00:03:41.215 --> 00:03:43.615
+<v Doondi Ashlesh>So some minor just like, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/60-1
+00:03:45.961 --> 00:03:53.221
+<v Antonio Martinez Torres>are you do did you create a ground truth
+of all these different services like kind</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/60-2
+00:03:53.221 --> 00:03:55.495
+<v Antonio Martinez Torres>of like PDF or embeddings?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/61-0
+00:03:56.015 --> 00:03:57.575
+<v Antonio Martinez Torres>I'm ready.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/62-0
+00:03:56.055 --> 00:04:01.082
+<v Doondi Ashlesh>Yes, yes, we have ground truth.
+So how this thing works specifically</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/62-1
+00:04:01.082 --> 00:04:06.766
+<v Doondi Ashlesh>coming to ground truth is that we already
+have all the services documentation</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/62-2
+00:04:06.766 --> 00:04:12.012
+<v Doondi Ashlesh>registered in a typeship file.
+So that is our ground truth and when the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/62-3
+00:04:12.012 --> 00:04:15.655
+<v Doondi Ashlesh>JSON object is returned,
+the server again checks.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/63-0
+00:04:15.655 --> 00:04:21.695
+<v Doondi Ashlesh>Against internal ruling which verifies if
+the layering is proper if the order is.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/64-0
+00:04:22.535 --> 00:04:26.854
+<v Doondi Ashlesh>In the right way, or if the service,
+let's say if there are you know any</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/64-1
+00:04:26.854 --> 00:04:29.812
+<v Doondi Ashlesh>hallucinations,
+let's say there's another service</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/64-2
+00:04:29.812 --> 00:04:33.066
+<v Doondi Ashlesh>included which should not be included.
+So the service,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/64-3
+00:04:33.066 --> 00:04:38.095
+<v Doondi Ashlesh>the server makes sure that these services
+are excluded and then finally outputs the.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/65-0
+00:04:38.215 --> 00:04:41.535
+<v Doondi Ashlesh>Final path for the front end to generate
+it.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/66-0
+00:04:43.055 --> 00:04:43.175
+<v Antonio Martinez Torres>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/67-0
+00:04:44.775 --> 00:04:48.124
+<v Doondi Ashlesh>OK,
+so this actually includes a little bit</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/67-1
+00:04:48.124 --> 00:04:52.719
+<v Doondi Ashlesh>more detail, including evaluation,
+data training, curator.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/67-2
+00:04:52.719 --> 00:04:56.535
+<v Doondi Ashlesh>So we're gonna see how the back gets
+translated.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/71-0
+00:05:07.655 --> 00:05:13.042
+<v Doondi Ashlesh>Again, as this big as the prompt can be,
+the better the results are going to be.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/71-1
+00:05:13.042 --> 00:05:18.363
+<v Doondi Ashlesh>So now it gave me an 8 step path again
+starting from NDC catalog to get on with</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/71-2
+00:05:18.363 --> 00:05:21.755
+<v Doondi Ashlesh>the pre-trained model,
+then going to NEMO curator.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/71-3
+00:05:21.755 --> 00:05:24.815
+<v Doondi Ashlesh>So you know curator data sets clean and
+also.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/75-0
+00:05:25.135 --> 00:05:30.325
+<v Doondi Ashlesh>Nvidia Nemo to find your model.
+Then we have an additional step added</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/75-1
+00:05:30.325 --> 00:05:34.996
+<v Doondi Ashlesh>here because we were talking about
+evaluations in the problem.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/75-2
+00:05:34.996 --> 00:05:39.815
+<v Doondi Ashlesh>So it now suggests Nvidia Nemo evaluator
+to run evaluations and.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/78-0
+00:05:40.375 --> 00:05:45.736
+<v Doondi Ashlesh>Guardrails again to make sure that
+everything is under legal compliances.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/78-1
+00:05:45.736 --> 00:05:50.735
+<v Doondi Ashlesh>Optimizer for low inference and model
+optimization and priority LLM.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/80-0
+00:05:52.095 --> 00:05:53.775
+<v Doondi Ashlesh>And finally.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/84-0
+00:06:00.295 --> 00:06:05.135
+<v Doondi Ashlesh>So the specific the prompt is gonna be
+the better the model can, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/84-1
+00:06:05.135 --> 00:06:08.491
+<v Doondi Ashlesh>guide the path with the specific relevant
+services.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/84-2
+00:06:08.491 --> 00:06:11.395
+<v Doondi Ashlesh>And let's say if the user has just a
+simple,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/84-3
+00:06:11.395 --> 00:06:14.815
+<v Doondi Ashlesh>let's say a student is trying this and he
+just says.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/86-0
+00:06:15.255 --> 00:06:20.516
+<v Doondi Ashlesh>I want to just build a pipeline, you know,
+with medical data at an enterprise scale.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/86-1
+00:06:20.516 --> 00:06:23.735
+<v Doondi Ashlesh>So when he inputs this,
+let's see the path details.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/88-0
+00:06:28.415 --> 00:06:31.612
+<v Mark Moyou>Do you know which model is this using
+behind the scenes?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/88-1
+00:06:31.612 --> 00:06:33.295
+<v Mark Moyou>Is this super or is this Nano?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/90-0
+00:06:32.335 --> 00:06:37.335
+<v Doondi Ashlesh>So this is a super variant actually.
+So I tried it with super 120 bit 120</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/90-1
+00:06:37.335 --> 00:06:42.740
+<v Doondi Ashlesh>billion parameter model but it was too
+huge and kind of an overkill for the use</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/89-0
+00:06:37.615 --> 00:06:38.095
+<v Mark Moyou>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/90-2
+00:06:42.740 --> 00:06:45.780
+<v Doondi Ashlesh>case.
+So what I did was go through the whole</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/90-3
+00:06:45.780 --> 00:06:48.415
+<v Doondi Ashlesh>research for model. So I took Lama 3.3.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/93-0
+00:06:48.935 --> 00:06:53.258
+<v Doondi Ashlesh>Nemotrans Super 49 billion parameter
+model V1 cause this was specifically</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/93-1
+00:06:53.258 --> 00:06:57.699
+<v Doondi Ashlesh>trained for you know reasoning and all
+this capabilities and I thought this</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/93-2
+00:06:57.699 --> 00:07:02.197
+<v Doondi Ashlesh>could be you know the right balance
+between not going too high and not going</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/93-3
+00:07:02.197 --> 00:07:03.775
+<v Doondi Ashlesh>too low on the model depth.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/92-0
+00:07:02.495 --> 00:07:02.615
+<v Mark Moyou>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/97-0
+00:07:03.935 --> 00:07:07.579
+<v Mark Moyou>OK,
+are you using the API or you deployed</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/97-1
+00:07:07.579 --> 00:07:10.095
+<v Mark Moyou>this on on the brave credits?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/100-0
+00:07:09.655 --> 00:07:15.783
+<v Doondi Ashlesh>I so this currently runs using the NIM
+APIs and I did try it with bro credits.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/98-0
+00:07:13.535 --> 00:07:13.655
+<v Mark Moyou>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/100-1
+00:07:15.783 --> 00:07:21.136
+<v Doondi Ashlesh>But thing is the contained relation kept,
+you know kind of crashing.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/100-2
+00:07:21.136 --> 00:07:25.015
+<v Doondi Ashlesh>So I'm trying to figure that out because
+they so.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/99-0
+00:07:22.415 --> 00:07:22.535
+<v Mark Moyou>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/107-0
+00:07:25.215 --> 00:07:28.784
+<v Doondi Ashlesh>Yeah, so for a simple RAG pipeline,
+it says you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/101-0
+00:07:26.095 --> 00:07:26.775
+<v Mark Moyou>Sounds good.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/107-1
+00:07:28.784 --> 00:07:33.542
+<v Doondi Ashlesh>get the pretrail model and work with
+retriever logic for your let's say</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/107-2
+00:07:33.542 --> 00:07:37.639
+<v Doondi Ashlesh>because you said you want to work with
+your own medical data.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/107-3
+00:07:37.639 --> 00:07:42.926
+<v Doondi Ashlesh>So you work with retriever to retrieve
+the actual useful data from your medical</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/107-4
+00:07:42.926 --> 00:07:43.455
+<v Doondi Ashlesh>context.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/111-0
+00:07:43.655 --> 00:07:50.109
+<v Doondi Ashlesh>And there's guard rest again for legal
+compliances, Nemo for for deployment.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/111-1
+00:07:50.109 --> 00:07:55.054
+<v Doondi Ashlesh>And since we specified a specific keyword
+like enterprise,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/111-2
+00:07:55.054 --> 00:08:02.095
+<v Doondi Ashlesh>now it adds a little bit more to the step
+saying now you can use Nvidia enterprise.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/115-0
+00:08:02.855 --> 00:08:07.059
+<v Doondi Ashlesh>So this is how the AI patch generator
+works and let's say the user want</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/115-1
+00:08:07.059 --> 00:08:11.964
+<v Doondi Ashlesh>additional information or let's say he's
+particularly into some of the other stuff.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/115-2
+00:08:11.964 --> 00:08:15.935
+<v Doondi Ashlesh>So he has home which directs to the whole
+developer community page.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/118-0
+00:08:17.455 --> 00:08:23.044
+<v Doondi Ashlesh>Where he can go through the tutorials,
+specific recommendations.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/118-1
+00:08:23.044 --> 00:08:28.375
+<v Doondi Ashlesh>If he wants to go to read blogs,
+that's cool. There's forums.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/119-0
+00:08:29.935 --> 00:08:32.335
+<v Doondi Ashlesh>That he can access, yes.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/123-0
+00:08:30.215 --> 00:08:34.637
+<v Antonio Martinez Torres>Yeah, so yeah, not this.
+Let me give you some initial feedback.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/123-1
+00:08:34.637 --> 00:08:39.058
+<v Antonio Martinez Torres>This is great, by the way.
+I think you're addressing one of the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/123-2
+00:08:39.058 --> 00:08:43.066
+<v Antonio Martinez Torres>problems that we have at NVIDIA.
+We offer too many tools.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/121-0
+00:08:41.575 --> 00:08:42.055
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/123-3
+00:08:43.066 --> 00:08:45.415
+<v Antonio Martinez Torres>We are open platform, which means.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/127-0
+00:08:46.095 --> 00:08:51.654
+<v Antonio Martinez Torres>Could be good,
+but this this can be also challenging to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/124-0
+00:08:51.455 --> 00:08:51.735
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/127-1
+00:08:51.654 --> 00:08:54.335
+<v Antonio Martinez Torres>understand how we work now.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/125-0
+00:08:53.295 --> 00:08:53.535
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/129-0
+00:08:56.095 --> 00:09:01.237
+<v Antonio Martinez Torres>The one of the improvements that I see
+here is, yeah,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/129-1
+00:09:01.237 --> 00:09:08.379
+<v Antonio Martinez Torres>you're great at visualizing what the
+customer needs to to leverage from an</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/129-2
+00:09:08.379 --> 00:09:10.855
+<v Antonio Martinez Torres>NVIDIA libraries and SDKS.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/128-0
+00:09:11.535 --> 00:09:12.015
+<v Mark Moyou>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/133-0
+00:09:11.535 --> 00:09:17.714
+<v Antonio Martinez Torres>But it will be even even better if you
+take this into the next level and then on</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/130-0
+00:09:16.735 --> 00:09:17.655
+<v Doondi Ashlesh>Mm-hmm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/133-1
+00:09:17.714 --> 00:09:23.664
+<v Antonio Martinez Torres>the fly autonomously build a Jupiter
+notebook that can orchestrate everything</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/131-0
+00:09:22.255 --> 00:09:22.495
+<v Doondi Ashlesh>Hmm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/133-2
+00:09:23.664 --> 00:09:28.775
+<v Antonio Martinez Torres>that you are highlighting and kind of
+like an end to end solution.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/132-0
+00:09:26.775 --> 00:09:28.295
+<v Doondi Ashlesh>Perfect.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/136-0
+00:09:29.135 --> 00:09:37.276
+<v Antonio Martinez Torres>And I think it's possible right now with
+LLM because we have besides documentation,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/134-0
+00:09:33.935 --> 00:09:34.615
+<v Doondi Ashlesh>Mm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/136-1
+00:09:37.276 --> 00:09:42.800
+<v Antonio Martinez Torres>we have examples,
+we have Jupiter notebooks at Jeremy is</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/135-0
+00:09:40.495 --> 00:09:40.615
+<v Doondi Ashlesh>Yep.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/136-2
+00:09:42.800 --> 00:09:46.095
+<v Antonio Martinez Torres>working with with Tarik and other.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/140-0
+00:09:46.175 --> 00:09:49.765
+<v Antonio Martinez Torres>Member of our team building Jupiter
+notebooks for fine tuning,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/137-0
+00:09:47.975 --> 00:09:48.455
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/140-1
+00:09:49.765 --> 00:09:53.754
+<v Antonio Martinez Torres>reinforcement learning, all this and that,
+and there are many others.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/140-2
+00:09:53.754 --> 00:09:58.427
+<v Antonio Martinez Torres>So you can use that as your ground truth,
+maybe create some embeddings or do some</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/138-0
+00:09:53.815 --> 00:09:54.295
+<v Doondi Ashlesh>Yep.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/140-3
+00:09:58.427 --> 00:09:58.655
+<v Antonio Martinez Torres>rag.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/139-0
+00:09:59.255 --> 00:09:59.575
+<v Doondi Ashlesh>Hmm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/141-0
+00:10:11.335 --> 00:10:11.655
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/143-0
+00:10:12.655 --> 00:10:17.727
+<v Antonio Martinez Torres>And then what you can do and I think
+Jeremy can touch point on this,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/143-1
+00:10:17.727 --> 00:10:23.388
+<v Antonio Martinez Torres>you can evaluate the Jupiter notebook
+that you dynamically generated to make</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/143-2
+00:10:23.388 --> 00:10:28.975
+<v Antonio Martinez Torres>sure it works and if it doesn't how have
+this kind of like a self evolving.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/145-0
+00:10:29.215 --> 00:10:35.145
+<v Antonio Martinez Torres>Mechanism that you can keep it iterating
+and improving the Jupyter notebook until</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/144-0
+00:10:32.695 --> 00:10:32.775
+<v Doondi Ashlesh>Huh.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/145-1
+00:10:35.145 --> 00:10:40.931
+<v Antonio Martinez Torres>is evaluated and tested that it actually
+works and that should be the output of</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/145-2
+00:10:40.931 --> 00:10:45.415
+<v Antonio Martinez Torres>the the solution like a complete
+end-to-end Jupyter notebook.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/150-0
+00:10:45.935 --> 00:10:50.895
+<v Antonio Martinez Torres>Production ready kind of thing.
+That will be one of the very,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/146-0
+00:10:48.495 --> 00:10:48.895
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/150-1
+00:10:50.895 --> 00:10:57.135
+<v Antonio Martinez Torres>very good improvement because right now
+besides all these different offerings</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/148-0
+00:10:52.935 --> 00:10:53.175
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/150-2
+00:10:57.135 --> 00:11:00.975
+<v Antonio Martinez Torres>that we have,
+we have these connected examples.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/149-0
+00:11:01.135 --> 00:11:01.495
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/154-0
+00:11:01.455 --> 00:11:05.239
+<v Antonio Martinez Torres>Like they need to go here and then they
+need to go down.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/154-1
+00:11:05.239 --> 00:11:10.551
+<v Antonio Martinez Torres>And I think that Jeremy is addressing
+that problem and having everything in one</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/151-0
+00:11:09.855 --> 00:11:10.375
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/154-2
+00:11:10.551 --> 00:11:13.870
+<v Antonio Martinez Torres>one area.
+So this tool can potentially solve this</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/154-3
+00:11:13.870 --> 00:11:17.655
+<v Antonio Martinez Torres>that problem. What do you think Jeremy,
+anything to add?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/152-0
+00:11:16.015 --> 00:11:16.895
+<v Doondi Ashlesh>Yes, I.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/158-0
+00:11:20.895 --> 00:11:26.631
+<v Jeremy Coupe>Yeah,
+I had a similar thought to Antonio where</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/158-1
+00:11:26.631 --> 00:11:35.175
+<v Jeremy Coupe>maybe a kind of stepping stone in between
+like what you have now and.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/163-0
+00:11:36.775 --> 00:11:42.528
+<v Jeremy Coupe>What Antonio was talking about,
+which is like kicking off like a</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/163-1
+00:11:42.528 --> 00:11:48.104
+<v Jeremy Coupe>reference implementation is.
+So my interpretation of the 1st 2</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/163-2
+00:11:48.104 --> 00:11:53.415
+<v Jeremy Coupe>examples that you gave is that they were
+similar in nature.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/168-0
+00:11:53.695 --> 00:11:58.858
+<v Jeremy Coupe>The only difference was that the user
+provided more details in the second</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/168-1
+00:11:58.858 --> 00:12:02.068
+<v Jeremy Coupe>prompt and then because of that,
+for example,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/168-2
+00:12:02.068 --> 00:12:06.394
+<v Jeremy Coupe>there was like a keyword of evaluation in
+your second prompt,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/168-3
+00:12:06.394 --> 00:12:09.255
+<v Jeremy Coupe>which then had you pull a Nemo evaluator.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/169-0
+00:12:10.175 --> 00:12:14.815
+<v Jeremy Coupe>And one of the things I was gonna say is
+that, um.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/175-0
+00:12:16.295 --> 00:12:21.360
+<v Jeremy Coupe>So my mental model of what is happening
+right now is like the prompt has</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/175-1
+00:12:21.360 --> 00:12:26.981
+<v Jeremy Coupe>different keywords or topics that then
+you're using to kind of match against the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/175-2
+00:12:26.981 --> 00:12:32.532
+<v Jeremy Coupe>different repos to say this is relevant.
+But one thing you could do is based on</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/175-3
+00:12:32.532 --> 00:12:33.295
+<v Jeremy Coupe>the prompt.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/181-0
+00:12:35.935 --> 00:12:42.529
+<v Jeremy Coupe>You could think about developing not like
+the full solution, but like a plan,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/181-1
+00:12:42.529 --> 00:12:48.786
+<v Jeremy Coupe>like an architecture plan of like
+effectively what would need to be built</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/178-0
+00:12:47.655 --> 00:12:47.815
+<v Doondi Ashlesh>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/181-2
+00:12:48.786 --> 00:12:54.535
+<v Jeremy Coupe>out for this and so like back to the 1st
+and second prompt example.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/179-0
+00:12:52.415 --> 00:12:52.695
+<v Doondi Ashlesh>Yes.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-0
+00:12:54.975 --> 00:12:59.417
+<v Jeremy Coupe>They're effectively the same.
+The only distinction is like more details</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-1
+00:12:59.417 --> 00:13:02.563
+<v Jeremy Coupe>in the second.
+So you could imagine that if a user</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/183-0
+00:13:01.455 --> 00:13:02.375
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-2
+00:13:02.563 --> 00:13:05.956
+<v Jeremy Coupe>that's not very experienced provides the
+first prompt,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-3
+00:13:05.956 --> 00:13:09.102
+<v Jeremy Coupe>based on that you build out a plan which
+knows OK,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-4
+00:13:09.102 --> 00:13:14.100
+<v Jeremy Coupe>I need to evaluate all of a sudden and
+then it basically tells you based on best</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/186-0
+00:13:10.335 --> 00:13:10.815
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/188-5
+00:13:14.100 --> 00:13:14.655
+<v Jeremy Coupe>practice.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/194-0
+00:13:14.655 --> 00:13:18.393
+<v Jeremy Coupe>This is like you kind of didn't mention
+evaluation,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/194-1
+00:13:18.393 --> 00:13:23.856
+<v Jeremy Coupe>but I think it should be in here.
+And so like in between like what you have</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/194-2
+00:13:23.856 --> 00:13:28.744
+<v Jeremy Coupe>now and like the full implementation like
+Antonio is talking about,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/194-3
+00:13:28.744 --> 00:13:34.495
+<v Jeremy Coupe>I think you could add basically like a
+development plan which would anticipate.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/191-0
+00:13:31.295 --> 00:13:31.415
+<v Doondi Ashlesh>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/199-0
+00:13:34.855 --> 00:13:39.603
+<v Jeremy Coupe>Basically in more details what would be
+needed to build that solution and then</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/193-0
+00:13:34.975 --> 00:13:35.135
+<v Doondi Ashlesh>2.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/199-1
+00:13:39.603 --> 00:13:44.351
+<v Jeremy Coupe>you can pull in stuff that maybe you
+don't have right now because the user has</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/196-0
+00:13:39.655 --> 00:13:40.215
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/199-2
+00:13:44.351 --> 00:13:46.695
+<v Jeremy Coupe>not like provided that level of detail.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/201-0
+00:13:45.775 --> 00:13:51.255
+<v Doondi Ashlesh>Yeah, yeah, completely agree on that.
+Even if they don't provide the details,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/201-1
+00:13:51.255 --> 00:13:53.855
+<v Doondi Ashlesh>it's better for us to suggest to you.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/207-0
+00:13:56.095 --> 00:13:59.749
+<v Antonio Martinez Torres>Yeah,
+and I think that where I don't know if</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/207-1
+00:13:59.749 --> 00:14:05.920
+<v Antonio Martinez Torres>Jeremy are you going into this path,
+but once you have the plan you can use</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/207-2
+00:14:05.920 --> 00:14:12.335
+<v Antonio Martinez Torres>any AR hardness like cloud code and pass
+the the plan and have that cloud code</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/207-3
+00:14:12.335 --> 00:14:15.015
+<v Antonio Martinez Torres>building the end to end solution.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/206-0
+00:14:17.015 --> 00:14:17.255
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/210-0
+00:14:20.415 --> 00:14:24.682
+<v Jeremy Coupe>Yeah, 'cause, you know,
+I think like Antonio was saying, right,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/210-1
+00:14:24.682 --> 00:14:25.015
+<v Jeremy Coupe>like.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/215-0
+00:14:27.375 --> 00:14:33.653
+<v Jeremy Coupe>I think that plan would be a stepping
+stone towards like the bigger thing and</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/215-1
+00:14:33.653 --> 00:14:40.253
+<v Jeremy Coupe>then it will also give you like a kind of
+way to validate right before you try to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/215-2
+00:14:40.253 --> 00:14:46.370
+<v Jeremy Coupe>validate on like the full software build.
+So it's kind of like it gives you</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/215-3
+00:14:46.370 --> 00:14:47.175
+<v Jeremy Coupe>something.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/221-0
+00:14:47.295 --> 00:14:52.212
+<v Jeremy Coupe>Something that you can still probably
+understand without going through like an</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/221-1
+00:14:52.212 --> 00:14:55.324
+<v Jeremy Coupe>hour long,
+just like vibe coding session and then</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/218-0
+00:14:52.415 --> 00:14:55.735
+<v Doondi Ashlesh>The whole process here, here, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/221-2
+00:14:55.324 --> 00:15:00.241
+<v Jeremy Coupe>getting the answer back and be like, oh,
+something is not like making a ton of</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/221-3
+00:15:00.241 --> 00:15:00.615
+<v Jeremy Coupe>sense.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/220-0
+00:15:00.655 --> 00:15:00.935
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/225-0
+00:15:07.615 --> 00:15:11.055
+<v Jeremy Coupe>But uh or go ahead, Antonio.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/223-0
+00:15:08.175 --> 00:15:09.255
+<v Antonio Martinez Torres>Yeah, and then.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/230-0
+00:15:12.015 --> 00:15:15.927
+<v Antonio Martinez Torres>I was gonna say the way you can build the
+plan.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/230-1
+00:15:15.927 --> 00:15:19.676
+<v Antonio Martinez Torres>It doesn't have to be a single markdown
+file.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/230-2
+00:15:19.676 --> 00:15:23.344
+<v Antonio Martinez Torres>It could be something like I've just
+posted.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/230-3
+00:15:23.344 --> 00:15:27.012
+<v Antonio Martinez Torres>Could be a could be multiple markdown
+files,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/230-4
+00:15:27.012 --> 00:15:31.495
+<v Antonio Martinez Torres>one for the product requirement document,
+one for the.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/235-0
+00:15:31.615 --> 00:15:38.781
+<v Antonio Martinez Torres>Software stack, one for the architecture,
+one for the features and then you can</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/235-1
+00:15:38.781 --> 00:15:45.769
+<v Antonio Martinez Torres>also shard which is like feature sharding
+and then you can have a folder with</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/233-0
+00:15:43.615 --> 00:15:44.775
+<v Doondi Ashlesh>Letting that.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/235-2
+00:15:45.769 --> 00:15:46.575
+<v Antonio Martinez Torres>multiple.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/236-0
+00:15:46.975 --> 00:15:48.495
+<v Antonio Martinez Torres>Features underneath.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/243-0
+00:15:49.935 --> 00:15:55.907
+<v Antonio Martinez Torres>Instead of being just a single file and
+then you can pass that folder to your</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/238-0
+00:15:52.975 --> 00:15:53.255
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/243-1
+00:15:55.907 --> 00:16:02.110
+<v Antonio Martinez Torres>agent and it will be better at following
+instructions on what to do to build the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/241-0
+00:16:01.535 --> 00:16:02.215
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/243-2
+00:16:02.110 --> 00:16:03.335
+<v Antonio Martinez Torres>entire solution.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/242-0
+00:16:04.135 --> 00:16:04.455
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/246-0
+00:16:04.255 --> 00:16:10.601
+<v Jeremy Coupe>That that that's a really good point like
+you know to kind of continue on that</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/246-1
+00:16:10.601 --> 00:16:13.975
+<v Jeremy Coupe>thought that Antonio shared there is like.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/252-0
+00:16:15.055 --> 00:16:18.992
+<v Jeremy Coupe>Not just a plan,
+but the way I think about it is like</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/252-1
+00:16:18.992 --> 00:16:23.878
+<v Jeremy Coupe>before I really start coding,
+I spend a decent amount of time just</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/252-2
+00:16:23.878 --> 00:16:27.450
+<v Jeremy Coupe>building the scaffolding,
+which includes a plan,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/252-3
+00:16:27.450 --> 00:16:30.877
+<v Jeremy Coupe>includes a cloud dot MD file,
+includes skills,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/252-4
+00:16:30.877 --> 00:16:34.815
+<v Jeremy Coupe>includes custom commands and things like
+that and so.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/255-0
+00:16:36.055 --> 00:16:41.751
+<v Jeremy Coupe>So what would be really cool, right,
+is like if based on the prompt,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/255-1
+00:16:41.751 --> 00:16:47.118
+<v Jeremy Coupe>you're able to understand what needs to
+be built, like the plan,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/255-2
+00:16:47.118 --> 00:16:50.255
+<v Jeremy Coupe>you're able to build that scaffolding.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/260-0
+00:16:50.535 --> 00:16:55.692
+<v Jeremy Coupe>And effectively,
+if you build that scaffolding like really</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/260-1
+00:16:55.692 --> 00:16:59.101
+<v Jeremy Coupe>well,
+then you have a higher chance of</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/260-2
+00:16:59.101 --> 00:17:04.695
+<v Jeremy Coupe>one-shotting the app or whatever you're
+building like directly.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/259-0
+00:17:04.935 --> 00:17:05.095
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/264-0
+00:17:05.535 --> 00:17:10.713
+<v Jeremy Coupe>And some of the more interesting kind of
+what are they called?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/264-1
+00:17:10.713 --> 00:17:16.219
+<v Jeremy Coupe>Like the coding challenges?
+I can't remember their the names right</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/264-2
+00:17:16.219 --> 00:17:19.835
+<v Jeremy Coupe>now.
+Some of the more interesting ones I've</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/264-3
+00:17:19.835 --> 00:17:20.575
+<v Jeremy Coupe>seen are.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/267-0
+00:17:20.975 --> 00:17:24.295
+<v Jeremy Coupe>One shot challenges.
+And so basically it's like, you know.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/265-0
+00:17:22.895 --> 00:17:23.335
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/273-0
+00:17:28.335 --> 00:17:33.700
+<v Jeremy Coupe>I'm gonna grade everybody's submissions
+knowing that you only get one shot and</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/270-0
+00:17:33.695 --> 00:17:34.095
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/273-1
+00:17:33.700 --> 00:17:38.861
+<v Jeremy Coupe>the only way to do that is to have that
+scaffolding ready. But and Antonio,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/273-2
+00:17:38.861 --> 00:17:43.615
+<v Jeremy Coupe>I was talking to you about this the other
+day, like I think Kaparthi.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/279-0
+00:17:43.815 --> 00:17:48.873
+<v Jeremy Coupe>After the personal wiki, he's like, oh,
+I have another way to share this.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/279-1
+00:17:48.873 --> 00:17:53.316
+<v Jeremy Coupe>And it wasn't like the code,
+but it was kind of like the intent,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/279-2
+00:17:53.316 --> 00:17:56.597
+<v Jeremy Coupe>which is kind of like the scaffolding and
+plan.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/279-3
+00:17:56.597 --> 00:18:01.655
+<v Jeremy Coupe>And so if you're able to generate that,
+it becomes a very simplified way.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/276-0
+00:17:57.455 --> 00:17:57.655
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/283-0
+00:18:03.535 --> 00:18:07.603
+<v Jeremy Coupe>To share like an app without actually
+having built the app yet and then let</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/283-1
+00:18:07.603 --> 00:18:10.975
+<v Jeremy Coupe>somebody kind of riff on it and extend it
+and stuff like that.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/280-0
+00:18:09.015 --> 00:18:09.255
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/282-0
+00:18:11.615 --> 00:18:11.895
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/290-0
+00:18:12.335 --> 00:18:15.607
+<v Antonio Martinez Torres>Yeah,
+what what he shared was a gist of the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/290-1
+00:18:15.607 --> 00:18:21.556
+<v Antonio Martinez Torres>idea and then he was saying you can just
+pass this idea to your AI coding agent</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/285-0
+00:18:17.375 --> 00:18:17.855
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/290-2
+00:18:21.556 --> 00:18:27.505
+<v Antonio Martinez Torres>and it will build the concept basically
+instead of now sharing the code base or</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/287-0
+00:18:25.215 --> 00:18:25.615
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/290-3
+00:18:27.505 --> 00:18:28.695
+<v Antonio Martinez Torres>the source code.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/288-0
+00:18:29.135 --> 00:18:29.575
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/294-0
+00:18:29.135 --> 00:18:34.106
+<v Antonio Martinez Torres>Now people are kind of sharing the intent
+in natural language.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/294-1
+00:18:34.106 --> 00:18:39.234
+<v Antonio Martinez Torres>Same is happening with Openclaw with
+Peter, which is the author.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/294-2
+00:18:39.234 --> 00:18:43.495
+<v Antonio Martinez Torres>He's saying don't create pull request
+with your code.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/291-0
+00:18:39.335 --> 00:18:39.815
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/300-0
+00:18:44.255 --> 00:18:50.815
+<v Antonio Martinez Torres>Create a pull request with with a prompt
+or what you're trying to solve because I</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/295-0
+00:18:45.575 --> 00:18:45.655
+<v Doondi Ashlesh>It.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/296-0
+00:18:47.495 --> 00:18:47.895
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/300-1
+00:18:50.815 --> 00:18:56.095
+<v Antonio Martinez Torres>can take that prompt and and have my
+agent creating the solution,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/300-2
+00:18:56.095 --> 00:18:59.055
+<v Antonio Martinez Torres>implementing the solution so he sees.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/299-0
+00:18:57.615 --> 00:18:57.895
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/305-0
+00:18:59.375 --> 00:19:03.957
+<v Antonio Martinez Torres>Easier to just understanding natural
+language what you what you are trying to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/305-1
+00:19:03.957 --> 00:19:08.187
+<v Antonio Martinez Torres>do in the PR and he will do the
+implementation or the agent will do the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/305-2
+00:19:08.187 --> 00:19:11.595
+<v Antonio Martinez Torres>implementation.
+So it's similar concept what Jeremy is is</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/303-0
+00:19:08.735 --> 00:19:09.015
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/305-3
+00:19:11.595 --> 00:19:14.415
+<v Antonio Martinez Torres>sharing.
+My idea of these Jupiter notebooks is.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/309-0
+00:19:28.135 --> 00:19:29.735
+<v Doondi Ashlesh>Implementation, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/311-0
+00:19:29.775 --> 00:19:30.055
+<v Antonio Martinez Torres>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/316-0
+00:19:35.135 --> 00:19:41.111
+<v Antonio Martinez Torres>Which I believe based on the planning and
+the whole documentation that you you can</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/316-1
+00:19:41.111 --> 00:19:44.639
+<v Antonio Martinez Torres>create,
+you can create Jupiter notebooks instead</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/316-2
+00:19:44.639 --> 00:19:47.015
+<v Antonio Martinez Torres>of the whole end to end solution.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/314-0
+00:19:45.055 --> 00:19:45.375
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/318-0
+00:19:50.655 --> 00:19:53.935
+<v Antonio Martinez Torres>Yeah,
+but otherwise I think it's good start.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/321-0
+00:19:54.975 --> 00:20:01.218
+<v Jeremy Coupe>Yeah, no, this is fantastic. Did you?
+So we shared, you know, some feedback.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/321-1
+00:20:01.218 --> 00:20:03.975
+<v Jeremy Coupe>Did you have any questions for us?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/326-0
+00:20:04.495 --> 00:20:07.177
+<v Doondi Ashlesh>Yes.
+So I personally wanted to ask you guys,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/326-1
+00:20:07.177 --> 00:20:11.646
+<v Doondi Ashlesh>I mean, you guys covered most of the,
+especially when coming to, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/326-2
+00:20:11.646 --> 00:20:14.864
+<v Doondi Ashlesh>not actually coding the whole solution,
+but you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/326-3
+00:20:14.864 --> 00:20:19.393
+<v Doondi Ashlesh>making sure the plan itself is kind of
+concrete so that if you just say the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/326-4
+00:20:19.393 --> 00:20:22.135
+<v Doondi Ashlesh>whole plan,
+then it's gonna build it for you.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/331-0
+00:20:23.055 --> 00:20:27.694
+<v Doondi Ashlesh>So in creating these plans and you know
+going to the reiteration steps, right?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/331-1
+00:20:27.694 --> 00:20:32.391
+<v Doondi Ashlesh>So what are the some of the things that
+actually make or break when it comes to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/331-2
+00:20:32.391 --> 00:20:35.738
+<v Doondi Ashlesh>these applications?
+'cause I know grounding the truth in</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/331-3
+00:20:35.738 --> 00:20:37.735
+<v Doondi Ashlesh>actual NVIDIA source is one thing.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/333-0
+00:20:37.855 --> 00:20:40.515
+<v Doondi Ashlesh>So apart from that,
+are there any other things I need to keep</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/333-1
+00:20:40.515 --> 00:20:43.175
+<v Doondi Ashlesh>in mind to make sure that the this
+application doesn't break?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/337-0
+00:20:46.495 --> 00:20:51.299
+<v Antonio Martinez Torres>Yeah,
+so there is this concept of adversary</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/337-1
+00:20:51.299 --> 00:20:54.575
+<v Antonio Martinez Torres>judging that like for example.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/343-0
+00:20:56.855 --> 00:21:01.835
+<v Antonio Martinez Torres>When you're building a plan with AI
+agents, they ask you questions,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/343-1
+00:21:01.835 --> 00:21:06.375
+<v Antonio Martinez Torres>clarifying questions.
+So you need human in the loop to answer</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/340-0
+00:21:03.135 --> 00:21:03.775
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/343-2
+00:21:06.375 --> 00:21:10.695
+<v Antonio Martinez Torres>those questions.
+What you can have is you can have another</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/343-3
+00:21:10.695 --> 00:21:11.135
+<v Antonio Martinez Torres>agent.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/349-0
+00:21:11.535 --> 00:21:16.491
+<v Antonio Martinez Torres>Acting as a human answering those
+questions and it's usually another model,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/345-0
+00:21:12.375 --> 00:21:15.455
+<v Doondi Ashlesh>Human mm-hmm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/349-1
+00:21:16.491 --> 00:21:19.557
+<v Antonio Martinez Torres>so it doesn't have the same knowledge or
+bias.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/349-2
+00:21:19.557 --> 00:21:24.383
+<v Antonio Martinez Torres>And then when you're building the plan
+and you have clarifying questions,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/349-3
+00:21:24.383 --> 00:21:29.535
+<v Antonio Martinez Torres>you can use another agent understanding
+and be able to answer those questions.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/355-0
+00:21:29.855 --> 00:21:35.486
+<v Antonio Martinez Torres>So you have these two agents working with
+each other, yes, and improving the plan.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/350-0
+00:21:32.135 --> 00:21:33.815
+<v Doondi Ashlesh>Working together, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/355-1
+00:21:35.486 --> 00:21:40.845
+<v Antonio Martinez Torres>So that will be something that you can
+implement or keep in mind when building</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/355-2
+00:21:40.845 --> 00:21:45.255
+<v Antonio Martinez Torres>this and it's a really good concept that
+we're using internally.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/360-0
+00:21:45.575 --> 00:21:50.867
+<v Antonio Martinez Torres>And it will be good for you to understand
+how you can orchestrate 2 agents working</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/354-0
+00:21:45.935 --> 00:21:46.415
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/357-0
+00:21:49.775 --> 00:21:50.695
+<v Doondi Ashlesh>Yes, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/360-1
+00:21:50.867 --> 00:21:56.032
+<v Antonio Martinez Torres>with each other and just leave the human
+in the loop for for other more critical</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/360-2
+00:21:56.032 --> 00:21:56.415
+<v Antonio Martinez Torres>tasks.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/359-0
+00:21:56.175 --> 00:21:56.855
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/362-0
+00:21:59.615 --> 00:22:03.495
+<v Jeremy Coupe>Yeah,
+the the other thing I was gonna say is um.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/367-0
+00:22:08.495 --> 00:22:18.095
+<v Jeremy Coupe>I think some of the place that you see
+some of the like more creativity is that.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/372-0
+00:22:19.935 --> 00:22:27.231
+<v Jeremy Coupe>Instead of providing like just hard
+specific requirements like like for</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/372-1
+00:22:27.231 --> 00:22:35.135
+<v Jeremy Coupe>example like implement some algorithm,
+there's this idea of like spec driven.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/375-0
+00:22:36.055 --> 00:22:43.882
+<v Jeremy Coupe>Development which kind of gives it more
+like performance level goals and like so</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/375-1
+00:22:43.882 --> 00:22:51.709
+<v Jeremy Coupe>an or like an example that I've seen for
+is imagine you're building an algorithm</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/375-2
+00:22:51.709 --> 00:22:54.415
+<v Jeremy Coupe>to solve a specific problem.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/380-0
+00:22:54.415 --> 00:23:01.682
+<v Jeremy Coupe>And you can implement A naive version of
+the algorithm that you know gives you the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/380-1
+00:23:01.682 --> 00:23:09.037
+<v Jeremy Coupe>correct answer but is not very efficient.
+And so inspect driven development instead</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/380-2
+00:23:09.037 --> 00:23:13.415
+<v Jeremy Coupe>of saying something like build this
+algorithm to.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/386-0
+00:23:14.015 --> 00:23:21.332
+<v Jeremy Coupe>Generate the correct solution.
+You would say something like develop an</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/379-0
+00:23:14.735 --> 00:23:14.855
+<v Doondi Ashlesh>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/386-1
+00:23:21.332 --> 00:23:29.268
+<v Jeremy Coupe>algorithm that is 30% better than this
+naive version of the algorithm and so</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/384-0
+00:23:28.615 --> 00:23:28.735
+<v Doondi Ashlesh>You.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/386-2
+00:23:29.268 --> 00:23:31.535
+<v Jeremy Coupe>then that can kind of.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/390-0
+00:23:31.615 --> 00:23:37.451
+<v Jeremy Coupe>Trigger the agent to, you know,
+not just do one thing and be like, OK,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/390-1
+00:23:37.451 --> 00:23:43.287
+<v Jeremy Coupe>well the algorithm works properly,
+but it will have to start getting a</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/390-2
+00:23:43.287 --> 00:23:48.055
+<v Jeremy Coupe>little bit more creative to be like, OK,
+let me try this.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/394-0
+00:23:48.655 --> 00:23:54.470
+<v Jeremy Coupe>It goes OK, that's 10% better. Well,
+like what can I try next to make it like</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/391-0
+00:23:49.015 --> 00:23:52.375
+<v Doondi Ashlesh>Better, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/394-1
+00:23:54.470 --> 00:23:59.838
+<v Jeremy Coupe>30% better and stuff like that.
+And so like as much as possible, right?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/394-2
+00:23:59.838 --> 00:24:04.535
+<v Jeremy Coupe>Like instead of just putting like a
+singular hard requirement.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/393-0
+00:24:04.735 --> 00:24:05.135
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/398-0
+00:24:04.735 --> 00:24:10.973
+<v Jeremy Coupe>Trying to think about ways to convert
+those requirements into something that's</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/398-1
+00:24:10.973 --> 00:24:17.291
+<v Jeremy Coupe>like performance goal driven and then let
+the algorithm kind of like iterate to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/398-2
+00:24:17.291 --> 00:24:20.055
+<v Jeremy Coupe>find better implementation kind of.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/402-0
+00:24:20.255 --> 00:24:24.185
+<v Jeremy Coupe>Solutions because that brings more of the
+autonomy in, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/402-1
+00:24:24.185 --> 00:24:27.268
+<v Jeremy Coupe>because instead of just trying to build
+one thing,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/402-2
+00:24:27.268 --> 00:24:32.166
+<v Jeremy Coupe>it's like you're trying to make something
+better and you have a clear goal about</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/400-0
+00:24:30.375 --> 00:24:31.215
+<v Doondi Ashlesh>Make.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/402-3
+00:24:32.166 --> 00:24:35.975
+<v Jeremy Coupe>how much better you want to, like,
+drive the solution towards.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/403-0
+00:24:36.975 --> 00:24:38.775
+<v Doondi Ashlesh>Yeah, absolutely. So.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/405-0
+00:24:42.535 --> 00:24:44.095
+<v Doondi Ashlesh>Performance.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/411-0
+00:24:49.375 --> 00:24:58.099
+<v Jeremy Coupe>And a question,
+which AI tools are you currently using to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/408-0
+00:24:51.335 --> 00:24:51.575
+<v Doondi Ashlesh>Alright.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/411-1
+00:24:58.099 --> 00:25:00.055
+<v Jeremy Coupe>develop this?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/415-0
+00:25:00.415 --> 00:25:06.211
+<v Doondi Ashlesh>So to develop this I use cloud code and I
+also use part of cursor for some part of</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/415-1
+00:25:06.211 --> 00:25:09.562
+<v Doondi Ashlesh>testing.
+But the whole creativity and the whole</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/415-2
+00:25:09.562 --> 00:25:13.961
+<v Doondi Ashlesh>implementation plan.
+I spent like a couple of hours just going</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/415-3
+00:25:13.961 --> 00:25:16.615
+<v Doondi Ashlesh>through the whole implementation plan.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/420-0
+00:25:16.855 --> 00:25:21.710
+<v Doondi Ashlesh>Making sure that it is NVIDIA native
+first and foremost and after that you</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/420-1
+00:25:21.710 --> 00:25:25.271
+<v Doondi Ashlesh>know all the model architecture,
+the embeddings model,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/420-2
+00:25:25.271 --> 00:25:29.090
+<v Doondi Ashlesh>you know how efficient can I make it for
+this demo, right?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/418-0
+00:25:27.455 --> 00:25:28.535
+<v Antonio Martinez Torres>Mm-hmm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/420-3
+00:25:29.090 --> 00:25:31.615
+<v Doondi Ashlesh>And the whole planning was flipped off.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/424-0
+00:25:33.215 --> 00:25:38.358
+<v Jeremy Coupe>And Antonio,
+did did you want to share what you did</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/424-1
+00:25:38.358 --> 00:25:43.698
+<v Jeremy Coupe>with respect to?
+So Antonio did something interesting</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/424-2
+00:25:43.698 --> 00:25:51.215
+<v Jeremy Coupe>where when he has a NVIDIA repo that he
+would like to leverage, he kind of.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/429-0
+00:25:51.295 --> 00:25:57.953
+<v Jeremy Coupe>Pulls in a summary of the repo so that it
+kind of has that locally to then check</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/426-0
+00:25:55.015 --> 00:25:55.495
+<v Doondi Ashlesh>Mhm.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/429-1
+00:25:57.953 --> 00:26:02.720
+<v Jeremy Coupe>against. Antonio,
+do you want to talk about like what you</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/429-2
+00:26:02.720 --> 00:26:04.775
+<v Jeremy Coupe>did previously with that?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/431-0
+00:26:07.295 --> 00:26:12.695
+<v Antonio Martinez Torres>Can you remind me again which part I'm
+trying to remember?</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/436-0
+00:26:10.655 --> 00:26:15.937
+<v Jeremy Coupe>I think you were saying that like you
+wanted to use Nemo agent toolkit and so</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/436-1
+00:26:15.937 --> 00:26:20.949
+<v Jeremy Coupe>you like took the read me or something
+and had it locally in the ND file.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/436-2
+00:26:20.949 --> 00:26:24.335
+<v Jeremy Coupe>So then you were able to like check
+against that.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/434-0
+00:26:22.935 --> 00:26:23.895
+<v Antonio Martinez Torres>Oh yeah, yeah, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/439-0
+00:26:26.375 --> 00:26:29.840
+<v Antonio Martinez Torres>Yeah,
+so there is one problem right now with</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/439-1
+00:26:29.840 --> 00:26:34.613
+<v Antonio Martinez Torres>new tools. For example,
+like if you use Nemo Agent Toolkit is</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/439-2
+00:26:34.613 --> 00:26:36.615
+<v Antonio Martinez Torres>relatively a new tool, so.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/444-0
+00:26:38.335 --> 00:26:41.929
+<v Antonio Martinez Torres>Frontier models,
+they don't have that in their pre-trained</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/444-1
+00:26:41.929 --> 00:26:45.767
+<v Antonio Martinez Torres>data. So if you say hey,
+I want to build an agent using a long</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/441-0
+00:26:42.095 --> 00:26:42.375
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/444-2
+00:26:45.767 --> 00:26:50.519
+<v Antonio Martinez Torres>chain, it will be able to do that easily.
+But if you say the same thing using</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/444-3
+00:26:50.519 --> 00:26:53.687
+<v Antonio Martinez Torres>Imogen Toolkit,
+it will have a hard time because it</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/444-4
+00:26:53.687 --> 00:26:54.175
+<v Antonio Martinez Torres>doesn't.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/451-0
+00:26:55.135 --> 00:26:59.710
+<v Antonio Martinez Torres>The documentation or the context is not
+in the pre-trained data.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/451-1
+00:26:59.710 --> 00:27:05.058
+<v Antonio Martinez Torres>It will need to do web search and that
+web search usually is not that good.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/446-0
+00:27:01.695 --> 00:27:01.975
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/451-2
+00:27:05.058 --> 00:27:09.915
+<v Antonio Martinez Torres>So it will ended up having.
+It will be ended up having a bad result.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/449-0
+00:27:08.175 --> 00:27:11.255
+<v Doondi Ashlesh>Unnecessary context, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/451-3
+00:27:09.915 --> 00:27:11.815
+<v Antonio Martinez Torres>Yeah, but just bad results.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/455-0
+00:27:12.095 --> 00:27:18.581
+<v Antonio Martinez Torres>And one technique that you can do is to
+have to clone that other project and then</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/455-1
+00:27:18.581 --> 00:27:24.830
+<v Antonio Martinez Torres>run Cloud code against that project and
+then have Cloud code understanding the</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/455-2
+00:27:24.830 --> 00:27:28.865
+<v Antonio Martinez Torres>project,
+all the different features or examples if</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/455-3
+00:27:28.865 --> 00:27:29.735
+<v Antonio Martinez Torres>they exist.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/459-0
+00:27:30.055 --> 00:27:37.107
+<v Antonio Martinez Torres>And create a markdown file and then that
+markdown file you use it in your other</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/459-1
+00:27:37.107 --> 00:27:39.575
+<v Antonio Martinez Torres>project as the ground truth.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/458-0
+00:27:38.175 --> 00:27:39.095
+<v Doondi Ashlesh>Yeah, yes.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/465-0
+00:27:41.895 --> 00:27:48.278
+<v Antonio Martinez Torres>And then you can build now agents using
+Imogen Toolkit and then Cloud Code will</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/465-1
+00:27:48.278 --> 00:27:52.586
+<v Antonio Martinez Torres>read that,
+read me and understand how it works. Yeah,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/462-0
+00:27:51.495 --> 00:27:51.975
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/465-2
+00:27:52.586 --> 00:27:56.815
+<v Antonio Martinez Torres>you can do also which that's something
+I've done is.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/469-0
+00:27:57.295 --> 00:28:01.082
+<v Antonio Martinez Torres>Cross repos,
+but I that will just fill up the context</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/469-1
+00:28:01.082 --> 00:28:04.798
+<v Antonio Martinez Torres>even more.
+So you are in the repo and then you clone</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/469-2
+00:28:04.798 --> 00:28:10.198
+<v Antonio Martinez Torres>the Nemo agent toolkit for example and
+you just say hey I want to build this</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/469-3
+00:28:10.198 --> 00:28:13.563
+<v Antonio Martinez Torres>agent.
+This is a path of the SDK that I want to</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/469-4
+00:28:13.563 --> 00:28:14.335
+<v Antonio Martinez Torres>you to use.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/475-0
+00:28:15.255 --> 00:28:19.323
+<v Antonio Martinez Torres>And it will read both repos at the same
+time, but again,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/475-1
+00:28:19.323 --> 00:28:24.105
+<v Antonio Martinez Torres>it just fills the context very fast.
+So having this summarization,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/471-0
+00:28:19.815 --> 00:28:20.055
+<v Doondi Ashlesh>There.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/475-2
+00:28:24.105 --> 00:28:29.815
+<v Antonio Martinez Torres>the summary of the other project that
+will help you, that will help your agent.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/474-0
+00:28:27.295 --> 00:28:29.455
+<v Doondi Ashlesh>With manage a couple texts, yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/476-0
+00:28:30.775 --> 00:28:31.015
+<v Antonio Martinez Torres>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/479-0
+00:28:32.255 --> 00:28:36.347
+<v Antonio Martinez Torres>But unfortunately I need to leave.
+I have another meeting, but it was good.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/479-1
+00:28:36.347 --> 00:28:39.255
+<v Antonio Martinez Torres>Um, learning about your project,
+getting to know you.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-0
+00:28:40.375 --> 00:28:42.961
+<v Doondi Ashlesh>Yeah,
+I actually implemented some of the rules</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/480-0
+00:28:41.055 --> 00:28:43.495
+<v Antonio Martinez Torres>And feel free to send me any questions.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-1
+00:28:42.961 --> 00:28:46.428
+<v Doondi Ashlesh>from your particular blog, Mr. Antonio.
+I read your, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-2
+00:28:46.428 --> 00:28:49.289
+<v Doondi Ashlesh>your thoughts on live coding a lot on
+your website.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-3
+00:28:49.289 --> 00:28:53.472
+<v Doondi Ashlesh>So I went through a couple of the stuff
+and you know, constantly, you know,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-4
+00:28:53.472 --> 00:28:56.058
+<v Doondi Ashlesh>pushing, merging, you know,
+cleaning your car.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/488-5
+00:28:56.058 --> 00:28:59.855
+<v Doondi Ashlesh>So those are some of the things, you know,
+I kind of implemented my.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/484-0
+00:28:56.535 --> 00:28:56.695
+<v Antonio Martinez Torres>Uh.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/489-0
+00:29:00.095 --> 00:29:04.256
+<v Doondi Ashlesh>Work cell too,
+just to make sure that you know you don't,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/486-0
+00:29:02.015 --> 00:29:04.015
+<v Antonio Martinez Torres>Oh, I need to update that.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/489-1
+00:29:04.256 --> 00:29:04.615
+<v Doondi Ashlesh>yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/491-0
+00:29:05.175 --> 00:29:07.682
+<v Antonio Martinez Torres>Yeah,
+I need to update that blog because I</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/491-1
+00:29:07.682 --> 00:29:10.655
+<v Antonio Martinez Torres>think I wrote that article like a year
+ago almost.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/492-0
+00:29:09.695 --> 00:29:12.775
+<v Doondi Ashlesh>Yeah, June 20, 2025. Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/499-0
+00:29:12.735 --> 00:29:15.454
+<v Antonio Martinez Torres>Yeah,
+and I was using cursor and everything is</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/499-1
+00:29:15.454 --> 00:29:18.751
+<v Antonio Martinez Torres>changing so fast.
+So I'm glad that you you found it. Uh,</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/494-0
+00:29:17.255 --> 00:29:17.575
+<v Doondi Ashlesh>Yep.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/499-2
+00:29:18.751 --> 00:29:23.495
+<v Antonio Martinez Torres>I think I'm gonna that I will use that as
+a motivation to keep updating the blog.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/496-0
+00:29:20.615 --> 00:29:20.855
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/497-0
+00:29:23.055 --> 00:29:23.415
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/502-0
+00:29:25.695 --> 00:29:29.575
+<v Antonio Martinez Torres>All right. Very nice to meet you.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/500-0
+00:29:28.895 --> 00:29:29.575
+<v Jeremy Coupe>Yep.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/503-0
+00:29:29.655 --> 00:29:29.895
+<v Jeremy Coupe>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/504-0
+00:29:29.655 --> 00:29:29.975
+<v Antonio Martinez Torres>OK then.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/505-0
+00:29:29.815 --> 00:29:33.276
+<v Doondi Ashlesh>Pleasure to meet you, Mr. Antonio.
+Thank you for all the feedback you gave</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/508-0
+00:29:33.215 --> 00:29:37.895
+<v Jeremy Coupe>Yep, if you have any questions,
+just reach out and let us know.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/505-1
+00:29:33.276 --> 00:29:33.415
+<v Doondi Ashlesh>me.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/506-0
+00:29:33.455 --> 00:29:35.495
+<v Antonio Martinez Torres>Yeah, no, you're welcome.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/515-0
+00:29:37.775 --> 00:29:44.015
+<v Doondi Ashlesh>All right. Thank you so much.
+Thank you so much for your time.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/511-0
+00:29:39.855 --> 00:29:41.775
+<v Antonio Martinez Torres>Yeah, Mike.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/510-0
+00:29:41.095 --> 00:29:42.455
+<v Jeremy Coupe>Alright, see ya.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/514-0
+00:29:43.895 --> 00:29:43.975
+<v Antonio Martinez Torres>Bye.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/533-0
+00:30:25.615 --> 00:30:26.375
+<v Doondi Ashlesh>Yeah.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/534-0
+00:30:27.775 --> 00:30:28.775
+<v Doondi Ashlesh>Absolutely.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/535-0
+00:30:30.295 --> 00:30:30.615
+<v Doondi Ashlesh>OK.</v>
+
+e2432bdf-b08e-4ec1-bf1d-cd517d35b2f3/552-0
+00:31:34.895 --> 00:31:35.095
+<v Doondi Ashlesh>Yes.</v>

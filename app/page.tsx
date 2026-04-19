@@ -2,11 +2,118 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Menu } from 'lucide-react';
+import { ExternalLink, Menu, FileDown, FolderDown, Package, Loader2 } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import EcosystemGraph from '@/components/EcosystemGraph';
 import { LAYER_ORDER, LAYER_LABELS, LAYER_SUBLABELS } from '@/types/ecosystem';
-import type { AppMode, Layer, Service, Workflow } from '@/types/ecosystem';
+import type { AppMode, Layer, Service, Workflow, GoalSpec } from '@/types/ecosystem';
+import { downloadPipelineZip } from '@/lib/export-zip';
+
+// ── Export buttons — shown at bottom-left of graph in workflow mode ──────────
+
+function ExportButtons({ goalSpec, workflow, notebookReady, cachedNotebook }: { goalSpec: GoalSpec; workflow: Workflow; notebookReady: boolean; cachedNotebook: string | null }) {
+  const [scaffoldingLoading, setScaffoldingLoading] = useState(false);
+  const [exportAllLoading, setExportAllLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleScaffolding = useCallback(async () => {
+    setScaffoldingLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/generate-scaffolding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ goalSpec, steps: workflow.steps }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? 'Scaffolding failed');
+
+      // Download as zip (docs only, no notebook)
+      downloadPipelineZip({
+        prd: data.prd,
+        stack: data.stack,
+        architecture: data.architecture,
+        features: data.features,
+        claudeMd: data.claudeMd,
+        agentsMd: data.agentsMd,
+        notebookJson: '{}', // empty — scaffolding only
+        goalName: `scaffolding-${workflow.id}`,
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed');
+    } finally {
+      setScaffoldingLoading(false);
+    }
+  }, [goalSpec, workflow]);
+
+  const handleExportAll = useCallback(async () => {
+    if (!cachedNotebook) return; // shouldn't happen — button only shows when notebook is ready
+    setExportAllLoading(true);
+    setError(null);
+    try {
+      // Fetch scaffolding (instant — zero LLM calls)
+      const scaffRes = await fetch('/api/generate-scaffolding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ goalSpec, steps: workflow.steps }),
+      });
+      const scaffData = await scaffRes.json();
+      if (!scaffRes.ok) throw new Error(scaffData.error ?? 'Scaffolding failed');
+
+      // Use cached notebook — no re-generation needed
+      downloadPipelineZip({
+        prd: scaffData.prd,
+        stack: scaffData.stack,
+        architecture: scaffData.architecture,
+        features: scaffData.features,
+        claudeMd: scaffData.claudeMd,
+        agentsMd: scaffData.agentsMd,
+        notebookJson: cachedNotebook,
+        goalName: workflow.id,
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed');
+    } finally {
+      setExportAllLoading(false);
+    }
+  }, [goalSpec, workflow, cachedNotebook]);
+
+  const anyLoading = scaffoldingLoading || exportAllLoading;
+
+  return (
+    <div className="flex flex-col gap-2">
+      {error && (
+        <div className="text-xs text-red-400 bg-red-900/30 border border-red-800/30 px-3 py-1.5 rounded-lg max-w-[280px]">
+          {error}
+        </div>
+      )}
+      <div className="flex gap-2">
+        <button
+          onClick={handleScaffolding}
+          disabled={anyLoading}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all border border-slate-700 hover:border-[#76b900] bg-black/80 backdrop-blur-sm"
+          style={{ color: scaffoldingLoading ? '#4a7300' : '#76b900' }}
+          title="Download PRD, stack, architecture, CLAUDE.md, AGENTS.md"
+        >
+          {scaffoldingLoading ? <Loader2 size={13} className="animate-spin" /> : <FolderDown size={13} />}
+          Docs
+        </button>
+        {notebookReady && (
+        <button
+          onClick={handleExportAll}
+          disabled={anyLoading}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all border border-slate-700 hover:border-[#76b900] bg-black/80 backdrop-blur-sm"
+          style={{ color: exportAllLoading ? '#4a7300' : '#76b900' }}
+          title="Download docs + notebook as zip"
+        >
+          {exportAllLoading ? <Loader2 size={13} className="animate-spin" /> : <Package size={13} />}
+          {exportAllLoading ? 'Generating...' : 'Export All'}
+        </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // Abbreviated labels for column headers at medium/tablet widths
 const LAYER_SHORT_LABELS: Record<string, string> = {
@@ -29,6 +136,14 @@ export default function Home() {
   const [focusLayer, setFocusLayer]           = useState<Layer | null>(null);
   const [dropdownLayer, setDropdownLayer]     = useState<Layer | null>(null);
   const [sidebarOpen, setSidebarOpen]         = useState(false);
+  const [goalSpec, setGoalSpec]               = useState<GoalSpec | null>(null);
+  const [notebookReady, setNotebookReady]     = useState(false);
+  const [cachedNotebook, setCachedNotebook]   = useState<string | null>(null);
+
+  const handleGoalSpecReady = useCallback((spec: GoalSpec) => {
+    setGoalSpec(spec);
+    setMode('goalspec');
+  }, []);
 
   const handleSelectWorkflow = useCallback((wf: Workflow) => {
     setActiveWorkflow(wf);
@@ -53,6 +168,8 @@ export default function Home() {
     setActiveWorkflow(null);
     setActiveStepIndex(0);
     setHoveredService(null);
+    setNotebookReady(false);
+    setCachedNotebook(null);
   }, []);
 
   const handleStepChange = useCallback((index: number) => {
@@ -98,11 +215,14 @@ export default function Home() {
         activeWorkflow={activeWorkflow}
         activeStepIndex={activeStepIndex}
         hoveredService={hoveredService}
+        goalSpec={goalSpec}
+        onGoalSpecReady={handleGoalSpecReady}
         onSelectWorkflow={handleSelectWorkflow}
         onExplore={handleExplore}
         onStepChange={handleStepChange}
         onExitWorkflow={handleExitWorkflow}
         onBackToInitial={handleBackToInitial}
+        onNotebookReady={(nb: string) => { setNotebookReady(true); setCachedNotebook(nb); }}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
@@ -128,6 +248,12 @@ export default function Home() {
               <p className="text-slate-500 text-sm truncate">
                 <span className="text-slate-300 font-semibold">AI Ecosystem Visualizer</span>
                 <span className="hidden lg:inline text-slate-600"> — Describe your goal or explore all 25 services</span>
+              </p>
+            )}
+            {mode === 'goalspec' && (
+              <p className="text-slate-500 text-sm truncate">
+                <span className="text-[#76b900] font-semibold">Requirements Analysis</span>
+                <span className="hidden lg:inline"> — Review inferred requirements, then generate service path</span>
               </p>
             )}
             {mode === 'explore' && (
@@ -306,6 +432,13 @@ export default function Home() {
               onClickService={handleClickService}
               focusLayer={focusLayer}
             />
+
+            {/* Export buttons — bottom-left of graph, visible only in workflow mode */}
+            {mode === 'workflow' && activeWorkflow && goalSpec && (
+              <div className="absolute bottom-4 left-4 flex gap-2 z-20">
+                <ExportButtons goalSpec={goalSpec} workflow={activeWorkflow} notebookReady={notebookReady} cachedNotebook={cachedNotebook} />
+              </div>
+            )}
           </div>
         </div>
       </div>

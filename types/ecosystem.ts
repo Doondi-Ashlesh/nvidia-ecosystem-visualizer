@@ -53,7 +53,52 @@ export type Workflow = {
 };
 
 /** App-level mode driving which visual state is shown */
-export type AppMode = 'initial' | 'explore' | 'workflow';
+export type AppMode = 'initial' | 'goalspec' | 'explore' | 'workflow';
+
+// ── Stage 1: Goal Spec types (analyze-requirements output) ────────────────────
+
+/** A single measurable performance target derived from the user's goal */
+export interface PerformanceGoal {
+  metric: string;           // e.g. "inference_latency_p95", "retrieval_recall_at_10"
+  target: string;           // e.g. "<200ms", ">85%", ">99.9%"
+  rationale: string;        // why this target was set
+}
+
+/** A requirement the system inferred that the user didn't explicitly state */
+export interface InferredRequirement {
+  requirement: string;      // e.g. "output guardrails for medical safety"
+  reason: string;           // e.g. "healthcare domain requires explainable, safe outputs"
+}
+
+/** A gap — something the user should have specified but didn't */
+export interface GoalGap {
+  gap: string;              // e.g. "no training dataset specified"
+  suggestion: string;       // e.g. "specify data source or use synthetic data via NeMo Curator"
+}
+
+/** A conflict — contradictory or impossible requirements */
+export interface GoalConflict {
+  conflict: string;         // e.g. "real-time inference on consumer GPU with 70B model"
+  severity: 'warning' | 'blocking';
+  suggestion: string;       // how to resolve
+}
+
+/** Complete structured goal spec — output of Stage 1 (POST /api/analyze-requirements) */
+export interface GoalSpec {
+  domain: string;           // e.g. "clinical decision support"
+  use_case_type: string;    // e.g. "real-time inference + retrieval"
+  performance_goals: PerformanceGoal[];
+  constraints: {
+    compliance: string[];   // e.g. ["HIPAA", "SOC2"]
+    hardware: string;       // e.g. "cloud GPU (A100/H100)"
+    scale: string;          // e.g. "multi-tenant, hospital-grade"
+    other: string[];        // any additional constraints
+  };
+  inferred_requirements: InferredRequirement[];
+  gaps: GoalGap[];
+  conflicts: GoalConflict[];
+  summary: string;          // 2-3 sentence enriched goal description
+}
 
 // NVIDIA brand palette: green only — no layer-specific accent colors
 const NV_GREEN = '#76b900';

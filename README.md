@@ -129,6 +129,10 @@ Create `.env.local` in the project root:
 ```env
 NVIDIA_API_KEY=your_nvidia_api_key_here
 
+# Self-hosted OpenAI-compatible NIM (e.g. Brev) — chat only; embeddings stay on integrate.api.nvidia.com
+# NIM_BASE_URL=http://your-brev-ip:8000/v1
+# NIM_CHAT_MODEL=your-served-model-id   # defaults to nvidia/nemotron-3-super-120b-a12b if unset
+
 # Nemotron chain-of-thought (adds latency). Omit or set false for faster path generation.
 # NIM_REASONING=true
 
@@ -137,6 +141,8 @@ NVIDIA_API_KEY=your_nvidia_api_key_here
 ```
 
 **`NIM_REASONING`** — When unset, empty, `false`, or `0`, path generation **does not** send `reasoning mode ON` to Nemotron (default). Set to **`true`** or **`1`** to enable NVIDIA’s reasoning trace (often slower; the sidebar can show the reasoning panel when the model returns it).
+
+**`NIM_BASE_URL` / `NIM_CHAT_MODEL`** — Point **chat completions** at a self-hosted NIM (must be OpenAI-compatible `/v1/chat/completions`). Skill **embeddings** in `lib/skills-retriever.ts` still use the shared NVIDIA API unless you change that file. If your Next.js app runs elsewhere (e.g. Vercel), the server must be able to **reach** your Brev URL (network, firewall, HTTPS).
 
 ### Run
 

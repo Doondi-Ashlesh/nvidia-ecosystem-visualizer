@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large binary media — keep on disk, never commit
+docs/*.mp4
+docs/*.mov
+docs/*.avi
+docs/*.mkv
+docs/*.webm
+
+# Embedded git repos from other Claude sessions (worktrees)
+.claude/worktrees/
+
+# Local node_modules and build

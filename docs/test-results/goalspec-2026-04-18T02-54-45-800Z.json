@@ -1,0 +1,896 @@
+{
+  "capturedAt": "2026-04-18T02:54:45.802Z",
+  "mode": "draft",
+  "grades": [
+    {
+      "case": {
+        "domain": "healthcare",
+        "kind": "vague",
+        "input": "help doctors make better decisions at hospitals",
+        "expectCompliance": [
+          "HIPAA"
+        ],
+        "minInferred": 2
+      },
+      "ok": true,
+      "latencyMs": 28595,
+      "perfGoalsCount": 3,
+      "perfGoalsWithNumericTarget": 3,
+      "inferredCount": 3,
+      "gapsCount": 0,
+      "conflictsCount": 2,
+      "complianceFound": [
+        "HIPAA",
+        "GDPR (if operating in EU)",
+        "FDA SaMD Class II (Software as a Medical Device)"
+      ],
+      "summaryLen": 307,
+      "domainLabel": "Healthcare / Clinical Decision Support",
+      "notes": [
+        "vague input but no gaps identified"
+      ],
+      "score": 9,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Healthcare / Clinical Decision Support",
+        "use_case_type": "AI-assisted clinical decision support system (CDSS) for diagnosis and treatment recommendations",
+        "performance_goals": [
+          {
+            "metric": "Model AUC-ROC on held-out validation set",
+            "target": "≥0.88",
+            "rationale": "Ensures the AI provides discriminative power comparable to expert clinicians for disease detection."
+          },
+          {
+            "metric": "Average inference latency per recommendation",
+            "target": "≤200 ms",
+            "rationale": "Low latency is critical for real-time use at the point of care without disrupting workflow."
+          },
+          {
+            "metric": "Clinician satisfaction score (Likert 1‑5)",
+            "target": "≥4.2",
+            "rationale": "High satisfaction correlates with adoption and sustained use of the CDSS in clinical practice."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "HIPAA",
+            "GDPR (if operating in EU)",
+            "FDA SaMD Class II (Software as a Medical Device)"
+          ],
+          "hardware": "Hospital‑grade GPU servers (NVIDIA A100 or newer) with ≥32 GB GPU memory; optional edge inference via NVIDIA Jetson AGX for low‑latency sites",
+          "scale": "Support up to 500 concurrent clinicians, processing ~10 000 patient records per day across multiple departments",
+          "other": [
+            "Provide model explainability (e.g., SHAP values) for each recommendation",
+            "Maintain immutable audit logs of all AI‑generated suggestions and clinician actions"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Real‑time integration with existing EHR systems via HL7/FHIR standards to pull patient vitals, labs, and medication data",
+            "reason": "Without seamless data flow, the CDSS cannot generate timely, context‑aware recommendations, limiting its utility."
+          },
+          {
+            "reason": "Clinicians need to understand the rationale behind AI suggestions to trust and act on them; regulators also require transparency for SaMD approval.",
+            "requirement": "Model explainability and uncertainty quantification (e.g., feature importance, confidence intervals) built into the user interface"
+          },
+          {
+            "requirement": "Continuous monitoring and retraining pipeline to detect concept drift and update model performance",
+            "reason": "Clinical data distributions shift over time (new protocols, seasonal outbreaks); without monitoring, model accuracy can degrade silently."
+          }
+        ],
+        "conflicts": [
+          {
+            "conflict": "Low latency target (≤200 ms) vs. high model complexity needed to achieve AUC ≥0.88",
+            "severity": "warning",
+            "suggestion": "Apply model distillation, quantization, or use TensorRT‑optimized inference to retain accuracy while meeting latency goals."
+          },
+          {
+            "conflict": "Data privacy regulations (HIPAA/GDPR) vs. need for large, diverse training datasets across institutions",
+            "severity": "warning",
+            "suggestion": "Adopt federated learning or secure multi‑party computation approaches, combined with rigorous de‑identification, to train on multi‑site data without exposing PHI."
+          }
+        ],
+        "summary": "The goal is to deploy a real‑time, explainable AI clinical decision support system that integrates with hospital EHRs, delivers diagnostic recommendations with AUC ≥0.88 and sub‑200 ms latency, and achieves clinician satisfaction scores above 4.2/5, all while meeting HIPAA, GDPR, and FDA SaMD requirements.",
+        "gaps": []
+      }
+    },
+    {
+      "case": {
+        "domain": "healthcare",
+        "kind": "detailed",
+        "input": "Build a HIPAA-compliant clinical decision support system for a 500-bed hospital. Process EHR data, integrate with Epic via HL7 FHIR, provide triage recommendations with <500ms p95 latency, support 10K queries/day, include audit logs, de-identify all training data.",
+        "expectCompliance": [
+          "HIPAA"
+        ],
+        "minPerfGoals": 4
+      },
+      "ok": true,
+      "latencyMs": 119845,
+      "perfGoalsCount": 4,
+      "perfGoalsWithNumericTarget": 4,
+      "inferredCount": 2,
+      "gapsCount": 3,
+      "conflictsCount": 2,
+      "complianceFound": [
+        "HIPAA",
+        "21 CFR Part 11 (electronic records)"
+      ],
+      "summaryLen": 398,
+      "domainLabel": "Healthcare / Clinical Decision Support",
+      "notes": [],
+      "score": 10,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Healthcare / Clinical Decision Support",
+        "use_case_type": "Real-time triage recommendation system",
+        "performance_goals": [
+          {
+            "metric": "95th percentile response latency",
+            "target": "<=500 ms",
+            "rationale": "Ensures timely triage recommendations for clinicians at point of care."
+          },
+          {
+            "metric": "System availability (uptime)",
+            "target": ">=99.9%",
+            "rationale": "Critical for continuous clinical operations and patient safety."
+          },
+          {
+            "metric": "PHI de-identification recall",
+            "target": ">=99.5%",
+            "rationale": "Guarantees HIPAA compliance by removing protected health information from all training data."
+          },
+          {
+            "metric": "Audit log completeness",
+            "target": "100% of access events logged",
+            "rationale": "Required for HIPAA audit trails, accountability, and forensic analysis."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "HIPAA",
+            "21 CFR Part 11 (electronic records)"
+          ],
+          "hardware": "On-premise private cloud or HIPAA-eligible public cloud (AWS/Azure/GCP) with GPU inference nodes (e.g., NVIDIA A100 or T4)",
+          "scale": "Support 500-bed hospital, average 10K queries/day (~0.12 QPS), peak 2x average (~0.24 QPS) while maintaining latency SLA",
+          "other": [
+            "HL7 FHIR R4 integration with Epic",
+            "Role-based access control (RBAC)",
+            "Encryption at rest (AES-256) and in transit (TLS 1.2+)"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Continuous model performance monitoring and drift detection",
+            "reason": "Ensures triage recommendations remain accurate as patient populations, disease prevalence, and clinical guidelines evolve over time."
+          },
+          {
+            "requirement": "Explainability interface for clinicians (e.g., SHAP values, attention highlights)",
+            "reason": "Builds trust, supports clinical validation, and meets regulatory expectations for transparent decision support."
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Target clinical accuracy or performance metric for triage recommendations (e.g., sensitivity, specificity, AUC)",
+            "suggestion": "Define acceptable accuracy thresholds based on clinical risk (e.g., >=85% sensitivity for high-acuity cases)."
+          },
+          {
+            "gap": "Audit log retention period and storage requirements",
+            "suggestion": "Specify retention duration (e.g., 6 years per HIPAA) and secure, tamper-evident storage solution."
+          },
+          {
+            "gap": "Model retraining and versioning schedule",
+            "suggestion": "Establish frequency (e.g., quarterly) and process for validating new model versions before deployment."
+          }
+        ],
+        "conflicts": [
+          {
+            "conflict": "Ultra-low latency (<500ms p95) vs. using complex deep learning models that may increase inference time",
+            "severity": "warning",
+            "suggestion": "Consider model optimization techniques (quantization, pruning, distillation) or hardware acceleration to meet latency without sacrificing accuracy."
+          },
+          {
+            "conflict": "Complete de-identification of all training data vs. potential loss of clinically relevant features that could reduce model accuracy",
+            "severity": "warning",
+            "suggestion": "Apply advanced de-identification methods (e.g., synthetic data generation, differential privacy) that preserve statistical utility while removing PHI."
+          }
+        ],
+        "summary": "A HIPAA-compliant, real-time clinical decision support system for a 500-bed hospital that ingests EHR data via Epic HL7 FHIR, delivers triage recommendations under 500ms latency at 95th percentile, handles 10K daily queries, maintains comprehensive audit logs, and ensures all training data is fully de-identified, while incorporating model monitoring, explainability, and robust security controls."
+      }
+    },
+    {
+      "case": {
+        "domain": "fraud",
+        "kind": "vague",
+        "input": "catch fraud in bank transactions",
+        "expectCompliance": [
+          "PCI",
+          "SOC"
+        ],
+        "minInferred": 2
+      },
+      "ok": true,
+      "latencyMs": 20665,
+      "perfGoalsCount": 5,
+      "perfGoalsWithNumericTarget": 5,
+      "inferredCount": 4,
+      "gapsCount": 4,
+      "conflictsCount": 2,
+      "complianceFound": [
+        "PCI DSS v4.0",
+        "GDPR (EU) / CCPA (if applicable)",
+        "BSA/AML regulations (e.g., OFAC sanctions screening)",
+        "Basel III operational risk guidelines"
+      ],
+      "summaryLen": 531,
+      "domainLabel": "Financial Services – Banking Fraud Detection",
+      "notes": [],
+      "score": 9,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Financial Services – Banking Fraud Detection",
+        "use_case_type": "Real-time transaction monitoring and anomaly detection",
+        "performance_goals": [
+          {
+            "metric": "Detection Recall (True Positive Rate)",
+            "target": "≥ 95%",
+            "rationale": "Ensures most fraudulent transactions are caught to minimize financial loss."
+          },
+          {
+            "metric": "False Positive Rate (FPR)",
+            "target": "≤ 0.5% of legitimate transactions",
+            "rationale": "Kills unnecessary customer friction and operational overhead from false alerts."
+          },
+          {
+            "metric": "Inference Latency per Transaction",
+            "target": "≤ 200 ms (95th percentile)",
+            "rationale": "Allows real‑time blocking or challenge before settlement, preserving user experience."
+          },
+          {
+            "metric": "System Throughput",
+            "target": "≥ 15,000 transactions per second (TPS) peak",
+            "rationale": "Supports high‑volume retail banking traffic during peak periods (e.g., paydays, holidays)."
+          },
+          {
+            "metric": "Model Retraining Frequency",
+            "target": "Full refresh ≤ 24 h, incremental updates ≤ 1 h",
+            "rationale": "Keeps the model current with evolving fraud patterns and new threat vectors."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "PCI DSS v4.0",
+            "GDPR (EU) / CCPA (if applicable)",
+            "BSA/AML regulations (e.g., OFAC sanctions screening)",
+            "Basel III operational risk guidelines"
+          ],
+          "hardware": "NVIDIA GPU-accelerated servers (e.g., A100 or T4) for model inference; CPU‑only fallback for preprocessing; optional Triton Inference Server.",
+          "scale": "Daily transaction volume: 100M–1B+; peak concurrent users: up to 500k; geographic distribution: multi‑region.",
+          "other": [
+            "Model explainability for audit trails (e.g., SHAP values per alert)",
+            "End‑to‑end encryption of transaction data in transit and at rest",
+            "Role‑based access control (RBAC) and audit logging for all model/pipeline changes"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Real-time streaming ingest (e.g., Apache Kafka or Pulsar) with exactly‑once semantics",
+            "reason": "Fraud detection must operate on the live transaction stream; any loss or duplication could miss fraud or cause double‑counting."
+          },
+          {
+            "requirement": "Feature store with low-latency retrieval (e.g., Feast or custom Redis-backed store)",
+            "reason": "Consistent, up-to-date customer and transaction features (velocity, geo, device) are critical for accurate model scoring."
+          },
+          {
+            "requirement": "Feedback loop with automated labeling from fraud investigations and chargeback data",
+            "reason": "Supervised models decay without fresh labeled examples; a closed-loop ensures continuous improvement."
+          },
+          {
+            "requirement": "Model governance framework (versioning, A/B testing, canary rollout)",
+            "reason": "Regulatory compliance and risk management require traceable model changes and performance validation before full deployment."
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Transaction volume and peak TPS expectations not specified",
+            "suggestion": "Clarify expected daily transaction count and peak load to size hardware and streaming infrastructure."
+          },
+          {
+            "gap": "Acceptable cost per false positive (e.g., operational review cost) not defined",
+            "suggestion": "Define a cost‑benefit target to balance recall vs. precision based on business impact."
+          },
+          {
+            "gap": "Geographic/jurisdictional scope for data residency and regulations not given",
+            "suggestion": "Identify primary markets (e.g., EU, US, APAC) to tailor compliance controls and data localization."
+          },
+          {
+            "gap": "Latency tolerance for downstream actions (e.g., block, challenge, or allow) not detailed",
+            "suggestion": "Specify whether a hard decline must happen within 200 ms or if a slightly higher latency is acceptable for step‑up authentication."
+          }
+        ],
+        "conflicts": [
+          {
+            "metric": "High Recall vs. Low False Positive Rate",
+            "conflict": "Increasing recall often raises false positives, potentially violating the ≤0.5% FPR target.",
+            "severity": "warning",
+            "suggestion": "Employ cost‑sensitive learning or threshold tuning; consider a two‑stage model (high‑recall screening + precision‑focused second stage)."
+          },
+          {
+            "metric": "Low Latency vs. Model Complexity",
+            "conflict": "More complex models (e.g., deep ensembles) improve detection but may exceed the 200 ms latency budget.",
+            "severity": "warning",
+            "suggestion": "Use model distillation or GPU‑optimized inference (TensorRT) to meet latency while preserving accuracy."
+          }
+        ],
+        "summary": "The goal is to build a real‑time, GPU‑accelerated fraud detection system for bank transactions that catches at least 95 % of fraud while keeping false alerts below 0.5 %, processing each transaction in under 200 ms and sustaining peak throughput of 15k TPS. The solution must satisfy PCI DSS, GDPR, AML and other regulatory constraints, incorporate a streaming feature store, feedback‑loop labeling, explainability, and robust model governance, and be scalable to hundreds of millions of daily transactions across multiple regions."
+      }
+    },
+    {
+      "case": {
+        "domain": "fraud",
+        "kind": "detailed",
+        "input": "Real-time credit card fraud detection at 50K TPS, <20ms p99 decision latency, integrate with Kafka event stream, SOC2 compliance, use graph features, deploy on A100 GPUs, explainability for declined transactions, weekly retraining on last 90 days of data.",
+        "expectCompliance": [
+          "SOC2",
+          "PCI"
+        ],
+        "minPerfGoals": 4
+      },
+      "ok": true,
+      "latencyMs": 84494,
+      "perfGoalsCount": 5,
+      "perfGoalsWithNumericTarget": 5,
+      "inferredCount": 4,
+      "gapsCount": 5,
+      "conflictsCount": 3,
+      "complianceFound": [
+        "SOC2 Type II"
+      ],
+      "summaryLen": 559,
+      "domainLabel": "Financial Services – Real-time Fraud Detection",
+      "notes": [],
+      "score": 9,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Financial Services – Real-time Fraud Detection",
+        "use_case_type": "Online ML inference with streaming feature engineering and explainability",
+        "performance_goals": [
+          {
+            "metric": "Throughput (transactions per second)",
+            "target": "50000 TPS",
+            "rationale": "Matches the required peak transaction volume for the credit card processing pipeline."
+          },
+          {
+            "metric": "Decision latency (p99 end-to-end from Kafka consume to fraud decision output)",
+            "target": "<20 ms",
+            "rationale": "Ensures real-time blocking decisions do not degrade user experience or transaction flow."
+          },
+          {
+            "metric": "Model predictive performance (AUC-ROC)",
+            "target": ">=0.95",
+            "rationale": "High discriminative power is needed to catch fraud while keeping false alarms low."
+          },
+          {
+            "metric": "Explainability latency (p99 additional time for SHAP values on declined transactions)",
+            "target": "<5 ms",
+            "rationale": "Provides timely explanations for compliance and customer service without breaking the overall latency budget."
+          },
+          {
+            "metric": "Weekly retraining job completion time on A100 cluster",
+            "target": "<2 hours",
+            "rationale": "Allows timely model updates with the latest 90‑day data while keeping training windows short enough to avoid interference with inference."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "SOC2 Type II"
+          ],
+          "hardware": "NVIDIA A100 40GB GPUs (minimum 8 GPUs for inference scaling; additional GPUs for training)",
+          "scale": "Peak load 50K TPS, burstable to 75K TPS; horizontal scaling via Kubernetes pods",
+          "other": [
+            "Kafka 2.+ event stream integration (exactly-once semantics)",
+            "Feature store for real-time graph features",
+            "Data retention: 90 days of raw transactions for training",
+            "Weekly retraining cadence"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Real-time graph feature computation service (e.g., GPU‑accelerated Neo4j/TigerGraph or pre‑computed node embeddings with ANN lookup)",
+            "reason": "Graph features are central to the model but must be fetched within the latency budget; a dedicated low‑latency feature service prevents CPU‑GPU bottlenecks."
+          },
+          {
+            "requirement": "Model serving platform with dynamic batching and GPU utilization (NVIDIA Triton Inference Server)",
+            "reason": "To achieve 50K TPS with <20ms p99 latency, the serving system must efficiently batch requests and keep GPUs saturated."
+          },
+          {
+            "requirement": "Monitoring, alerting, and observability stack (Prometheus/Grafana + Loki) for data drift, model performance, and system health",
+            "reason": "SOC2 compliance and production reliability require continuous visibility into latency, error rates, and feature/distribution shifts."
+          },
+          {
+            "requirement": "Encryption at rest (AES-256) and in transit (TLS 1.2+) plus role‑based access control for Kafka, feature store, and model artifacts",
+            "reason": "Financial data and model assets must be protected to meet SOC2 security controls and regulatory expectations."
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Target fraud prevalence or class imbalance ratio (e.g., expected fraud rate per 10K transactions)",
+            "suggestion": "Specify the expected positive rate to calibrate class‑weighting, evaluation metrics, and alert thresholds."
+          },
+          {
+            "gap": "Chosen explainability method (SHAP, LIME, counterfactual, or surrogate) and whether it is computed synchronously or asynchronously",
+            "suggestion": "Define the technique and latency budget allocation to ensure the <20ms p99 goal remains achievable."
+          },
+          {
+            "gap": "Kafka topic partitioning scheme and consumer group sizing needed to sustain 50K TPS",
+            "suggestion": "Calculate required partitions (e.g., 100 partitions @ 500 msgs/sec each) and consumer instances to avoid back‑pressure."
+          },
+          {
+            "gap": "Storage backend for feature vectors and model checkpoints (e.g., S3, EFS, or NVMe over fabric)",
+            "suggestion": "Select a low‑latency, highly available store that can serve feature lookups and support rapid model rollout."
+          },
+          {
+            "gap": "Fault‑tolerance and autoscaling policy (e.g., Kubernetes HPA thresholds, pod disruption budgets)",
+            "suggestion": "Detail scaling triggers based on CPU/GPU utilization and lag metrics to guarantee availability under load spikes."
+          }
+        ],
+        "conflicts": [
+          {
+            "conflict": "Graph feature computation may increase per‑transaction latency beyond the 20 ms p99 target if done naively on CPU",
+            "severity": "warning",
+            "suggestion": "Pre‑compute static graph embeddings and use GPU‑accelerated approximate nearest‑neighbor lookup, or push graph ops to the GPU via libraries like cuGraph."
+          },
+          {
+            "conflict": "Weekly retraining on 90 days of data could compete for the same A100 GPUs used for inference, risking latency spikes",
+            "severity": "warning",
+            "suggestion": "Separate training workload onto a dedicated GPU node pool or use spot/preemptible instances, and schedule retraining during low‑traffic windows (e.g., early morning UTC)."
+          },
+          {
+            "conflict": "Providing explainability (SHAP) for every declined transaction adds extra compute that may jeopardize the latency budget",
+            "severity": "warning",
+            "suggestion": "Compute explainability asynchronously for a sampled subset of declines, or use a lightweight surrogate model (e.g., linear approximation) that adds <1 ms overhead."
+          }
+        ],
+        "summary": "The project aims to build a SOC2‑compliant, real‑time credit‑card fraud detection service that ingests Kafka event streams at 50K TPS, makes sub‑20 ms p99 decisions using GPU‑accelerated graph‑enhanced models on A100 hardware, provides rapid explainability for blocked transactions, and retrains weekly on the most recent 90 days of data. Achieving this requires low‑latency feature serving, efficient Triton‑based inference, robust monitoring, and careful separation of training and inference workloads to meet performance, compliance, and operational goals."
+      }
+    },
+    {
+      "case": {
+        "domain": "recommendation",
+        "kind": "vague",
+        "input": "suggest products to shoppers",
+        "minInferred": 2
+      },
+      "ok": false,
+      "latencyMs": 26708,
+      "perfGoalsCount": 0,
+      "perfGoalsWithNumericTarget": 0,
+      "inferredCount": 0,
+      "gapsCount": 0,
+      "conflictsCount": 0,
+      "complianceFound": [],
+      "summaryLen": 0,
+      "domainLabel": "",
+      "notes": [
+        "http 500: {\"error\":\"Goal analysis failed — check NVIDIA_API_KEY\",\"detail\":\"GoalSpec failed schema validation: constraints.hardware: Invalid input: expected string, received array; constraints.scale: Invalid inp"
+      ],
+      "score": 0,
+      "raw": {
+        "error": "Goal analysis failed — check NVIDIA_API_KEY",
+        "detail": "GoalSpec failed schema validation: constraints.hardware: Invalid input: expected string, received array; constraints.scale: Invalid input: expected string, received array"
+      }
+    },
+    {
+      "case": {
+        "domain": "recommendation",
+        "kind": "detailed",
+        "input": "E-commerce recommendation engine for 5M-SKU catalog, 20M monthly users, support cold-start for new items, <100ms serving latency, A/B test framework, GDPR consent handling, optimize for CTR and margin.",
+        "expectCompliance": [
+          "GDPR"
+        ],
+        "minPerfGoals": 4
+      },
+      "ok": false,
+      "latencyMs": 57112,
+      "perfGoalsCount": 0,
+      "perfGoalsWithNumericTarget": 0,
+      "inferredCount": 0,
+      "gapsCount": 0,
+      "conflictsCount": 0,
+      "complianceFound": [],
+      "summaryLen": 0,
+      "domainLabel": "",
+      "notes": [
+        "http 500: {\"error\":\"Goal analysis failed — check NVIDIA_API_KEY\",\"detail\":\"GoalSpec failed schema validation: conflicts.1.conflict: Too small: expected string to have >=1 characters; conflicts.1.severity: Inval"
+      ],
+      "score": 0,
+      "raw": {
+        "error": "Goal analysis failed — check NVIDIA_API_KEY",
+        "detail": "GoalSpec failed schema validation: conflicts.1.conflict: Too small: expected string to have >=1 characters; conflicts.1.severity: Invalid option: expected one of \"warning\"|\"blocking\"; conflicts.1.suggestion: Too small: expected string to have >=1 characters"
+      }
+    },
+    {
+      "case": {
+        "domain": "rag",
+        "kind": "vague",
+        "input": "make a chatbot that answers from our docs",
+        "minInferred": 2
+      },
+      "ok": true,
+      "latencyMs": 30352,
+      "perfGoalsCount": 4,
+      "perfGoalsWithNumericTarget": 4,
+      "inferredCount": 4,
+      "gapsCount": 5,
+      "conflictsCount": 3,
+      "complianceFound": [
+        "GDPR (if personal data present)",
+        "ISO 27001 (information security)",
+        "Internal data classification policies"
+      ],
+      "summaryLen": 392,
+      "domainLabel": "Enterprise Knowledge Management / Internal Documentation Q&A",
+      "notes": [],
+      "score": 10,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Enterprise Knowledge Management / Internal Documentation Q&A",
+        "use_case_type": "Retrieval-Augmented Generation (RAG) chatbot for document-based question answering",
+        "performance_goals": [
+          {
+            "metric": "Answer Accuracy (percentage of correct answers against a held‑out test set)",
+            "target": "≥ 90%",
+            "rationale": "Ensures the chatbot reliably extracts and synthesizes information from the source docs, meeting user trust thresholds."
+          },
+          {
+            "metric": "End‑to‑End Latency (time from user query to final answer)",
+            "target": "≤ 2.0 seconds (95th percentile)",
+            "rationale": "Provides a responsive conversational experience; higher latency degrades usability especially in real‑time support scenarios."
+          },
+          {
+            "metric": "Throughput (concurrent user sessions supported)",
+            "target": "≥ 100 simultaneous users",
+            "rationale": "Supports department‑scale adoption without degrading latency or accuracy."
+          },
+          {
+            "metric": "Hallucination Rate (percentage of answers containing unsupported facts)",
+            "target": "≤ 5%",
+            "rationale": "Limits misinformation, critical for internal compliance and decision‑making."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "GDPR (if personal data present)",
+            "ISO 27001 (information security)",
+            "Internal data classification policies"
+          ],
+          "hardware": "On‑prem GPU servers (e.g., NVIDIA A100) or equivalent cloud GPU instances; CPU fallback for embedding preprocessing",
+          "scale": "Document corpus size: up to 100 k files (~10 GB raw text); incremental updates daily",
+          "other": [
+            "Must support role‑based access control (RBAC) to restrict doc visibility",
+            "Multi‑language support (English primary, optional Spanish/French)"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Embedding model and vector store for semantic retrieval (e.g., Sentence‑Transformer + FAISS or Milvus)",
+            "reason": "Enables fast, relevant snippet selection from large doc sets, which is foundational to RAG accuracy."
+          },
+          {
+            "requirement": "Prompt engineering pipeline with safety filters and fallback to human escalation",
+            "reason": "Reduces hallucinations and ensures compliance when the model is uncertain."
+          },
+          {
+            "requirement": "Continuous ingestion pipeline (ETL) to re‑index docs on change with versioning",
+            "reason": "Keeps the chatbot up‑to‑date without manual re‑training, meeting freshness expectations."
+          },
+          {
+            "requirement": "Observability stack (logging, metrics, tracing, A/B testing framework)",
+            "reason": "Allows monitoring of latency, accuracy drift, and usage patterns for SLA compliance and iterative improvement."
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Exact document formats (PDF, HTML, Markdown, etc.) and average size",
+            "suggestion": "Conduct an inventory of source docs to size the embedding and storage requirements."
+          },
+          {
+            "gap": "Update frequency and change‑rate of the documentation",
+            "suggestion": "Define whether updates are batch‑daily, real‑time, or event‑driven to choose streaming vs batch indexing."
+          },
+          {
+            "gap": "User authentication method (SSO, LDAP, etc.)",
+            "suggestion": "Specify identity provider to integrate RBAC and audit logging."
+          },
+          {
+            "gap": "Target deployment environment (air‑gapped, VPC, public cloud)",
+            "suggestion": "Clarify infrastructure constraints to select appropriate hardware and data‑transfer mechanisms."
+          },
+          {
+            "gap": "Budget or cost ceiling for GPU usage and licensing",
+            "suggestion": "Estimate expected QPS to size instances and control OPEX."
+          }
+        ],
+        "conflicts": [
+          {
+            "metric": "Latency vs. Accuracy",
+            "conflict": "Using larger, more accurate LLMs increases latency; stricter latency targets may force smaller models that reduce answer quality.",
+            "severity": "warning",
+            "suggestion": "Adopt a hybrid approach: retrieve top‑k passages with a lightweight encoder, then rerank with a compact LLM; optionally cache frequent queries."
+          },
+          {
+            "metric": "Data Privacy vs. External API Use",
+            "conflict": "If using a third‑party LLM API (e.g., GPT‑4) to improve accuracy, internal docs may leave the trust boundary, violating GDPR/ISO‑27001.",
+            "severity": "blocking",
+            "suggestion": "Host the LLM internally (e.g., NVIDIA Triton with Llama‑2/ChatGLM) or enforce strict data‑processing agreements and anonymization before API calls."
+          },
+          {
+            "metric": "Real‑time Indexing vs. Index Stability",
+            "conflict": "Continuous re‑indexing can cause temporary retrieval inconsistencies, affecting accuracy; batch indexing improves stability but increases staleness.",
+            "severity": "warning",
+            "suggestion": "Implement a dual‑index strategy: a stable baseline index refreshed nightly, plus a delta index for recent changes merged query‑time."
+          }
+        ],
+        "summary": "The goal is to build an enterprise‑grade RAG chatbot that lets users ask natural‑language questions and receive accurate, source‑grounded answers from the internal documentation corpus. It must meet strict accuracy (>90%) and latency (<2 s) targets while supporting at least 100 concurrent users, ensuring data privacy, and providing continuous updates with observability and access controls."
+      }
+    },
+    {
+      "case": {
+        "domain": "rag",
+        "kind": "detailed",
+        "input": "Enterprise RAG chatbot over 50GB of PDF technical manuals, citations with page numbers, respond in <3s, 500 concurrent users, SSO and RBAC for sensitive docs, hallucination rate <2% on eval set, on-premise deployment (no external API calls).",
+        "minPerfGoals": 4
+      },
+      "ok": true,
+      "latencyMs": 54829,
+      "perfGoalsCount": 5,
+      "perfGoalsWithNumericTarget": 5,
+      "inferredCount": 4,
+      "gapsCount": 5,
+      "conflictsCount": 3,
+      "complianceFound": [
+        "GDPR",
+        "ISO 27001",
+        "SOC 2 Type II",
+        "NIST CSF"
+      ],
+      "summaryLen": 555,
+      "domainLabel": "Enterprise AI / Retrieval-Augmented Generation (RAG)",
+      "notes": [],
+      "score": 10,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Enterprise AI / Retrieval-Augmented Generation (RAG)",
+        "use_case_type": "Document-grounded conversational assistant for technical support",
+        "performance_goals": [
+          {
+            "metric": "95th percentile end-to-end response time",
+            "target": "<= 3 seconds",
+            "rationale": "Meets user experience requirement for interactive chatbot while maintaining throughput."
+          },
+          {
+            "metric": "Concurrent user capacity",
+            "target": ">= 500 simultaneous users with <= 5% error rate",
+            "rationale": "Ensures the system can handle peak enterprise load without degradation."
+          },
+          {
+            "metric": "Hallucination rate (factuality)",
+            "target": "<= 2% on held-out evaluation set",
+            "rationale": "Guarantees high trustworthiness of answers, critical for technical manuals."
+          },
+          {
+            "metric": "Retrieval recall (top-1 passage)",
+            "target": ">= 90%",
+            "rationale": "Ensures the relevant manual section is fetched before generation, reducing hallucinations."
+          },
+          {
+            "metric": "Citation accuracy (page number correctness)",
+            "target": ">= 95%",
+            "rationale": "Provides verifiable traceability to source documents for audit and compliance."
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "GDPR",
+            "ISO 27001",
+            "SOC 2 Type II",
+            "NIST CSF"
+          ],
+          "hardware": "On-premise server with >= 2x NVIDIA A100 40GB GPUs, >= 256GB RAM, NVMe SSD storage for vector index",
+          "scale": "Corpus size ~50GB PDF (~5M tokens), peak query rate ~100 queries/sec, support 500 concurrent users",
+          "other": [
+            "End-to-end encryption (AES-256 at rest, TLS 1.3 in transit)",
+            "SAML/OIDC SSO integration",
+            "Role-Based Access Control (RBAC) with audit logging",
+            "Automated backup and disaster recovery plan",
+            "Versioned document ingestion pipeline"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Document preprocessing pipeline (OCR, text extraction, semantic chunking, embedding generation) with incremental update support",
+            "reason": "Technical manuals may contain scanned pages, tables, and code snippets; efficient chunking and up-to-date embeddings are essential for retrieval quality and latency."
+          },
+          {
+            "requirement": "Vector database with GPU acceleration and horizontal sharding (e.g., Milvus or FAISS on GPU)",
+            "reason": "To achieve sub‑second retrieval at 500 concurrent users over a 50GB corpus, the index must be memory‑resident and searchable in parallel."
+          },
+          {
+            "requirement": "LLM serving optimization (TensorRT-LLM or NVIDIA Triton Inference Server) with prompt caching",
+            "reason": "Reduces generation latency to meet the <3s SLA while allowing larger models that lower hallucination rates."
+          },
+          {
+            "requirement": "Observability stack (metrics, distributed tracing, alerting) and user feedback loop for continuous hallucination reduction",
+            "reason": "Operational visibility ensures SLA compliance; feedback enables model retraining and prompt refinement to keep hallucination <2%."
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Specific hardware budget or exact GPU model count",
+            "suggestion": "Define CAPEX/OPEX limits or target utilization (e.g., 70% GPU avg) to right-size the deployment."
+          },
+          {
+            "gap": "Update frequency of the PDF technical manuals (e.g., daily, weekly)",
+            "suggestion": "Specify ingestion cadence to size the preprocessing pipeline and determine if near‑real‑time updates are needed."
+          },
+          {
+            "gap": "Composition and size of the hallucination evaluation set",
+            "suggestion": "Provide details on domain‑specific Q&A pairs, metrics used (e.g., FEVER, BERTScore), and validation frequency."
+          },
+          {
+            "gap": "Language requirements (English only, multilingual)",
+            "suggestion": "Clarify if translation or multilingual embeddings are required for global users."
+          },
+          {
+            "gap": "Uptime SLA (e.g., 99.9% monthly)",
+            "suggestion": "Add availability target to drive redundancy, load‑balancing, and disaster‑recovery design."
+          }
+        ],
+        "conflicts": [
+          {
+            "metric": "Hallucination rate <2% vs. Response time <3s",
+            "conflict": "Larger LLMs improve factuality but increase generation latency; achieving both may require aggressive optimization or model distillation.",
+            "severity": "warning",
+            "suggestion": "Benchmark multiple model sizes (e.g., 7B vs 13B) with TensorRT-LLM; consider a two‑stage approach: fast retrieval + lightweight generator with fallback to larger model for low‑confidence queries."
+          },
+          {
+            "metric": "500 concurrent users vs. On‑premise GPU capacity",
+            "conflict": "A single A100 may not sustain 500 concurrent generation requests at <3s latency without queuing.",
+            "severity": "blocking",
+            "suggestion": "Plan for a GPU cluster (>=4 A100s) or implement request batching and dynamic scaling; alternatively, enforce a soft concurrency limit with queueing and client‑side throttling."
+          },
+          {
+            "metric": "SSO/RBAC overhead vs. Latency target",
+            "conflict": "Authentication and authorization checks can add 100‑300ms, eating into the 3s budget.",
+            "severity": "warning",
+            "suggestion": "Cache validated tokens (e.g., JWT) for short TTL (<5min) and offload auth to a sidecar or API gateway; measure and budget <=150ms for auth in latency SLA."
+          }
+        ],
+        "summary": "The project calls for an on‑premise, enterprise‑grade RAG chatbot that can answer questions over a 50GB corpus of technical PDFs with sub‑second retrieval, <3s end‑to‑end response, and hallucination rates under 2% for up to 500 concurrent users. It must enforce SSO and RBAC, provide page‑level citations, meet GDPR/ISO‑27001 compliance, and run without external API calls, requiring a robust preprocessing pipeline, GPU‑accelerated vector store, optimized LLM serving, and comprehensive monitoring to satisfy performance, security, and operational goals."
+      }
+    },
+    {
+      "case": {
+        "domain": "speech",
+        "kind": "vague",
+        "input": "turn meeting recordings into text",
+        "minInferred": 2
+      },
+      "ok": true,
+      "latencyMs": 26167,
+      "perfGoalsCount": 3,
+      "perfGoalsWithNumericTarget": 3,
+      "inferredCount": 3,
+      "gapsCount": 3,
+      "conflictsCount": 1,
+      "complianceFound": [
+        "GDPR",
+        "CCPA",
+        "SOC 2 Type II"
+      ],
+      "summaryLen": 319,
+      "domainLabel": "Speech-to-Text Transcription for Enterprise Meetings",
+      "notes": [],
+      "score": 10,
+      "exitReason": "draft_only",
+      "raw": {
+        "domain": "Speech-to-Text Transcription for Enterprise Meetings",
+        "use_case_type": "Audio transcription with speaker diarization",
+        "performance_goals": [
+          {
+            "metric": "Word Error Rate (WER)",
+            "target": "<=12%",
+            "rationale": "Ensures high accuracy for meeting minutes and actionable items"
+          },
+          {
+            "metric": "End-to-end latency",
+            "target": "<=2 seconds per 30-second audio chunk (real-time factor <=0.07)",
+            "rationale": "Allows near-real-time transcription for live meeting captioning"
+          },
+          {
+            "metric": "Throughput",
+            "target": ">=500 meeting hours per day on a single GPU node",
+            "rationale": "Supports scaling to large organizations with many concurrent meetings"
+          }
+        ],
+        "constraints": {
+          "compliance": [
+            "GDPR",
+            "CCPA",
+            "SOC 2 Type II"
+          ],
+          "hardware": "NVIDIA A100 40GB GPU (or equivalent) with sufficient CPU RAM for preprocessing",
+          "scale": "Support up to 100 concurrent meeting streams, each up to 4 hours length",
+          "other": [
+            "Must operate in a VPC with data-at-rest encryption",
+            "Must provide API access for integration with calendar and collaboration tools"
+          ]
+        },
+        "inferred_requirements": [
+          {
+            "requirement": "Speaker diarization to label who said what",
+            "reason": "Meeting transcripts are useful only when attribution is clear for follow‑up actions"
+          },
+          {
+            "requirement": "Custom vocabulary / domain‑specific language model (e.g., product names, acronyms)",
+            "reason": "Reduces WER in technical meetings and improves actionable item detection"
+          },
+          {
+            "requirement": "Secure storage and retention policies for transcripts",
+            "reason": "Compliance with data protection regulations and corporate governance"
+          }
+        ],
+        "gaps": [
+          {
+            "gap": "Language(s) of the meetings",
+            "suggestion": "Specify primary language(s) (e.g., English, multilingual) to select appropriate ASR models"
+          },
+          {
+            "gap": "Audio quality expectations (e.g., microphone type, background noise)",
+            "suggestion": "Define required SNR or provide guidelines for recording equipment to ensure target WER"
+          },
+          {
+            "gap": "Real‑time vs batch processing need",
+            "suggestion": "Clarify whether live captioning is required or if post‑meeting transcription suffices"
+          }
+        ],
+        "conflicts": [
+          {
+            "conflict": "High accuracy (low WER) vs low latency",
+            "severity": "warning",
+            "suggestion": "Use a two‑pass approach: fast first pass for live captioning, second pass with larger model for final transcript"
+          }
+        ],
+        "summary": "The solution will transcribe enterprise meeting recordings into accurate, speaker‑labeled text with ≤12% WER and near‑real‑time latency, processing hundreds of meeting hours daily on GPU‑accelerated infrastructure while meeting GDPR/CCPA compliance and providing secure, searchable transcripts for downstream workflows."
+      }
+    },
+    {
+      "case": {
+        "domain": "speech",
+        "kind": "detailed",
+        "input": "Meeting transcription for 10-person video calls, real-time streaming at <500ms latency, speaker diarization, technical vocabulary adaptation (~500 jargon terms), punctuation + capitalization, summarization of key decisions, GDPR-compliant 30-day retention, English + Spanish.",
+        "expectCompliance": [
+          "GDPR"
+        ],
+        "minPerfGoals": 4
+      },
+      "ok": false,
+      "latencyMs": 51132,
+      "perfGoalsCount": 0,
+      "perfGoalsWithNumericTarget": 0,
+      "inferredCount": 0,
+      "gapsCount": 0,
+      "conflictsCount": 0,
+      "complianceFound": [],
+      "summaryLen": 0,
+      "domainLabel": "",
+      "notes": [
+        "http 500: {\"error\":\"Goal analysis failed — check NVIDIA_API_KEY\",\"detail\":\"GoalSpec failed schema validation: gaps.2.gap: Invalid input: expected string, received undefined; conflicts.2.conflict: Invalid input:"
+      ],
+      "score": 0,
+      "raw": {
+        "error": "Goal analysis failed — check NVIDIA_API_KEY",
+        "detail": "GoalSpec failed schema validation: gaps.2.gap: Invalid input: expected string, received undefined; conflicts.2.conflict: Invalid input: expected string, received undefined"
+      }
+    }
+  ]
+}
