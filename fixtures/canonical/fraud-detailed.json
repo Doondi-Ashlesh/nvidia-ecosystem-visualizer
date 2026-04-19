@@ -1,0 +1,185 @@
+{
+  "canonicalLabel": "fraud-detailed",
+  "description": "Real-time credit-card fraud detection at 50K TPS. Exercises: tabular-ML path (no LLM services), TensorRT + Triton serving stack, compliance (PCI DSS + SOC2), numeric latency budgets.",
+  "goal": "Real-time credit card fraud detection at 50K TPS, <20ms p99 decision latency, integrate with Kafka event stream, SOC2 compliance, use graph features, deploy on A100 GPUs, explainability for declined transactions, weekly retraining on last 90 days of data.",
+  "goalSpec": {
+    "domain": "Financial Services – Real-time Fraud Detection",
+    "use_case_type": "Online ML inference with streaming feature engineering and explainability",
+    "performance_goals": [
+      {
+        "metric": "Throughput (transactions per second)",
+        "target": "50000 TPS",
+        "rationale": "Matches the required peak transaction volume for the credit card processing pipeline."
+      },
+      {
+        "metric": "Decision latency (p99 end-to-end from Kafka consume to fraud decision output)",
+        "target": "<20 ms",
+        "rationale": "Ensures real-time blocking decisions do not degrade user experience or transaction flow."
+      },
+      {
+        "metric": "Model predictive performance (AUC-ROC)",
+        "target": ">=0.95",
+        "rationale": "High discriminative power is needed to catch fraud while keeping false alarms low."
+      },
+      {
+        "metric": "Explainability latency (p99 additional time for SHAP values on declined transactions)",
+        "target": "<5 ms",
+        "rationale": "Provides timely explanations for compliance and customer service without breaking the overall latency budget."
+      },
+      {
+        "metric": "Weekly retraining job completion time on A100 cluster",
+        "target": "<2 hours",
+        "rationale": "Allows timely model updates with the latest 90‑day data while keeping training windows short enough to avoid interference with inference."
+      }
+    ],
+    "constraints": {
+      "compliance": [
+        "SOC2 Type II"
+      ],
+      "hardware": "NVIDIA A100 40GB GPUs (minimum 8 GPUs for inference scaling; additional GPUs for training)",
+      "scale": "Peak load 50K TPS, burstable to 75K TPS; horizontal scaling via Kubernetes pods",
+      "other": [
+        "Kafka 2.+ event stream integration (exactly-once semantics)",
+        "Feature store for real-time graph features",
+        "Data retention: 90 days of raw transactions for training",
+        "Weekly retraining cadence"
+      ]
+    },
+    "inferred_requirements": [
+      {
+        "requirement": "Real-time graph feature computation service (e.g., GPU‑accelerated Neo4j/TigerGraph or pre‑computed node embeddings with ANN lookup)",
+        "reason": "Graph features are central to the model but must be fetched within the latency budget; a dedicated low‑latency feature service prevents CPU‑GPU bottlenecks."
+      },
+      {
+        "requirement": "Model serving platform with dynamic batching and GPU utilization (NVIDIA Triton Inference Server)",
+        "reason": "To achieve 50K TPS with <20ms p99 latency, the serving system must efficiently batch requests and keep GPUs saturated."
+      },
+      {
+        "requirement": "Monitoring, alerting, and observability stack (Prometheus/Grafana + Loki) for data drift, model performance, and system health",
+        "reason": "SOC2 compliance and production reliability require continuous visibility into latency, error rates, and feature/distribution shifts."
+      },
+      {
+        "requirement": "Encryption at rest (AES-256) and in transit (TLS 1.2+) plus role‑based access control for Kafka, feature store, and model artifacts",
+        "reason": "Financial data and model assets must be protected to meet SOC2 security controls and regulatory expectations."
+      }
+    ],
+    "gaps": [
+      {
+        "gap": "Target fraud prevalence or class imbalance ratio (e.g., expected fraud rate per 10K transactions)",
+        "suggestion": "Specify the expected positive rate to calibrate class‑weighting, evaluation metrics, and alert thresholds."
+      },
+      {
+        "gap": "Chosen explainability method (SHAP, LIME, counterfactual, or surrogate) and whether it is computed synchronously or asynchronously",
+        "suggestion": "Define the technique and latency budget allocation to ensure the <20ms p99 goal remains achievable."
+      },
+      {
+        "gap": "Kafka topic partitioning scheme and consumer group sizing needed to sustain 50K TPS",
+        "suggestion": "Calculate required partitions (e.g., 100 partitions @ 500 msgs/sec each) and consumer instances to avoid back‑pressure."
+      },
+      {
+        "gap": "Storage backend for feature vectors and model checkpoints (e.g., S3, EFS, or NVMe over fabric)",
+        "suggestion": "Select a low‑latency, highly available store that can serve feature lookups and support rapid model rollout."
+      },
+      {
+        "gap": "Fault‑tolerance and autoscaling policy (e.g., Kubernetes HPA thresholds, pod disruption budgets)",
+        "suggestion": "Detail scaling triggers based on CPU/GPU utilization and lag metrics to guarantee availability under load spikes."
+      }
+    ],
+    "conflicts": [
+      {
+        "conflict": "Graph feature computation may increase per‑transaction latency beyond the 20 ms p99 target if done naively on CPU",
+        "severity": "warning",
+        "suggestion": "Pre‑compute static graph embeddings and use GPU‑accelerated approximate nearest‑neighbor lookup, or push graph ops to the GPU via libraries like cuGraph."
+      },
+      {
+        "conflict": "Weekly retraining on 90 days of data could compete for the same A100 GPUs used for inference, risking latency spikes",
+        "severity": "warning",
+        "suggestion": "Separate training workload onto a dedicated GPU node pool or use spot/preemptible instances, and schedule retraining during low‑traffic windows (e.g., early morning UTC)."
+      },
+      {
+        "conflict": "Providing explainability (SHAP) for every declined transaction adds extra compute that may jeopardize the latency budget",
+        "severity": "warning",
+        "suggestion": "Compute explainability asynchronously for a sampled subset of declines, or use a lightweight surrogate model (e.g., linear approximation) that adds <1 ms overhead."
+      }
+    ],
+    "summary": "The project aims to build a SOC2‑compliant, real‑time credit‑card fraud detection service that ingests Kafka event streams at 50K TPS, makes sub‑20 ms p99 decisions using GPU‑accelerated graph‑enhanced models on A100 hardware, provides rapid explainability for blocked transactions, and retrains weekly on the most recent 90 days of data. Achieving this requires low‑latency feature serving, efficient Triton‑based inference, robust monitoring, and careful separation of training and inference workloads to meet performance, compliance, and operational goals."
+  },
+  "steps": [
+    {
+      "serviceId": "rapids",
+      "role": "GPU-accelerated ETL and graph feature engineering",
+      "action": "Ingest raw transaction streams and account relationship graph, compute neighbor embeddings and graph-based features using cuGraph, produce feature vectors and store them in a low-latency GPU-backed feature store.",
+      "inputs": [
+        "raw transaction logs (Kafka/Parquet)",
+        "account relationship graph (edge list)"
+      ],
+      "outputs": [
+        "feature vectors with graph embeddings (Parquet/GPU cache)",
+        "updated feature store snapshots"
+      ]
+    },
+    {
+      "serviceId": "tensorrt",
+      "role": "Model optimization for inference",
+      "action": "Convert the trained model to a TensorRT engine, applying FP16 precision and kernel tuning for A100.",
+      "inputs": [
+        "trained model checkpoint"
+      ],
+      "outputs": [
+        "TensorRT engine plan (.engine)"
+      ]
+    },
+    {
+      "serviceId": "model-optimizer",
+      "role": "Post-training compression (quantization/sparsity)",
+      "action": "Apply INT8 quantization and sparsity to the TensorRT engine to meet latency and GPU utilization targets.",
+      "inputs": [
+        "TensorRT engine plan"
+      ],
+      "outputs": [
+        "quantized TensorRT engine"
+      ]
+    },
+    {
+      "serviceId": "triton",
+      "role": "Inference serving with dynamic batching and autoscaling",
+      "action": "Deploy the guarded model bundle on Triton Inference Server, configure dynamic batching, monitor GPU utilization, and enable Kubernetes-based autoscaling.",
+      "inputs": [
+        "guarded model bundle"
+      ],
+      "outputs": [
+        "inference endpoint (HTTP/gRPC)",
+        "runtime metrics (latency, throughput, GPU util)"
+      ]
+    },
+    {
+      "serviceId": "ai-enterprise",
+      "role": "Enterprise-grade secure platform and operations",
+      "action": "Provide encrypted storage (AES-256), TLS 1.3, key management, immutable audit logging, RBAC, SOC2/PCCI DSS/GDPR compliance, and orchestrate the Triton deployment on Kubernetes with autoscaling and resource guarantees.",
+      "inputs": [
+        "triton deployment specs",
+        "audit log schema",
+        "encryption policies"
+      ],
+      "outputs": [
+        "production service (K8s)",
+        "compliance reports",
+        "monitoring dashboards"
+      ]
+    },
+    {
+      "serviceId": "ai-workbench",
+      "role": "Development, CI/CD, and release management",
+      "action": "Manage Git-based development environment, run unit/integration tests, perform canary deployments, and enable rollback; produce validated container images for promotion.",
+      "inputs": [
+        "model code",
+        "guarded model bundle",
+        "test suites"
+      ],
+      "outputs": [
+        "validated container images",
+        "CI/CD pipelines"
+      ]
+    }
+  ]
+}
