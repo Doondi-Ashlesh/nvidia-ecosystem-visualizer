@@ -24,6 +24,15 @@ import type { NotebookCell } from '@/lib/workflow-notebook';
 import { buildArchitecture } from '@/lib/scaffolding-templates';
 import { completeChat } from '@/lib/llm-client';
 import {
+  validateNotebookAST,
+  buildASTRepromptFeedback,
+  type NotebookCellLike,
+} from '@/lib/validators/notebook-ast';
+import {
+  validateNarrative,
+  buildNarrativeRepromptFeedback,
+} from '@/lib/validators/narrative';
+import {
   GenerateNotebookRequestSchema,
   NotebookCellsSchema,
   sanitizeUserText,
@@ -372,6 +381,60 @@ Output ONLY a JSON array of cells:
         );
       }
       continue;
+    }
+
+    // AST grounding validation (layer 2 — semantic). Checks that every
+    // import / attribute chain under an NVIDIA namespace exists in the
+    // allowed-API manifest. Fake CLI invocations (e.g. `nemo train`) are
+    // also caught here.
+    const astResult = validateNotebookAST(
+      schemaResult.data as NotebookCellLike[],
+    );
+    console.log(
+      `[generate-notebook][${correlationId}] Attempt ${attempt} AST: ` +
+        `cells=${astResult.stats.codeCellsChecked} imports=${astResult.stats.importsChecked} ` +
+        `nvidia=${astResult.stats.nvidiaImportsChecked} violations=${astResult.violations.length}`,
+    );
+
+    if (!astResult.ok && attempt < 3) {
+      feedback = buildASTRepromptFeedback(astResult);
+      continue;
+    }
+
+    // Final attempt: accept the notebook even with residual AST violations
+    // but surface them in logs so post-run inspection can catch what survived.
+    if (!astResult.ok) {
+      console.warn(
+        `[generate-notebook][${correlationId}] AST violations survived retries (${astResult.violations.length}):`,
+      );
+      for (const v of astResult.violations.slice(0, 5)) {
+        console.warn(`  - ${v.message}`);
+      }
+    }
+
+    // Narrative structure validation (layer 3 — shape of the story).
+    // Checks that required sections (overview / setup / baseline / eval /
+    // summary) are present. Training paths require baseline too.
+    const narrativeResult = validateNarrative(
+      schemaResult.data as NotebookCellLike[],
+      steps,
+    );
+    console.log(
+      `[generate-notebook][${correlationId}] Attempt ${attempt} narrative: ` +
+        `found=[${narrativeResult.sectionsFound.join(',')}] ` +
+        `missing=${narrativeResult.violations.length}`,
+    );
+
+    if (!narrativeResult.ok && attempt < 3) {
+      feedback = buildNarrativeRepromptFeedback(narrativeResult);
+      continue;
+    }
+
+    if (!narrativeResult.ok) {
+      console.warn(
+        `[generate-notebook][${correlationId}] Narrative gaps survived retries: ` +
+          `missing=${narrativeResult.violations.map((v) => v.section).join(',')}`,
+      );
     }
 
     cells = schemaResult.data;
